@@ -21,6 +21,7 @@ def kotti_configure(settings):
     settings['pyramid.includes'] += ' kotti_eshop'
     settings['kotti.available_types'] += (
         ' kotti_eshop.resources.Shop' +
+        ' kotti_eshop.resources.ShopProduct' +
         ' kotti_eshop.resources.CustomContent')
     settings['kotti.fanstatic.view_needed'] += \
         ' kotti_eshop.fanstatic.css_and_js'
