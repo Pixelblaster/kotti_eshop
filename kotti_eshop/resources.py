@@ -61,6 +61,26 @@ class ShopClient(Content):
         addable_to=['Shop', ],)
 
 
+class ShopProduct(Content):
+    """ A product in this eShop
+    """
+    id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
+    # id_category
+    # price
+    # currency
+    # price_offer
+    # expires_offer_date
+    # featured
+    # status
+    # image
+    # support_days
+    type_info = Content.type_info.copy(
+        name=u'ShopProduct',
+        title=_(u'ShopProduct'),
+        add_view=u'add_product',
+        addable_to=['Shop', ],)
+
+
 class CustomContent(Content):
     """ A custom content type. """
 
