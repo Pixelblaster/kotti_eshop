@@ -12,7 +12,7 @@ from kotti_eshop import _
 
 
 class Shop(Content):
-    """ Shop content type
+    """ An eShop in this website
     """
     id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
 
@@ -21,6 +21,28 @@ class Shop(Content):
         title=_(u'Shop'),
         add_view=u'add_shop',
         addable_to=['Document', ],)
+
+
+class ShopOrder(Content):
+    """ An order in eShop
+    """
+    id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
+    # id_user -> who is the client
+    # id_product or list of products?
+    # id_coupon - maybe was a special offer?
+    # paymethod - paypal or something
+    # currency
+    # amount decimal(14,3)
+    # ip_address
+    # pay_date
+    # support_date
+    # status
+    # notes
+    type_info = Content.type_info.copy(
+        name=u'ShopOrder',
+        title=_(u'ShopOrder'),
+        add_view=u'add_order',
+        addable_to=['Shop', ],)
 
 
 class CustomContent(Content):
