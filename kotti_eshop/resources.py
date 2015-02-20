@@ -1,14 +1,58 @@
 # -*- coding: utf-8 -*-
 
+from kotti_eshop import _
 from kotti.interfaces import IDefaultWorkflow
+from kotti.resources import Base
 from kotti.resources import Content
+from kotti.resources import DBSession
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import Unicode
+from sqlalchemy import Table
 from zope.interface import implements
 
-from kotti_eshop import _
+
+shopproduct_productmaterials_table = Table(
+    'shopproduct_productmaterials', Base.metadata,
+    Column('shopproduct_id', Integer, ForeignKey("shopproduct.id"),
+           primary_key=True),
+    Column('productmaterial_id', Integer, ForeignKey("productmaterial.id"),
+           primary_key=True)
+)
+
+shopproduct_producttopics_table = Table(
+    'shopproduct_producttopics', Base.metadata,
+    Column('shopproduct_id', Integer, ForeignKey("shopproduct.id"),
+           primary_key=True),
+    Column('producttopic_id', Integer, ForeignKey("producttopic.id"),
+           primary_key=True)
+)
+
+shopproduct_productcategories_table = Table(
+    'shopproduct_productcategories', Base.metadata,
+    Column('shopproduct_id', Integer, ForeignKey("shopproduct.id"),
+           primary_key=True),
+    Column('productcategory_id', Integer, ForeignKey("productcategory.id"),
+           primary_key=True)
+)
+
+shopproduct_productages_table = Table(
+    'shopproduct_productages', Base.metadata,
+    Column('shopproduct_id', Integer, ForeignKey("shopproduct.id"),
+           primary_key=True),
+    Column('productage_id', Integer, ForeignKey("productage.id"),
+           primary_key=True)
+)
+
+
+def _categorization_find_or_create(factory, kw):
+    with DBSession.no_autoflush:
+        keyword = factory.query.filter_by(title=kw).first()
+    if keyword is None:
+        keyword = factory(title=kw)
+        DBSession.add(keyword)
+    return keyword
 
 
 class Shop(Content):
