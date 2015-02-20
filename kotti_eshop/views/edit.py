@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-
-"""
-Created on 2015-02-18
-:author: GhitaB (ghita_bizau@yahoo.com)
-"""
-
 import colander
 from kotti.views.edit import ContentSchema
 from kotti.views.form import AddFormView

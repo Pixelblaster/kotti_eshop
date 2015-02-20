@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-
-"""
-Created on 2015-02-18
-:author: GhitaB (ghita_bizau@yahoo.com)
-"""
-
 from pyramid.view import view_config
 from pyramid.view import view_defaults
 
@@ -31,8 +25,9 @@ class CustomContentViews(BaseView):
             'foo': _(u'bar'),
         }
 
-    @view_config(name='alternative-view', permission='view',
-                 renderer='kotti_eshop:templates/custom-content-alternative.pt')
+    @view_config(
+        name='alternative-view', permission='view',
+        renderer='kotti_eshop:templates/custom-content-alternative.pt')
     def alternative_view(self):
         """ Alternative view for :class:`kotti_eshop.resources.CustomContent`.
         This view requires the JS / CSS resources defined in

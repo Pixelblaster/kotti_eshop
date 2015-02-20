@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
-
-"""
-Created on 2015-02-18
-:author: GhitaB (ghita_bizau@yahoo.com)
-"""
+from pytest import fixture
 
 pytest_plugins = "kotti"
-
-from pytest import fixture
 
 
 @fixture(scope='session')

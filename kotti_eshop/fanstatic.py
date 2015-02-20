@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-Created on 2015-02-18
-:author: GhitaB (ghita_bizau@yahoo.com)
-"""
-
 from __future__ import absolute_import
 
 from fanstatic import Group
