@@ -1,11 +1,23 @@
 # -*- coding: utf-8 -*-
+from kotti_eshop import _
+from kotti_eshop.resources import CustomContent
+from kotti_eshop.resources import ShopProduct
+from kotti_eshop.fanstatic import css_and_js
+from kotti_eshop.views import BaseView
 from pyramid.view import view_config
 from pyramid.view import view_defaults
 
-from kotti_eshop import _
-from kotti_eshop.resources import CustomContent
-from kotti_eshop.fanstatic import css_and_js
-from kotti_eshop.views import BaseView
+
+@view_config(context=ShopProduct, name='view', permission='view',
+             renderer='kotti_eshop:templates/shopproduct-view.pt')
+class ShopProductView(BaseView):
+    """ Shop product view """
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        return {}
 
 
 @view_defaults(context=CustomContent, permission='view')
