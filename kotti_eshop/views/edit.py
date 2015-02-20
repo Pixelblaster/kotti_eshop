@@ -124,7 +124,7 @@ class ShopProductAddForm(AddFormView):
             tags=all_tags,
             title=appstruct['title'],
             producttopics=producttopics,
-            ages=productages,
+            productages=productages,
         )
 
     def before(self, form):

@@ -102,7 +102,7 @@ class ProductTopic(Base):
     shopproducts = relationship(
         'ShopProduct',
         secondary=shopproduct_producttopics_table,
-        backref="shopproducts_topics")
+        backref="shopproduct_topics")
 
     def __init__(self, title):
         self.title = title
@@ -122,7 +122,7 @@ class ProductAge(Base):
     shopproducts = relationship(
         'ShopProduct',
         secondary=shopproduct_productages_table,
-        backref="shopproducts_ages")
+        backref="shopproduct_ages")
 
 
 class Shop(Content):
