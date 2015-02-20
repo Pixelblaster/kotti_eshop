@@ -10,6 +10,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import Table
 from sqlalchemy import Unicode
+from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import relationship
 from zope.interface import implements
 
@@ -177,6 +178,8 @@ class ShopClient(Content):
 class ShopProduct(Content):
     """ A product in this eShop
     """
+    __tablename__ = 'shopproduct'
+
     id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
     # id_category
     # price
@@ -187,11 +190,42 @@ class ShopProduct(Content):
     # status
     # image
     # support_days
+
+    producttopics = association_proxy(
+        'shopproduct_topics',
+        'title',
+        creator=lambda v: _categorization_find_or_create(ProductTopic, v)
+    )
+    productmaterials = association_proxy(
+        'shopproduct_materials',
+        'title',
+        creator=lambda v: _categorization_find_or_create(ProductMaterial, v)
+    )
+    productcategories = association_proxy(
+        'shopproduct_categories',
+        'title',
+        creator=lambda v: ProductCategory(title=v)
+    )
+
+    productages = association_proxy(
+        'shopproduct_ages',
+        'title',
+        creator=lambda v: ProductAge(title=v)
+    )
+
     type_info = Content.type_info.copy(
         name=u'ShopProduct',
         title=_(u'ShopProduct'),
         add_view=u'add_product',
         addable_to=['Shop', ],)
+
+    def __init__(self, **kwargs):
+        super(ShopProduct, self).__init__(**kwargs)
+
+        for attr in ['materials', 'categories', 'topics']:
+            val = kwargs.get(attr)
+            if val:
+                setattr(self, attr, val)
 
 
 class CustomContent(Content):
