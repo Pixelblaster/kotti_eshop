@@ -8,8 +8,9 @@ from kotti.resources import DBSession
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
-from sqlalchemy import Unicode
 from sqlalchemy import Table
+from sqlalchemy import Unicode
+from sqlalchemy.orm import relationship
 from zope.interface import implements
 
 
@@ -53,6 +54,74 @@ def _categorization_find_or_create(factory, kw):
         keyword = factory(title=kw)
         DBSession.add(keyword)
     return keyword
+
+
+class ProductCategory(Base):
+    """ A shop_product can be saved in one or more product_categories
+    """
+    __tablename__ = 'productcategory'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(Unicode(512), nullable=False)
+
+    def __init__(self, title):
+        self.title = title
+
+    shopproducts = relationship(
+        'ShopProduct',
+        secondary=shopproduct_productcategories_table,
+        backref="shopproduct_categories")
+
+
+class ProductMaterial(Base):
+    """ A shop_product can be made of one ore more product_materials
+    """
+    __tablename__ = 'productmaterial'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(Unicode(512), nullable=False)
+
+    shopproducts = relationship(
+        'ShopProduct',
+        secondary=shopproduct_productmaterials_table,
+        backref="shopproduct_materials")
+
+    def __init__(self, title):
+        self.title = title
+
+
+class ProductTopic(Base):
+    """ A shop_product can be added in one ore more product_topics
+    """
+    __tablename__ = 'producttopic'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(Unicode(512), nullable=False)
+
+    shopproducts = relationship(
+        'ShopProduct',
+        secondary=shopproduct_producttopics_table,
+        backref="shopproducts_topics")
+
+    def __init__(self, title):
+        self.title = title
+
+
+class ProductAge(Base):
+    """ A shop_product can be recommended for one ore more product_ages
+    """
+    __tablename__ = 'productage'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(Unicode(512), nullable=False)
+
+    def __init__(self, title):
+        self.title = title
+
+    shopproducts = relationship(
+        'ShopProduct',
+        secondary=shopproduct_productages_table,
+        backref="shopproducts_ages")
 
 
 class Shop(Content):
