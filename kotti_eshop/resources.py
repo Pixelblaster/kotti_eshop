@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-Created on 2015-02-18
-:author: GhitaB (ghita_bizau@yahoo.com)
-"""
-
 from kotti.interfaces import IDefaultWorkflow
 from kotti.resources import Content
 from sqlalchemy import Column
@@ -14,6 +9,18 @@ from sqlalchemy import Unicode
 from zope.interface import implements
 
 from kotti_eshop import _
+
+
+class Shop(Content):
+    """ Shop content type
+    """
+    id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
+
+    type_info = Content.type_info.copy(
+        name=u'Shop',
+        title=_(u'Shop'),
+        add_view=u'add_shop',
+        addable_to=['Document', ],)
 
 
 class CustomContent(Content):
