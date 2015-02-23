@@ -130,6 +130,11 @@ class Shop(Content):
     """
     id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
 
+    def get_all_products(self):
+        products = DBSession.query(ShopProduct).filter(
+            ShopProduct.parent_id == self.id)
+        return products
+
     type_info = Content.type_info.copy(
         name=u'Shop',
         title=_(u'Shop'),
