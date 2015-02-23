@@ -222,7 +222,7 @@ class ShopProduct(Content):
     def __init__(self, **kwargs):
         super(ShopProduct, self).__init__(**kwargs)
 
-        for attr in ['materials', 'categories', 'topics']:
+        for attr in ['materials', 'categories', 'topics', 'ages']:
             val = kwargs.get(attr)
             if val:
                 setattr(self, attr, val)

@@ -14,13 +14,10 @@ class ShopProductViews(BaseView):
 
     @view_config(name='view', permission='view',
                  renderer='kotti_eshop:templates/shopproduct-view.pt')
-    def default_view(self):
-        """ Default view ShopProduct
+    def view_shop_product(self):
+        """ ShopProduct View
         """
-
-        return {
-            'foo': _(u'bar'),
-        }
+        return {}
 
 
 @view_defaults(context=CustomContent, permission='view')

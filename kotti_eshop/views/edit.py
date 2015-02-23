@@ -59,7 +59,6 @@ def ShopProductSchema(tmpstore, title_missing=None):
         producttopics = ProductTopics(
             widget=get_selectize_widget(ProductTopic),
             description=_("Type or select topics"))
-
         productages = ProductAges(
             widget=get_selectize_widget(ProductAge),
             description=_("Type or select ages"))
