@@ -1,1 +1,12 @@
-<p>Simple text in product view</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>${context.parent.title} - ${context.title}</title>
+</head>
+  <body>
+    <div class="content">
+      <h1>${context.parent.title} - ${context.title}</h1>      
+    </div>
+  </body>
+</html>

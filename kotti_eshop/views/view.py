@@ -8,16 +8,19 @@ from pyramid.view import view_config
 from pyramid.view import view_defaults
 
 
-@view_config(context=ShopProduct, name='view', permission='view',
-             renderer='kotti_eshop:templates/shopproduct-view.pt')
-class ShopProductView(BaseView):
-    """ Shop product view """
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
+@view_defaults(context=ShopProduct, permission='view')
+class ShopProductViews(BaseView):
+    """ Views for ShopProduct """
 
-    def __call__(self):
-        return {}
+    @view_config(name='view', permission='view',
+                 renderer='kotti_eshop:templates/shopproduct-view.pt')
+    def default_view(self):
+        """ Default view ShopProduct
+        """
+
+        return {
+            'foo': _(u'bar'),
+        }
 
 
 @view_defaults(context=CustomContent, permission='view')
