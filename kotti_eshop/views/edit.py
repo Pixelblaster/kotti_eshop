@@ -130,7 +130,10 @@ class ShopProductAddForm(AddFormView):
         return super(ShopProductAddForm, self).before(form)
 
 
+@view_config(name='edit', context=ShopProduct, permission='edit',
+             renderer='kotti:templates/edit/node.pt')
 class ShopProductEditForm(EditFormView):
+    """ Form to edit existing ShopProduct objects. """
 
     def schema_factory(self):
         # tmpstore = FileUploadTempStore(self.request)
