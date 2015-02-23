@@ -15,13 +15,10 @@
     <p class="lead">
       ${context.description}
     </p>
-    <div tal:content="structure context.title | None"></div>
     <div class="products-list">
       <h2>Products</h2>
       <div tal:repeat="product shop.get_all_products()">
-        <h3>_______________________</h3>
-        <p>NAME: ${product.name}</p>
-        <p>TITLE: ${product.title}</p>
+        <h3><a href="${api.url(product)}">${product.title}</a></h3>
         <p>DESCRIPTION: ${product.description}</p>
         <p>CATEGORIES: ${product.productcategories}</p>
         <p>MATERIALS: ${product.productmaterials}</p>
