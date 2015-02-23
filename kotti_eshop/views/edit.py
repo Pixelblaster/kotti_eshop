@@ -48,7 +48,7 @@ class ShopSchema(ContentSchema):
     """ Schema for Shop. """
 
 
-def ShopProductSchema(tmpstore, title_missing=None):
+def ShopProductSchema(title_missing=None):
     class ShopProductSchema(ContentSchema):
         productmaterials = ProductMaterials(
             widget=get_selectize_widget(ProductMaterial),
