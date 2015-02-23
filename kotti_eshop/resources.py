@@ -204,13 +204,13 @@ class ShopProduct(Content):
     productcategories = association_proxy(
         'shopproduct_categories',
         'title',
-        creator=lambda v: ProductCategory(title=v)
+        creator=lambda v: _categorization_find_or_create(ProductCategory, v)
     )
 
     productages = association_proxy(
         'shopproduct_ages',
         'title',
-        creator=lambda v: ProductAge(title=v)
+        creator=lambda v: _categorization_find_or_create(ProductAge, v)
     )
 
     type_info = Content.type_info.copy(
@@ -222,10 +222,10 @@ class ShopProduct(Content):
     def __init__(self, **kwargs):
         super(ShopProduct, self).__init__(**kwargs)
 
-        # for attr in ['materials', 'categories', 'topics', 'ages']:
-        #     val = kwargs.get(attr)
-        #     if val:
-        #         setattr(self, attr, val)
+        for attr in ['materials', 'categories', 'topics', 'ages']:
+            val = kwargs.get(attr)
+            if val:
+                setattr(self, attr, val)
 
 
 class CustomContent(Content):

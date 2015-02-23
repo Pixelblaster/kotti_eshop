@@ -16,5 +16,16 @@
     </p>
     <div tal:content="structure context.title | None"></div>
 
+    <div tal:define="product context">
+      <p>NAME: ${product.name}</p>
+      <p>TITLE: ${product.title}</p>
+      <p>DESCRIPTION: ${product.description}</p>
+      <p>CATEGORIES: ${product.productcategories}</p>
+      <p>MATERIALS: ${product.productmaterials}</p>
+      <p>TAGS: ${product.tags}</p>
+      <p>TOPICS: ${product.producttopics}</p>
+      <p>AGES: ${product.productages}</p>
+    </div>
+
   </article>
 </html>

@@ -115,7 +115,6 @@ class ShopProductAddForm(AddFormView):
         productages = appstruct['productages']
         all_tags = set(productcategories + producttopics + productmaterials +
                        productages)
-
         return self.item_class(
             productcategories=productcategories,
             description=appstruct['description'],
