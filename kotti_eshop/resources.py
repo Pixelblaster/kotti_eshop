@@ -5,6 +5,7 @@ from kotti.interfaces import IDefaultWorkflow
 from kotti.resources import Base
 from kotti.resources import Content
 from kotti.resources import DBSession
+from kotti.resources import Image
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
@@ -123,6 +124,25 @@ class ProductAge(Base):
         'ShopProduct',
         secondary=shopproduct_productages_table,
         backref="shopproduct_ages")
+
+
+class ProductImage(Image):
+    """ An image added to a product """
+
+    __tablename__ = 'productimage'
+
+    # add your columns
+    id = Column(Integer, ForeignKey('images.id'), primary_key=True)
+
+    type_info = Image.type_info.copy(
+        name=u'ProductImage',
+        title=_(u'ProductImage'),
+        add_view=u'add_image',
+        addable_to=[u'ShopProduct'],
+    )
+
+    def __init__(self, **kwargs):
+        super(ProductImage, self).__init__(**kwargs)
 
 
 class Shop(Content):
