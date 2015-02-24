@@ -17,7 +17,11 @@
     </p>
 
     <div class="product-gallery">
-      ${product.get_all_images().all()}
+      <div class="product-image-div"
+           tal:repeat="productimage product.get_all_images().all()">
+        <img width="300px" tal:condition="productimage.data" class="product-image"
+         src="${request.resource_url(productimage)}image" />
+      </div>
     </div>
 
     <div class="product-details">
