@@ -75,37 +75,39 @@
     </div><!-- shop carousel -->
 
     <div class="shop-content-row row">
-      <div class="shop-categories-col col col-lg-3 col-md-3 col-sm-12 col-xs-12">
+      <div class="shop-categories-col col col-lg-2 col-md-2 col-sm-12 col-xs-12">
         <h3>Categories</h3>
-        <ul>
-          <li>Item 1</li>
-          <li>Item 2</li>
-          <li>Item 3</li>
+        <ul class="list-left list-categories">
+          <li tal:repeat="category shop.get_all_productcategories()">
+            <a href="${api.url(api.root)}@@search-products?category=${category.title}">
+              ${category.title}
+            </a>
+          </li>
         </ul>
         <h3>Materials</h3>
-        <ul>
-          <li>Item 1</li>
-          <li>Item 2</li>
-          <li>Item 3</li>
-        </ul>        
+        <ul class="list-left list-materials">
+          <li tal:repeat="material shop.get_all_productmaterials()">
+            <a href="${api.url(api.root)}@@search-products?material=${material.title}">
+              ${material.title}
+            </a>
+          </li>
+        </ul>
         <h3>Topics</h3>
-        <ul>
-          <li>Item 1</li>
-          <li>Item 2</li>
-          <li>Item 3</li>
-        </ul>        
+        <ul class="list-left list-topics">
+          <li tal:repeat="topic shop.get_all_producttopics()">
+            <a href="${api.url(api.root)}@@search-products?topic=${topic.title}">
+              ${topic.title}
+            </a>
+          </li>
+        </ul>
         <h3>Ages</h3>
-        <ul>
-          <li>Item 1</li>
-          <li>Item 2</li>
-          <li>Item 3</li>
-        </ul>        
-        <h3>Tags</h3>
-        <ul>
-          <li>Item 1</li>
-          <li>Item 2</li>
-          <li>Item 3</li>
-        </ul>        
+        <ul class="list-left list-ages">
+          <li tal:repeat="age shop.get_all_productages()">
+            <a href="${api.url(api.root)}@@search-products?age=${age.title}">
+              ${age.title}
+            </a>
+          </li>
+        </ul>
       </div>
       <div class="shop-products-col col col-lg-9 col-md-9 col-sm-12 col-xs-12">
         <h2>Products</h2>

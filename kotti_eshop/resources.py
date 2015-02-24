@@ -165,6 +165,26 @@ class Shop(Content):
         add_view=u'add_shop',
         addable_to=['Document', ],)
 
+    def get_all_productcategories(self):
+        """ Returns all categories items """
+        categories = DBSession.query(ProductCategory)
+        return categories
+
+    def get_all_productmaterials(self):
+        """ Returns all materials items """
+        materials = DBSession.query(ProductMaterial)
+        return materials
+
+    def get_all_producttopics(self):
+        """ Returns all topics items """
+        topics = DBSession.query(ProductCategory)
+        return topics
+
+    def get_all_productages(self):
+        """ Returns all ages items """
+        ages = DBSession.query(ProductAge)
+        return ages
+
 
 class ShopOrder(Content):
     """ An order in eShop
