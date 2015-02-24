@@ -19,6 +19,11 @@
       <h2>Products</h2>
       <div tal:repeat="product shop.get_all_products()">
         <h3><a href="${api.url(product)}">${product.title}</a></h3>
+
+        <div class="product-gallery">
+          ${product.get_all_images().all()}
+        </div>
+
         <div tal:condition="product.productcategories">
           <h4>Categories</h4>
           <ul>

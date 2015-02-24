@@ -213,7 +213,6 @@ class ShopProduct(Content):
     # expires_offer_date
     # featured
     # status
-    # image
     # support_days
 
     producttopics = association_proxy(
@@ -251,6 +250,13 @@ class ShopProduct(Content):
             val = kwargs.get(attr)
             if val:
                 setattr(self, attr, val)
+
+    def get_all_images(self):
+        """ Returns all images added to this product """
+        images = DBSession.query(Image).filter(
+            Image.parent_id == self.id)
+
+        return images
 
 
 class CustomContent(Content):

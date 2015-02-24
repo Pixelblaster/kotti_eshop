@@ -16,6 +16,10 @@
       ${product.description}
     </p>
 
+    <div class="product-gallery">
+      ${product.get_all_images().all()}
+    </div>
+
     <div tal:condition="product.productcategories">
       <h4>Categories</h4>
       <ul>
