@@ -30,6 +30,9 @@
 
         <div class="product-details">
           <p>PRICE: ${product.price}</p>
+          <p tal:condition="python: product.price_offer and product.expires_offer_date >= today">
+            PRICE OFFER: ${product.price_offer}
+          </p>
           <p>SUPPORT DAYS: ${product.support_days}</p>
           <p>FEATURED: ${product.featured}</p>
           <p>STATUS: ${product.status}</p>

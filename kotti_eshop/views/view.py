@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import date
 from kotti_eshop import _
 from kotti_eshop.resources import CustomContent
 from kotti_eshop.resources import Shop
@@ -18,7 +19,8 @@ class ShopView(BaseView):
     def view_shop(self):
         """ Shop View
         """
-        return {}
+        today = date.today()
+        return {'today': today}
 
 
 @view_defaults(context=ShopProduct, permission='view')
@@ -30,7 +32,8 @@ class ShopProductViews(BaseView):
     def view_shop_product(self):
         """ ShopProduct View
         """
-        return {}
+        today = date.today()
+        return {'today': today}
 
 
 @view_defaults(context=CustomContent, permission='view')
