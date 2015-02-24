@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import colander
 from colander import SequenceSchema
+from colander import Schema
 from colander import SchemaNode
 from colander import String
 from deform.widget import SelectWidget
@@ -85,7 +86,7 @@ def ShopProductSchema(title_missing=None):
     return ShopProductSchema()
 
 
-class ShopProductPriceOfferSchema(ContentSchema):
+class ShopProductPriceOfferSchema(Schema):
     price = colander.SchemaNode(
         colander.Float(),
         title=_(u"Price"),
@@ -207,25 +208,12 @@ class ShopProductEditForm(EditFormView):
 class ShopProductPriceOfferEditForm(EditFormView):
     """ Form to give a special price offer for a product. """
 
-    def schema_factory(self):
-        # tmpstore = FileUploadTempStore(self.request)
-        # return ShopProductSchema(tmpstore)
-        return ShopProductSchema()
-
-    def before(self, form):
-        selectize.need()
-        return super(ShopProductEditForm, self).before(form)
+    schema_factory = ShopProductPriceOfferSchema
 
     def edit(self, **appstruct):
-        super(ShopProductEditForm, self).edit(**appstruct)
-        self.context.productmaterials = appstruct['productmaterials']
-        self.context.productcategories = appstruct['productcategories']
-        self.context.producttopics = appstruct['producttopics']
-        self.context.productages = appstruct['productages']
-        all_tags = set(
-            appstruct['productcategories'] + appstruct['productmaterials'] +
-            appstruct['producttopics'] + appstruct['productages'])
-        self.context.tags = all_tags
+        self.context.price = appstruct['price']
+        self.context.price_offer = appstruct['price_offer']
+        self.context.expires_offer_date = appstruct['expires_offer_date']
 
 
 @view_config(name=CustomContent.type_info.add_view, permission='add',
