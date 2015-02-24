@@ -85,6 +85,23 @@ def ShopProductSchema(title_missing=None):
     return ShopProductSchema()
 
 
+class ShopProductPriceOfferSchema(ContentSchema):
+    price = colander.SchemaNode(
+        colander.Float(),
+        title=_(u"Price"),
+        description=_(u"The price for this product"))
+
+    price_offer = colander.SchemaNode(
+        colander.Float(),
+        title=_(u"Price offer"),
+        description=_(u"A better price for a time period"))
+
+    expires_offer_date = colander.SchemaNode(
+        colander.Date(),
+        title=_(u"Date"),
+        description=_(u"The date for offer time period end"))
+
+
 class ShopSelectizeWidget(SelectWidget):
 
     template = "kotti_eshop:templates/selectize.pt"
@@ -163,6 +180,32 @@ class ShopProductAddForm(AddFormView):
              renderer='kotti:templates/edit/node.pt')
 class ShopProductEditForm(EditFormView):
     """ Form to edit existing ShopProduct objects. """
+
+    def schema_factory(self):
+        # tmpstore = FileUploadTempStore(self.request)
+        # return ShopProductSchema(tmpstore)
+        return ShopProductSchema()
+
+    def before(self, form):
+        selectize.need()
+        return super(ShopProductEditForm, self).before(form)
+
+    def edit(self, **appstruct):
+        super(ShopProductEditForm, self).edit(**appstruct)
+        self.context.productmaterials = appstruct['productmaterials']
+        self.context.productcategories = appstruct['productcategories']
+        self.context.producttopics = appstruct['producttopics']
+        self.context.productages = appstruct['productages']
+        all_tags = set(
+            appstruct['productcategories'] + appstruct['productmaterials'] +
+            appstruct['producttopics'] + appstruct['productages'])
+        self.context.tags = all_tags
+
+
+@view_config(name='edit_price_offer', context=ShopProduct, permission='edit',
+             renderer='kotti:templates/edit/node.pt')
+class ShopProductPriceOfferEditForm(EditFormView):
+    """ Form to give a special price offer for a product. """
 
     def schema_factory(self):
         # tmpstore = FileUploadTempStore(self.request)
