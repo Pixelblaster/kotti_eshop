@@ -6,9 +6,13 @@ from kotti.resources import Base
 from kotti.resources import Content
 from kotti.resources import DBSession
 from kotti.resources import Image
+from sqlalchemy import Boolean
 from sqlalchemy import Column
+from sqlalchemy import Date
+from sqlalchemy import Float
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
+from sqlalchemy import String
 from sqlalchemy import Table
 from sqlalchemy import Unicode
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -206,14 +210,12 @@ class ShopProduct(Content):
     __tablename__ = 'shopproduct'
 
     id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
-    # id_category
-    # price
-    # currency
-    # price_offer
-    # expires_offer_date
-    # featured
-    # status
-    # support_days
+    price = Column(Float())
+    price_offer = Column(Float())
+    expires_offer_date = Column(Date())
+    support_days = Column(Integer())
+    featured = Column(Boolean())
+    status = Column(String())
 
     producttopics = association_proxy(
         'shopproduct_topics',
