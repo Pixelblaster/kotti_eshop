@@ -50,6 +50,26 @@ class ShopSchema(ContentSchema):
 
 def ShopProductSchema(title_missing=None):
     class ShopProductSchema(ContentSchema):
+        price = colander.SchemaNode(
+            colander.Float(),
+            title=_(u"Price"),
+            description=_(u"The price for this product"))
+
+        support_days = colander.SchemaNode(
+            colander.Integer(),
+            title=_(u"Support days"),
+            description=_(u"Number of support days for this product"))
+
+        featured = colander.SchemaNode(
+            colander.Boolean(),
+            title=_(u"Featured"),
+            description=_(u"Do you want this product to be featured?"))
+
+        status = colander.SchemaNode(
+            colander.String(),
+            title=_(u"Status"),
+            description=_(u"Available, limited or not available?"))
+
         productmaterials = ProductMaterials(
             widget=get_selectize_widget(ProductMaterial),
             description=_("Type or select materials"))
@@ -115,6 +135,11 @@ class ShopProductAddForm(AddFormView):
         productages = appstruct['productages']
         all_tags = set(productcategories + producttopics + productmaterials +
                        productages)
+        price = appstruct['price']
+        support_days = appstruct['support_days']
+        featured = appstruct['featured']
+        status = appstruct['status']
+
         return self.item_class(
             productcategories=productcategories,
             description=appstruct['description'],
@@ -123,6 +148,10 @@ class ShopProductAddForm(AddFormView):
             title=appstruct['title'],
             producttopics=producttopics,
             productages=productages,
+            price=price,
+            support_days=support_days,
+            featured=featured,
+            status=status
         )
 
     def before(self, form):

@@ -20,6 +20,13 @@
       ${product.get_all_images().all()}
     </div>
 
+    <div class="product-details">
+      <p>PRICE: ${product.price}</p>
+      <p>SUPPORT DAYS: ${product.support_days}</p>
+      <p>FEATURED: ${product.featured}</p>
+      <p>STATUS: ${product.status}</p>
+    </div>
+
     <div tal:condition="product.productcategories">
       <h4>Categories</h4>
       <ul>
