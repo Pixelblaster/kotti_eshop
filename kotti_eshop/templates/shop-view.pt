@@ -82,6 +82,7 @@
             <a href="${api.url(api.root)}@@search-products?category=${category.title}">
               ${category.title}
             </a>
+            <span class="products-number">(${len(category.shopproducts)})</span>
           </li>
         </ul>
         <h3>Materials</h3>
@@ -90,6 +91,7 @@
             <a href="${api.url(api.root)}@@search-products?material=${material.title}">
               ${material.title}
             </a>
+            <span class="products-number">(${len(material.shopproducts)})</span>
           </li>
         </ul>
         <h3>Topics</h3>
@@ -98,6 +100,7 @@
             <a href="${api.url(api.root)}@@search-products?topic=${topic.title}">
               ${topic.title}
             </a>
+            <span class="products-number">(${len(topic.shopproducts)})</span>
           </li>
         </ul>
         <h3>Ages</h3>
@@ -106,6 +109,7 @@
             <a href="${api.url(api.root)}@@search-products?age=${age.title}">
               ${age.title}
             </a>
+            <span class="products-number">(${len(age.shopproducts)})</span>
           </li>
         </ul>
       </div>
