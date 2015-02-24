@@ -154,16 +154,17 @@ class Shop(Content):
     """
     id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
 
-    def get_all_products(self):
-        products = DBSession.query(ShopProduct).filter(
-            ShopProduct.parent_id == self.id)
-        return products
-
     type_info = Content.type_info.copy(
         name=u'Shop',
         title=_(u'Shop'),
         add_view=u'add_shop',
         addable_to=['Document', ],)
+
+    def get_all_products(self):
+        """ Returns all products in this shop """
+        products = DBSession.query(ShopProduct).filter(
+            ShopProduct.parent_id == self.id)
+        return products
 
     def get_all_productcategories(self):
         """ Returns all categories items """
@@ -184,6 +185,46 @@ class Shop(Content):
         """ Returns all ages items """
         ages = DBSession.query(ProductAge)
         return ages
+
+    def get_products_by_category(self, category):
+        """ Returns products for a given category
+        """
+        all_products = self.get_all_products()
+        products = []
+        for product in all_products:
+            if category in product.categories:
+                products.append(product)
+        return products
+
+    def get_products_by_topic(self, topic):
+        """ Returns products for a given topic
+        """
+        all_products = self.get_all_products()
+        products = []
+        for product in all_products:
+            if topic in product.topics:
+                products.append(product)
+        return products
+
+    def get_products_by_material(self, material):
+        """ Returns products for a given material
+        """
+        all_products = self.get_all_products()
+        products = []
+        for product in all_products:
+            if material in product.materials:
+                products.append(product)
+        return products
+
+    def get_products_by_age(self, age):
+        """ Returns products for a given age
+        """
+        all_products = self.get_all_products()
+        products = []
+        for product in all_products:
+            if age in product.ages:
+                products.append(product)
+        return products
 
 
 class ShopOrder(Content):

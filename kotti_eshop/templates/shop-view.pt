@@ -79,7 +79,7 @@
         <h3>Categories</h3>
         <ul class="list-left list-categories">
           <li tal:repeat="category shop.get_all_productcategories()">
-            <a href="${api.url(api.root)}@@search-products?category=${category.title}">
+            <a href="${api.url(shop)}@@search-products?category=${category.title}">
               ${category.title}
             </a>
             <span class="products-number">(${len(category.shopproducts)})</span>
@@ -88,7 +88,7 @@
         <h3>Materials</h3>
         <ul class="list-left list-materials">
           <li tal:repeat="material shop.get_all_productmaterials()">
-            <a href="${api.url(api.root)}@@search-products?material=${material.title}">
+            <a href="${api.url(shop)}@@search-products?material=${material.title}">
               ${material.title}
             </a>
             <span class="products-number">(${len(material.shopproducts)})</span>
@@ -97,7 +97,7 @@
         <h3>Topics</h3>
         <ul class="list-left list-topics">
           <li tal:repeat="topic shop.get_all_producttopics()">
-            <a href="${api.url(api.root)}@@search-products?topic=${topic.title}">
+            <a href="${api.url(shop)}@@search-products?topic=${topic.title}">
               ${topic.title}
             </a>
             <span class="products-number">(${len(topic.shopproducts)})</span>
@@ -106,7 +106,7 @@
         <h3>Ages</h3>
         <ul class="list-left list-ages">
           <li tal:repeat="age shop.get_all_productages()">
-            <a href="${api.url(api.root)}@@search-products?age=${age.title}">
+            <a href="${api.url(shop)}@@search-products?age=${age.title}">
               ${age.title}
             </a>
             <span class="products-number">(${len(age.shopproducts)})</span>
@@ -123,8 +123,8 @@
 
               <div class="product-gallery">
                 <div class="product-image-div"
-                     tal:repeat="productimage product.get_all_images().all()">
-                  <img width="300px" tal:condition="productimage.data" class="product-image"
+                     tal:repeat="productimage product.get_all_images().all()[:1]"><!-- only first img -->
+                  <img width="150px" tal:condition="productimage.data" class="product-image"
                    src="${request.resource_url(productimage)}image" />
                 </div>
               </div>
@@ -143,11 +143,11 @@
                 <h4>Categories</h4>
                 <ul>
                   <li>
-                    <a href="${api.url(api.root)}@@search-products?category=${product.productcategories[0]}">
+                    <a href="${api.url(shop)}@@search-products?category=${product.productcategories[0]}">
                       ${product.productcategories[0]}
                     </a>
                     <span tal:repeat="category product.productcategories[1:]">
-                      , <a href="${api.url(api.root)}@@search-products?category=${category}">${category}</a>
+                      , <a href="${api.url(shop)}@@search-products?category=${category}">${category}</a>
                     </span>
                   </li>
                 </ul>
@@ -157,11 +157,11 @@
                 <h4>Materials</h4>
                 <ul>
                   <li>
-                    <a href="${api.url(api.root)}@@search-products?material=${product.productmaterials[0]}">
+                    <a href="${api.url(shop)}@@search-products?material=${product.productmaterials[0]}">
                       ${product.productmaterials[0]}
                     </a>
                     <span tal:repeat="material product.productmaterials[1:]">
-                      , <a href="${api.url(api.root)}@@search-products?material=${material}">${material}</a>
+                      , <a href="${api.url(shop)}@@search-products?material=${material}">${material}</a>
                     </span>
                   </li>
                 </ul>
@@ -171,11 +171,11 @@
                 <h4>Topics</h4>
                 <ul>
                   <li>
-                    <a href="${api.url(api.root)}@@search-products?topic=${product.producttopics[0]}">
+                    <a href="${api.url(shop)}@@search-products?topic=${product.producttopics[0]}">
                       ${product.producttopics[0]}
                     </a>
                     <span tal:repeat="topic product.producttopics[1:]">
-                      , <a href="${api.url(api.root)}@@search-products?topic=${topic}">${topic}</a>
+                      , <a href="${api.url(shop)}@@search-products?topic=${topic}">${topic}</a>
                     </span>
                   </li>
                 </ul>
@@ -185,11 +185,11 @@
                 <h4>Ages</h4>
                 <ul>
                   <li>
-                    <a href="${api.url(api.root)}@@search-products?age=${product.productages[0]}">
+                    <a href="${api.url(shop)}@@search-products?age=${product.productages[0]}">
                       ${product.productages[0]}
                     </a>
                     <span tal:repeat="age product.productages[1:]">
-                      , <a href="${api.url(api.root)}@@search-products?age=${age}">${age}</a>
+                      , <a href="${api.url(shop)}@@search-products?age=${age}">${age}</a>
                     </span>
                   </li>
                 </ul>
@@ -199,15 +199,19 @@
                 <h4>Tags</h4>
                 <ul>
                   <li>
-                    <a href="${api.url(api.root)}@@search-products?tag=${product.tags[0]}">
+                    <a href="${api.url(shop)}@@search-products?tag=${product.tags[0]}">
                       ${product.tags[0]}
                     </a>
                     <span tal:repeat="tag product.tags[1:]">
-                      , <a href="${api.url(api.root)}@@search-products?tag=${tag}">${tag}</a>
+                      , <a href="${api.url(shop)}@@search-products?tag=${tag}">${tag}</a>
                     </span>
                   </li>
                 </ul>
               </div>
+
+              <a class="shop-add-btn btn btn-primary" href="#add-to-cart-link">
+                Add to cart
+              </a>
             </div>
           </tal:repeat>
         </div>

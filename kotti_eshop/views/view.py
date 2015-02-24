@@ -16,11 +16,60 @@ class ShopView(BaseView):
 
     @view_config(name='view', permission='view',
                  renderer='kotti_eshop:templates/shop-view.pt')
-    def view_shop(self):
+    def shop_view(self):
         """ Shop View
         """
         today = date.today()
         return {'today': today}
+
+    @view_config(name='search-products', permission='view',
+                 renderer='kotti_eshop:templates/shop-view.pt')
+    def shop_search_products_view(self):
+        """ Shop Search Products View
+        """
+        today = date.today()
+        return {'today': today}
+
+        # GET current page. SET to 1 if is None
+        get = self.request.GET
+
+        products = []
+        title_text = ""
+        # Select products by CATEGORY
+        if get.get('category') is not None:
+            category = get.get('category')
+            title_text = category + " in categorii"
+            products = self.get_products_by_category(category)
+
+        else:
+            # Select products by TOPIC
+            if get.get('topic') is not None:
+                topic = get.get('topic')
+                title_text = topic + " in teme"
+                products = self.get_products_by_topic(topic)
+
+            else:
+                # Select products by MATERIAL
+                if get.get('material') is not None:
+                    material = get.get('material')
+                    title_text = material + " in materiale"
+                    products = self.get_products_by_material(material)
+
+                else:
+                    # Select products by AGE
+                    if get.get('age') is not None:
+                        age = get.get('age')
+                        title_text = age + " in recomandari dupa varsta"
+                        products = self.get_products_by_age(age)
+
+                    else:
+                        # No filters.
+                        products = self.get_all_products()
+                        title_text = "articole in activitati"
+
+        custom_page_title = "Cautare dupa " + title_text
+        return {'products': products,
+                'custom_page_title': custom_page_title}
 
 
 @view_defaults(context=ShopProduct, permission='view')
@@ -29,7 +78,7 @@ class ShopProductViews(BaseView):
 
     @view_config(name='view', permission='view',
                  renderer='kotti_eshop:templates/shopproduct-view.pt')
-    def view_shop_product(self):
+    def shop_product_view(self):
         """ ShopProduct View
         """
         today = date.today()
