@@ -21,7 +21,7 @@ class ShopView(BaseView):
         """
         shop = self.context
         today = date.today()
-        custom_page_title = shop.title + " - Administration Panel"
+        custom_page_title = "Administration Panel"
         products = shop.get_all_products()
         featured_products = shop.get_featured_products()
         show_shop_carousel = True
