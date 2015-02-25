@@ -14,6 +14,21 @@ from pyramid.view import view_defaults
 class ShopView(BaseView):
     """ Views for ShopProduct """
 
+    @view_config(name='admin', permission='view',
+                 renderer='kotti_eshop:templates/shop-admin-view.pt')
+    def shop_admin_view(self):
+        """ Shop administration panel
+        """
+        shop = self.context
+        today = date.today()
+        custom_page_title = shop.title + " - Administration Panel"
+        products = shop.get_all_products()
+        show_shop_carousel = True
+        return {'products': products,
+                'custom_page_title': custom_page_title,
+                'today': today,
+                'show_shop_carousel': show_shop_carousel}
+
     @view_config(name='view', permission='view',
                  renderer='kotti_eshop:templates/shop-view.pt')
     def shop_view(self):
