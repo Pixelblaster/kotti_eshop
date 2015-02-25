@@ -42,11 +42,16 @@ class ShopView(BaseView):
         custom_page_title = "Products"
         featured_products = shop.get_featured_products()
         show_shop_carousel = True
+        if featured_products.count() > 0:
+            show_featured_products = True
+        else:
+            show_featured_products = False
         return {'products': products,
                 'featured_products': featured_products,
                 'custom_page_title': custom_page_title,
                 'today': today,
-                'show_shop_carousel': show_shop_carousel}
+                'show_shop_carousel': show_shop_carousel,
+                'show_featured_products': show_featured_products}
 
     @view_config(name='search-products', permission='view',
                  renderer='kotti_eshop:templates/shop-view.pt')
@@ -93,12 +98,14 @@ class ShopView(BaseView):
 
         custom_page_title = "Search for " + title_text
         show_shop_carousel = False
+        show_featured_products = False
         featured_products = shop.get_featured_products()
         return {'products': products,
                 'featured_products': featured_products,
                 'custom_page_title': custom_page_title,
                 'today': today,
-                'show_shop_carousel': show_shop_carousel}
+                'show_shop_carousel': show_shop_carousel,
+                'show_featured_products': show_featured_products}
 
 
 @view_defaults(context=ShopProduct, permission='view')
