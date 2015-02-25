@@ -119,7 +119,6 @@
         <div class="row products-list">
           <tal:repeat repeat="product products">
             <div class="product-item-col col col-lg-4 col-md-6 col-sm-12 col-xs-12">
-              <h3 class="product-title"><a href="${api.url(product)}">${product.title}</a></h3>
 
               <div class="product-gallery">
                 <div class="product-image-div"
@@ -128,6 +127,8 @@
                    src="${request.resource_url(productimage)}image/span2" />
                 </div>
               </div>
+
+              <h3 class="product-title"><a href="${api.url(product)}">${product.title}</a></h3>
 
               <div class="product-details">
                 <h4>${product.price} RON</h4>
