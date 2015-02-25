@@ -119,94 +119,23 @@
         <div class="row products-list">
           <tal:repeat repeat="product products">
             <div class="product-item-col col col-lg-4 col-md-6 col-sm-12 col-xs-12">
-              <h3><a href="${api.url(product)}">${product.title}</a></h3>
+              <h3 class="product-title"><a href="${api.url(product)}">${product.title}</a></h3>
 
               <div class="product-gallery">
                 <div class="product-image-div"
                      tal:repeat="productimage product.get_all_images().all()[:1]"><!-- only first img -->
-                  <img width="150px" tal:condition="productimage.data" class="product-image"
-                   src="${request.resource_url(productimage)}image" />
+                  <img tal:condition="productimage.data" class="product-image-thumb"
+                   src="${request.resource_url(productimage)}image/span2" />
                 </div>
               </div>
 
               <div class="product-details">
-                <p>PRICE: ${product.price}</p>
+                <h4>${product.price} RON</h4>
                 <p tal:condition="python: product.price_offer and product.expires_offer_date >= today">
                   PRICE OFFER: ${product.price_offer}
                 </p>
-                <p>SUPPORT DAYS: ${product.support_days}</p>
-                <p>FEATURED: ${product.featured}</p>
-                <p>STATUS: ${product.status}</p>
-              </div>
-
-              <div tal:condition="product.productcategories">
-                <h4>Categories</h4>
-                <ul>
-                  <li>
-                    <a href="${api.url(shop)}@@search-products?category=${product.productcategories[0]}">
-                      ${product.productcategories[0]}
-                    </a>
-                    <span tal:repeat="category product.productcategories[1:]">
-                      , <a href="${api.url(shop)}@@search-products?category=${category}">${category}</a>
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-              <div tal:condition="product.productmaterials">
-                <h4>Materials</h4>
-                <ul>
-                  <li>
-                    <a href="${api.url(shop)}@@search-products?material=${product.productmaterials[0]}">
-                      ${product.productmaterials[0]}
-                    </a>
-                    <span tal:repeat="material product.productmaterials[1:]">
-                      , <a href="${api.url(shop)}@@search-products?material=${material}">${material}</a>
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-              <div tal:condition="product.producttopics">
-                <h4>Topics</h4>
-                <ul>
-                  <li>
-                    <a href="${api.url(shop)}@@search-products?topic=${product.producttopics[0]}">
-                      ${product.producttopics[0]}
-                    </a>
-                    <span tal:repeat="topic product.producttopics[1:]">
-                      , <a href="${api.url(shop)}@@search-products?topic=${topic}">${topic}</a>
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-              <div tal:condition="product.productages">
-                <h4>Ages</h4>
-                <ul>
-                  <li>
-                    <a href="${api.url(shop)}@@search-products?age=${product.productages[0]}">
-                      ${product.productages[0]}
-                    </a>
-                    <span tal:repeat="age product.productages[1:]">
-                      , <a href="${api.url(shop)}@@search-products?age=${age}">${age}</a>
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-              <div tal:condition="product.tags">
-                <h4>Tags</h4>
-                <ul>
-                  <li>
-                    <a href="${api.url(shop)}@@search-products?tag=${product.tags[0]}">
-                      ${product.tags[0]}
-                    </a>
-                    <span tal:repeat="tag product.tags[1:]">
-                      , <a href="${api.url(shop)}@@search-products?tag=${tag}">${tag}</a>
-                    </span>
-                  </li>
-                </ul>
+                <p class="featured-product" tal:condition="product.featured is True">**FEATURED**</p>
+                <h5 class="product-status">${product.status}</h5>
               </div>
 
               <a class="shop-add-btn btn btn-primary" href="#add-to-cart-link">
