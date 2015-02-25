@@ -23,13 +23,9 @@ class ShopView(BaseView):
         today = date.today()
         custom_page_title = "Administration Panel"
         products = shop.get_all_products()
-        featured_products = shop.get_featured_products()
-        show_shop_carousel = True
         return {'products': products,
-                'featured_products': featured_products,
                 'custom_page_title': custom_page_title,
-                'today': today,
-                'show_shop_carousel': show_shop_carousel}
+                'today': today}
 
     @view_config(name='view', permission='view',
                  renderer='kotti_eshop:templates/shop-view.pt')

@@ -20,16 +20,36 @@
       </a>
     </h1>
 
-    <p class="shop-description lead">
-      ${shop.description}
-    </p>
-
     <div class="row">
       <div class="col col-lg-2 col-md-2 col-sm-12 col-xs 12">
-        <p><a href="${api.url(shop,'@@edit')}">Edit basic details</a> - shop name and description</p>
+        <h3>Options</h3>
+        <ul>
+          <li><a href="${api.url(shop,'@@edit')}">Edit basic details</a> - shop name and description</li>
+          <li><a href="${api.url(shop,'@@contents')}">Edit products</a> - shop contents</li>
+        </ul>
       </div>
+
       <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
-        
+        <!-- ADMIN PRODUCTS -->
+        <h3>Products</h3>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr tal:repeat="product products">
+              <td>${product.title}</td>
+              <td>${product.description}</td>
+              <td>${product.price} RON</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ADMIN PRODUCTS -->
       </div>      
     </div>
   </article>
