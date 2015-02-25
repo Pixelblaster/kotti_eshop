@@ -192,7 +192,7 @@ class Shop(Content):
         all_products = self.get_all_products()
         products = []
         for product in all_products:
-            if category in product.categories:
+            if category in product.productcategories:
                 products.append(product)
         return products
 
@@ -202,7 +202,7 @@ class Shop(Content):
         all_products = self.get_all_products()
         products = []
         for product in all_products:
-            if topic in product.topics:
+            if topic in product.producttopics:
                 products.append(product)
         return products
 
@@ -212,7 +212,7 @@ class Shop(Content):
         all_products = self.get_all_products()
         products = []
         for product in all_products:
-            if material in product.materials:
+            if material in product.productmaterials:
                 products.append(product)
         return products
 
@@ -222,7 +222,7 @@ class Shop(Content):
         all_products = self.get_all_products()
         products = []
         for product in all_products:
-            if age in product.ages:
+            if age in product.productages:
                 products.append(product)
         return products
 

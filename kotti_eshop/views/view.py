@@ -19,8 +19,12 @@ class ShopView(BaseView):
     def shop_view(self):
         """ Shop View
         """
+        products = self.context.get_all_products()
         today = date.today()
-        return {'today': today}
+        custom_page_title = "Products"
+        return {'products': products,
+                'custom_page_title': custom_page_title,
+                'today': today}
 
     @view_config(name='search-products', permission='view',
                  renderer='kotti_eshop:templates/shop-view.pt')
@@ -28,10 +32,8 @@ class ShopView(BaseView):
         """ Shop Search Products View
         """
         today = date.today()
-        return {'today': today}
-
-        # GET current page. SET to 1 if is None
         get = self.request.GET
+        shop = self.context
 
         products = []
         title_text = ""
@@ -39,37 +41,39 @@ class ShopView(BaseView):
         if get.get('category') is not None:
             category = get.get('category')
             title_text = category + " in categorii"
-            products = self.get_products_by_category(category)
+            products = shop.get_products_by_category(category)
 
         else:
             # Select products by TOPIC
             if get.get('topic') is not None:
                 topic = get.get('topic')
                 title_text = topic + " in teme"
-                products = self.get_products_by_topic(topic)
+                products = shop.get_products_by_topic(topic)
 
             else:
                 # Select products by MATERIAL
                 if get.get('material') is not None:
                     material = get.get('material')
                     title_text = material + " in materiale"
-                    products = self.get_products_by_material(material)
+                    products = shop.get_products_by_material(material)
 
                 else:
                     # Select products by AGE
                     if get.get('age') is not None:
                         age = get.get('age')
                         title_text = age + " in recomandari dupa varsta"
-                        products = self.get_products_by_age(age)
+                        products = shop.get_products_by_age(age)
 
                     else:
                         # No filters.
-                        products = self.get_all_products()
+                        products = shop.get_all_products()
                         title_text = "articole in activitati"
 
         custom_page_title = "Cautare dupa " + title_text
+
         return {'products': products,
-                'custom_page_title': custom_page_title}
+                'custom_page_title': custom_page_title,
+                'today': today}
 
 
 @view_defaults(context=ShopProduct, permission='view')
