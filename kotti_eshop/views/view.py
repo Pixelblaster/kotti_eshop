@@ -22,9 +22,11 @@ class ShopView(BaseView):
         products = self.context.get_all_products()
         today = date.today()
         custom_page_title = "Products"
+        show_shop_carousel = True
         return {'products': products,
                 'custom_page_title': custom_page_title,
-                'today': today}
+                'today': today,
+                'show_shop_carousel': show_shop_carousel}
 
     @view_config(name='search-products', permission='view',
                  renderer='kotti_eshop:templates/shop-view.pt')
@@ -70,10 +72,11 @@ class ShopView(BaseView):
                         title_text = "products in shop"
 
         custom_page_title = "Search for " + title_text
-
+        show_shop_carousel = False
         return {'products': products,
                 'custom_page_title': custom_page_title,
-                'today': today}
+                'today': today,
+                'show_shop_carousel': show_shop_carousel}
 
 
 @view_defaults(context=ShopProduct, permission='view')

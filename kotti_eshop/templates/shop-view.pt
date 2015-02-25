@@ -11,14 +11,18 @@
            i18n:domain="kotti_eshop"
            tal:define="shop context">
 
-    <h1 class="shop-title">${context.title}</h1>
+    <h1 class="shop-title">
+      <a href="${api.url(shop)}">
+        ${shop.title}
+      </a>
+    </h1>
 
     <p class="shop-description lead">
-      ${context.description}
+      ${shop.description}
     </p>
 
     <!-- shop carousel -->
-    <div class="shop-carousel-row row">
+    <div tal:condition="show_shop_carousel" class="shop-carousel-row row">
       <div class="shop-carousel-col col col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div id="shop-carousel" class="carousel slide" data-ride="carousel">
           <!-- Indicators -->
@@ -123,8 +127,10 @@
               <div class="product-gallery">
                 <div class="product-image-div"
                      tal:repeat="productimage product.get_all_images().all()[:1]"><!-- only first img -->
-                  <img tal:condition="productimage.data" class="product-image-thumb"
-                   src="${request.resource_url(productimage)}image/span2" />
+                  <a tal:condition="productimage.data" href="${api.url(product)}">
+                    <img tal:condition="productimage.data" class="product-image-thumb"
+                     src="${request.resource_url(productimage)}image/span2" />
+                  </a>
                 </div>
               </div>
 
