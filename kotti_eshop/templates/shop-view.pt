@@ -118,9 +118,52 @@
         </ul>
       </div>
       <div class="shop-products-col col col-lg-9 col-md-9 col-sm-12 col-xs-12">
-        <h2>${custom_page_title}</h2>
 
+        <!-- FEATURED PRODUCTS -->
+        <div class="row products-list featured-products-list">
+          <h2>Featured products</h2>
+          <tal:repeat repeat="product featured_products">
+            <div 
+              class="product-item-col product-item-col-featured col col-lg-4 col-md-6 col-sm-12 col-xs-12">
+
+              <div class="product-gallery product-gallery-featured">
+                <div class="product-image-div product-image-div-featured"
+                     tal:repeat="productimage product.get_all_images().all()[:1]"><!-- only first img -->
+                  <a tal:condition="productimage.data" href="${api.url(product)}">
+                    <img tal:condition="productimage.data" class="product-image-thumb"
+                     src="${request.resource_url(productimage)}image/span2" />
+                  </a>
+                </div>
+              </div>
+
+              <h3 class="product-title"><a href="${api.url(product)}">${product.title}</a></h3>
+
+              <div class="product-details"
+                   tal:define="has_price_offer python: product.price_offer and product.expires_offer_date >= today">
+                <!-- simple price -->
+                <h4 class="price-simple" tal:condition="has_price_offer is not True">${product.price} RON</h4>
+
+                <!-- or old price + new price -->
+                <h5 class="price-offer-old-price" tal:condition="has_price_offer">
+                  <del>${product.price} RON</del>
+                </h5>
+                <p tal:condition="has_price_offer">
+                  <h4 class="price-offer">${product.price_offer} RON</h4>
+                </p>
+                <h5 class="product-status">${product.status}</h5>
+              </div>
+
+              <a class="shop-add-btn btn btn-primary" href="#add-to-cart-link">
+                Add to cart
+              </a>
+            </div>
+          </tal:repeat>
+        </div><!-- FEATURED PRODUCTS -->
+
+
+        <!-- ALL PRODUCTS or SEARCH RESULTS -->
         <div class="row products-list">
+          <h2>${custom_page_title}</h2>
           <tal:repeat repeat="product products">
             <div class="product-item-col col col-lg-4 col-md-6 col-sm-12 col-xs-12">
 
@@ -149,7 +192,6 @@
                   <h4 class="price-offer">${product.price_offer} RON</h4>
                 </p>
 
-                <p class="featured-product" tal:condition="product.featured is True">**FEATURED**</p>
                 <h5 class="product-status">${product.status}</h5>
               </div>
 
@@ -158,7 +200,7 @@
               </a>
             </div>
           </tal:repeat>
-        </div>
+        </div><!-- ALL PRODUCTS or SEARCH RESULTS -->
       </div>      
     </div>
   </article>

@@ -23,8 +23,10 @@ class ShopView(BaseView):
         today = date.today()
         custom_page_title = shop.title + " - Administration Panel"
         products = shop.get_all_products()
+        featured_products = shop.get_featured_products()
         show_shop_carousel = True
         return {'products': products,
+                'featured_products': featured_products,
                 'custom_page_title': custom_page_title,
                 'today': today,
                 'show_shop_carousel': show_shop_carousel}
@@ -34,11 +36,14 @@ class ShopView(BaseView):
     def shop_view(self):
         """ Shop View
         """
-        products = self.context.get_all_products()
+        shop = self.context
+        products = shop.get_all_products()
         today = date.today()
         custom_page_title = "Products"
+        featured_products = shop.get_featured_products()
         show_shop_carousel = True
         return {'products': products,
+                'featured_products': featured_products,
                 'custom_page_title': custom_page_title,
                 'today': today,
                 'show_shop_carousel': show_shop_carousel}
@@ -78,7 +83,7 @@ class ShopView(BaseView):
                     # Select products by AGE
                     if get.get('age') is not None:
                         age = get.get('age')
-                        title_text = age + " in recommanded for ages"
+                        title_text = age + " in recommended for ages"
                         products = shop.get_products_by_age(age)
 
                     else:
@@ -88,7 +93,9 @@ class ShopView(BaseView):
 
         custom_page_title = "Search for " + title_text
         show_shop_carousel = False
+        featured_products = shop.get_featured_products()
         return {'products': products,
+                'featured_products': featured_products,
                 'custom_page_title': custom_page_title,
                 'today': today,
                 'show_shop_carousel': show_shop_carousel}

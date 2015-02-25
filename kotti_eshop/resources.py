@@ -166,6 +166,12 @@ class Shop(Content):
             ShopProduct.parent_id == self.id)
         return products
 
+    def get_featured_products(self):
+        """ Returns all featured products in this shop """
+        featured_products = DBSession.query(ShopProduct).filter(
+            ShopProduct.parent_id == self.id, ShopProduct.featured)
+        return featured_products
+
     def get_all_productcategories(self):
         """ Returns all categories items """
         categories = DBSession.query(ProductCategory)
