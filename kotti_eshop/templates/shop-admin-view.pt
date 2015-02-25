@@ -35,20 +35,39 @@
         <table class="table table-condensed">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Description</th>
+              <th>Name and description</th>
+              <th>Images</th>
               <th>Price</th>
+              <th>Price offer</th>
+              <th>Support days</th>
+              <th>Featured</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             <tr tal:repeat="product products">
-              <td>${product.title}</td>
-              <td>${product.description}</td>
+              <td><b>${product.title}<b> - ${product.description}</td>
+              <td>
+                <div class="product-gallery">
+                  <div class="product-image-div"
+                       tal:repeat="productimage product.get_all_images().all()">
+                    <img width="300px" tal:condition="productimage.data" class="product-image"
+                     src="${request.resource_url(productimage)}image" />
+                  </div>
+                </div>
+              </td>
               <td>${product.price} RON</td>
+              <td>
+                <p tal:condition="python: product.price_offer and product.expires_offer_date >= today">
+                  ${product.price_offer} RON until ${product.expires_offer_date}
+                </p>
+              </td>
+              <td>${product.support_days}</td>
+              <td>${product.featured}</td>
+              <td>${product.status}</td>
             </tr>
           </tbody>
         </table>
-
         <!-- ADMIN PRODUCTS -->
       </div>      
     </div>
