@@ -178,7 +178,7 @@ class Shop(Content):
 
     def get_all_producttopics(self):
         """ Returns all topics items """
-        topics = DBSession.query(ProductCategory)
+        topics = DBSession.query(ProductTopic)
         return topics
 
     def get_all_productages(self):

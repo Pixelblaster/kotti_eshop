@@ -40,36 +40,36 @@ class ShopView(BaseView):
         # Select products by CATEGORY
         if get.get('category') is not None:
             category = get.get('category')
-            title_text = category + " in categorii"
+            title_text = category + " in categories"
             products = shop.get_products_by_category(category)
 
         else:
             # Select products by TOPIC
             if get.get('topic') is not None:
                 topic = get.get('topic')
-                title_text = topic + " in teme"
+                title_text = topic + " in topics"
                 products = shop.get_products_by_topic(topic)
 
             else:
                 # Select products by MATERIAL
                 if get.get('material') is not None:
                     material = get.get('material')
-                    title_text = material + " in materiale"
+                    title_text = material + " in materials"
                     products = shop.get_products_by_material(material)
 
                 else:
                     # Select products by AGE
                     if get.get('age') is not None:
                         age = get.get('age')
-                        title_text = age + " in recomandari dupa varsta"
+                        title_text = age + " in recommanded for ages"
                         products = shop.get_products_by_age(age)
 
                     else:
                         # No filters.
                         products = shop.get_all_products()
-                        title_text = "articole in activitati"
+                        title_text = "products in shop"
 
-        custom_page_title = "Cautare dupa " + title_text
+        custom_page_title = "Search for " + title_text
 
         return {'products': products,
                 'custom_page_title': custom_page_title,
