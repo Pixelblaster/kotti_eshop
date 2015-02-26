@@ -53,7 +53,32 @@
         <!-- CLIENTS -->
         <tal:condition condition="python: action == 'clients'">
           <h3>Clients</h3>
-          <p>${shop.get_all_clients().all()}</p>
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Nickname (Fullname)</th>
+                <th>Email (Paypal email)</th>
+                <th>Deliver Address</th>
+                <th>Status</th>
+                <th>Last IP login</th>
+                <th>Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr tal:repeat="client shop.get_all_clients()">
+                <td>
+                  ${client.nickname} (${client.fullname})
+                </td>
+                <td>
+                  ${client.email} (${client.paypal_email})
+                </td>
+                <td>${client.deliver_address}</td>
+                <td>${client.status}</td>
+                <td>${client.last_ip_login}</td>
+                <td>Options here</td>
+              </tr>
+            </tbody>
+          </table>
         </tal:condition>
         <!-- CLIENTS -->
 
@@ -111,9 +136,8 @@
               </tr>
             </tbody>
           </table>
-          <!-- PRODUCTS -->        
         </tal:condition>
-
+        <!-- PRODUCTS -->
       </div>      
     </div>
   </article>
