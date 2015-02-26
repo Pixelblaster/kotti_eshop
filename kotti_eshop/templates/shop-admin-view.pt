@@ -32,6 +32,11 @@
             </a>
             - edit products details, delete products or give price offers
           </li>
+          <li>
+            <a class="btn btn-xs btn-primary" href="${api.url(shop,'@@admin')}?action=clients">
+              Manage clients
+            </a>
+          </li>        
           <li><a class="btn btn-xs btn-warning" href="${api.url(shop,'@@edit')}">Edit basic details</a> - edit shop name and description</li>
           <li><a class="btn btn-xs btn-warning" href="${api.url(shop,'@@contents')}">Edit products</a> - edit shop contents</li>
         </ul>
@@ -45,7 +50,14 @@
         </tal:condition>
         <!-- ADMIN MAIN -->
 
-        <!-- ADMIN PRODUCTS -->
+        <!-- CLIENTS -->
+        <tal:condition condition="python: action == 'clients'">
+          <h3>Clients</h3>
+          <p>${shop.get_all_clients().all()}</p>
+        </tal:condition>
+        <!-- CLIENTS -->
+
+        <!-- PRODUCTS -->
         <tal:condition condition="python: action == 'products'">
           <h3>Products</h3>
           <table class="table table-condensed">
@@ -99,7 +111,7 @@
               </tr>
             </tbody>
           </table>
-          <!-- ADMIN PRODUCTS -->        
+          <!-- PRODUCTS -->        
         </tal:condition>
 
       </div>      

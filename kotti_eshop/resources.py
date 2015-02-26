@@ -160,6 +160,12 @@ class Shop(Content):
         add_view=u'add_shop',
         addable_to=['Document', ],)
 
+    def get_all_clients(self):
+        """ Returns all clients in this shop """
+        clients = DBSession.query(ShopClient).filter(
+            ShopClient.parent_id == self.id)
+        return clients
+
     def get_all_products(self):
         """ Returns all products in this shop """
         products = DBSession.query(ShopProduct).filter(
