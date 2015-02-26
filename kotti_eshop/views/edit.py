@@ -9,6 +9,7 @@ from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import CustomContent
 from kotti_eshop.resources import Shop
+from kotti_eshop.resources import ShopClient
 from kotti_eshop.resources import ShopProduct
 from kotti_eshop.resources import ProductAge
 from kotti_eshop.resources import ProductCategory
@@ -101,6 +102,33 @@ class ShopProductPriceOfferSchema(Schema):
         colander.Date(),
         title=_(u"Date"),
         description=_(u"The date for offer time period end"))
+
+
+class ShopClientSchema(Schema):
+    name = colander.SchemaNode(
+        colander.String(),
+        title=_(u"Nickname"),
+        description=_(u"Your nickname in this shop"))
+
+    title = colander.SchemaNode(
+        colander.String(),
+        title=_(u"Full name"),
+        description=_(u"Your full name. This is important."))
+
+    email = colander.SchemaNode(
+        colander.String(),
+        title=_(u"Email"),
+        description=_(u"Your email"))
+
+    paypal_email = colander.SchemaNode(
+        colander.String(),
+        title=_(u"Your paypal email"),
+        description=_(u"Only if you want to use a paypal account"))
+
+    deliver_address = colander.SchemaNode(
+        colander.String(),
+        title=_(u"Your deliver address"),
+        description=_(u"Our products will go there"))
 
 
 class ShopSelectizeWidget(SelectWidget):
@@ -214,6 +242,39 @@ class ShopProductPriceOfferEditForm(EditFormView):
         self.context.price = appstruct['price']
         self.context.price_offer = appstruct['price_offer']
         self.context.expires_offer_date = appstruct['expires_offer_date']
+
+
+@view_config(name=ShopClient.type_info.add_view, context=Shop,
+             permission='add', renderer='kotti:templates/edit/node.pt')
+class ShopClientAddForm(AddFormView):
+    item_type = _(u"ShopClient")
+    item_class = ShopClient
+
+    schema_factory = ShopClientSchema
+
+    def add(self, **appstruct):
+        name = appstruct['name']
+        title = appstruct['title']
+        description = appstruct['title']
+        nickname = appstruct['name']
+        fullname = appstruct['title']
+        email = appstruct['email']
+        paypal_email = appstruct['paypal_email']
+        deliver_address = appstruct['deliver_address']
+        status = "new user"
+        last_ip_login = self.request.remote_addr
+        return self.item_class(
+            name=name,
+            title=title,
+            description=description,
+            nickname=nickname,
+            fullname=fullname,
+            email=email,
+            paypal_email=paypal_email,
+            deliver_address=deliver_address,
+            status=status,
+            last_ip_login=last_ip_login
+        )
 
 
 @view_config(name=CustomContent.type_info.add_view, permission='add',

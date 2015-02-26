@@ -259,11 +259,13 @@ class ShopClient(Content):
     """ A client for this eShop
     """
     id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
-    # email
-    # paypal_email
-    # deliver_address
-    # status
-    # last_ip_login
+    nickname = Column(String())
+    fullname = Column(String())
+    email = Column(String())
+    paypal_email = Column(String())
+    deliver_address = Column(String())
+    status = Column(String())
+    last_ip_login = Column(String())
     type_info = Content.type_info.copy(
         name=u'ShopClient',
         title=_(u'ShopClient'),
