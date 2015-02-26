@@ -2,6 +2,25 @@
 <tal:condition condition="(context.type_info.name == 'ShopProduct' or context.type_info.name == 'Shop') and logged_in_user">
   <p class="pull-right">
   	Welcome, <a href="#cart-link">${logged_in_user}</a>!
+  
+	<!-- show admin link only for admin -->
+	<tal:condition condition="logged_in_user == 'admin'">
+	  <tal:condition condition="context.type_info.name == 'ShopProduct'">
+	  	<span tal:define="shop context.parent">
+	  	  <a class="btn btn-xs btn-success" href="${api.url(shop)}@@admin">
+	  	  	Manage shop
+	  	  </a>
+	  	</span>
+	  </tal:condition>
+
+	  <tal:condition condition="context.type_info.name == 'Shop'">
+	  	<span tal:define="shop context">
+	  	  <a class="btn btn-xs btn-success" href="${api.url(shop)}@@admin">
+	  	    Manage shop
+	  	  </a>
+	  	</span>
+	  </tal:condition>
+	<tal:condition>
   </p>
 </tal:condition>
 
