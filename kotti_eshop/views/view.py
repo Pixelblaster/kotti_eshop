@@ -4,6 +4,7 @@ from kotti_eshop import _
 from kotti_eshop.resources import CustomContent
 from kotti_eshop.resources import Shop
 from kotti_eshop.resources import ShopProduct
+from kotti_eshop.resources import ShopClient
 from kotti_eshop.fanstatic import css_and_js
 from kotti_eshop.views import BaseView
 from pyramid.view import view_config
@@ -124,6 +125,19 @@ class ShopProductViews(BaseView):
                  renderer='kotti_eshop:templates/shopproduct-view.pt')
     def shop_product_view(self):
         """ ShopProduct View
+        """
+        today = date.today()
+        return {'today': today}
+
+
+@view_defaults(context=ShopClient, permission='view')
+class ShopClientViews(BaseView):
+    """ Views for ShopClient """
+
+    @view_config(name='view', permission='view',
+                 renderer='kotti_eshop:templates/shopclient-view.pt')
+    def shop_product_view(self):
+        """ ShopClient View
         """
         today = date.today()
         return {'today': today}

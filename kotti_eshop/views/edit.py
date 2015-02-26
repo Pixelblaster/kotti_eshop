@@ -247,6 +247,8 @@ class ShopProductPriceOfferEditForm(EditFormView):
 @view_config(name=ShopClient.type_info.add_view, context=Shop,
              permission='add', renderer='kotti:templates/edit/node.pt')
 class ShopClientAddForm(AddFormView):
+    """ Form to add a client to shop """
+
     item_type = _(u"ShopClient")
     item_class = ShopClient
 
@@ -275,6 +277,24 @@ class ShopClientAddForm(AddFormView):
             status=status,
             last_ip_login=last_ip_login
         )
+
+
+@view_config(name='edit', context=ShopClient,
+             permission='edit', renderer='kotti:templates/edit/node.pt')
+class ShopClientEditForm(EditFormView):
+    """ Form to edit a client info """
+
+    schema_factory = ShopClientSchema
+
+    def edit(self, **appstruct):
+        self.context.name = appstruct['name']
+        self.context.title = appstruct['title']
+        self.context.description = appstruct['title']
+        self.context.nickname = appstruct['name']
+        self.context.fullname = appstruct['title']
+        self.context.email = appstruct['email']
+        self.context.paypal_email = appstruct['paypal_email']
+        self.context.deliver_address = appstruct['deliver_address']
 
 
 @view_config(name=CustomContent.type_info.add_view, permission='add',

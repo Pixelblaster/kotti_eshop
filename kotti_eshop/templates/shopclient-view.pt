@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="api.macro('kotti:templates/view/master.pt')">
+
+  <article metal:fill-slot="content"
+           class="content"
+           i18n:domain="kotti_eshop"
+           tal:define="client context">
+
+    <h1>${client.nickname}</h1>
+    <p class="lead">
+      ${client.fullname}
+    </p>
+    <p>
+      ${client.description}
+    </p>
+  </article>
+</html>
