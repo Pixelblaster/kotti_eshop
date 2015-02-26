@@ -2,6 +2,7 @@
 
 from kotti.resources import File
 from pyramid.i18n import TranslationStringFactory
+from kotti.views.slots import assign_slot
 
 _ = TranslationStringFactory('kotti_eshop')
 
@@ -41,3 +42,4 @@ def includeme(config):
     config.add_static_view('static-kotti_eshop', 'kotti_eshop:static')
 
     config.scan(__name__)
+    assign_slot('shopping_cart', 'abovecontent')

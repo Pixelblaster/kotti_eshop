@@ -8,22 +8,20 @@ from kotti_eshop.fanstatic import css_and_js
 from kotti_eshop.views import BaseView
 from pyramid.view import view_config
 from pyramid.view import view_defaults
-from kotti.views.slots import assign_slot
+
+
+@view_config(name='shopping_cart', permission='view',
+             renderer='kotti_eshop:templates/shopping-cart.pt')
+def shopping_cart(self):
+    """ Shopping cart view
+    """
+    logged_in_user = "GhitaB"
+    return {'logged_in_user': logged_in_user}
 
 
 @view_defaults(context=Shop, permission='view')
 class ShopView(BaseView):
     """ Views for ShopProduct """
-
-    assign_slot('shopping_cart', 'abovecontent')
-
-    @view_config(name='shopping_cart', permission='view',
-                 renderer='kotti_eshop:templates/shopping-cart.pt')
-    def shopping_cart(self):
-        """ Shopping cart view
-        """
-        logged_in_user = "GhitaB"
-        return {'logged_in_user': logged_in_user}
 
     @view_config(name='admin', permission='view',
                  renderer='kotti_eshop:templates/shop-admin-view.pt')
