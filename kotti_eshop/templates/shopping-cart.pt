@@ -1,6 +1,13 @@
-<div tal:condition="context.type_info.name == 'ShopProduct' or context.type_info.name == 'Shop'">
+<!-- display cart only in the right context and if logged in-->
+<tal:condition condition="(context.type_info.name == 'ShopProduct' or context.type_info.name == 'Shop') and logged_in_user">
   <p class="pull-right">
-    This is the shopping cart. Welcome, 
-	<a href="#cart-link">${logged_in_user}</a>!
-  </p>	
-</div>
+  	Welcome, <a href="#cart-link">${logged_in_user}</a>!
+  </p>
+</tal:condition>
+
+<!-- else display login link if right context but not logged in -->
+<tal:condition condition="(context.type_info.name == 'ShopProduct' or context.type_info.name == 'Shop') and logged_in_user == ''">
+  <p class="pull-right">
+  	Welcome! You must <a href="#login-link">login in</a>.
+  </p>
+</tal:condition>
