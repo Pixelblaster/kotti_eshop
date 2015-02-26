@@ -122,7 +122,7 @@
         <!-- FEATURED PRODUCTS -->
         <div tal:condition="show_featured_products"
              class="row products-list featured-products-list">
-          <h2 class="page-header">Featured products</h2>
+          <h3>Featured products</h3>
           <tal:repeat repeat="product featured_products">
             <div 
               class="product-item-col product-item-col-featured col col-lg-4 col-md-6 col-sm-12 col-xs-12">
@@ -161,10 +161,9 @@
           </tal:repeat>
         </div><!-- FEATURED PRODUCTS -->
 
-
         <!-- ALL PRODUCTS or SEARCH RESULTS -->
         <div class="row products-list">
-          <h2 class="page-header">${custom_page_title}</h2>
+          <h3>${custom_page_title}</h3>
           <tal:repeat repeat="product products">
             <div class="product-item-col col col-lg-4 col-md-6 col-sm-12 col-xs-12">
 

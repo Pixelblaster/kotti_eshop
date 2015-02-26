@@ -20,61 +20,88 @@
       </a>
     </h1>
 
-    <div class="row">
+    <div class="row"
+         tal:define="action request.GET.get('action', '')">
       <div class="col col-lg-2 col-md-2 col-sm-12 col-xs 12">
         <h3>Options</h3>
         <ul>
-          <li><a href="${api.url(shop,'@@edit')}">Edit basic details</a> - shop name and description</li>
-          <li><a href="${api.url(shop,'@@contents')}">Edit products</a> - shop contents</li>
+          <li><a class="btn btn-xs btn-success" href="${api.url(shop,'@@admin')}">Main</a> - the administration panel main</li>
+          <li>
+            <a class="btn btn-xs btn-primary" href="${api.url(shop,'@@admin')}?action=products">
+              Manage products
+            </a>
+            - edit products details, delete products or give price offers
+          </li>
+          <li><a class="btn btn-xs btn-warning" href="${api.url(shop,'@@edit')}">Edit basic details</a> - edit shop name and description</li>
+          <li><a class="btn btn-xs btn-warning" href="${api.url(shop,'@@contents')}">Edit products</a> - edit shop contents</li>
         </ul>
       </div>
 
       <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
+        <!-- ADMIN MAIN -->
+        <tal:condition condition="python: action == ''">
+          <h3>Admin main</h3>
+          <p>Maybe you want <a href="${api.url(shop, '@@admin')}?action=products">manage products</a>.</p>
+        </tal:condition>
+        <!-- ADMIN MAIN -->
+
         <!-- ADMIN PRODUCTS -->
-        <h3>Products</h3>
-        <table class="table table-condensed">
-          <thead>
-            <tr>
-              <th>Name, description, images</th>
-              <th>Price</th>
-              <th>Support days</th>
-              <th>Featured</th>
-              <th>Status</th>
-              <th>Options</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr tal:repeat="product products">
-              <td><b>${product.title}</b> - ${product.description}
-                <div class="product-gallery">
-                  <div class="product-image-div"
-                       tal:repeat="productimage product.get_all_images().all()">
-                    <img width="150px" tal:condition="productimage.data" class="product-image"
-                     src="${request.resource_url(productimage)}image" />
+        <tal:condition condition="python: action == 'products'">
+          <h3>Products</h3>
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th>Name, description, images</th>
+                <th>Price</th>
+                <th>Support days</th>
+                <th>Featured</th>
+                <th>Status</th>
+                <th>Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr tal:repeat="product products">
+                <td><b>${product.title}</b> - ${product.description}
+                  <div class="product-gallery">
+                    <div class="product-image-div"
+                         tal:repeat="productimage product.get_all_images().all()">
+                      <img width="150px" tal:condition="productimage.data" class="product-image"
+                       src="${request.resource_url(productimage)}image" />
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td>
-                ${product.price} RON
-                <p tal:condition="python: product.price_offer and product.expires_offer_date >= today">
-                  (${product.price_offer} RON until ${product.expires_offer_date})
-                </p>
-              </td>
-              <td>${product.support_days}</td>
-              <td>
-                <span tal:condition="product.featured is True">yes</span>
-                <span tal:condition="product.featured is not True">no</span>
-              </td>
-              <td>${product.status}</td>
-              <td>
-                <a href="${api.url(product, '@@edit')}">Edit</a>
-                <a href="${api.url(product, '@@delete')}">Delete</a>
-                <a href="${api.url(product, '@@edit_price_offer')}">Price offer</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- ADMIN PRODUCTS -->
+                </td>
+                <td tal:define="has_price_offer python: product.price_offer and product.expires_offer_date >= today">
+                  <!-- simple price -->
+                  <h4 class="price-simple" tal:condition="has_price_offer is not True">${product.price} RON</h4>
+
+                  <!-- or old price + new price -->
+                  <h5 class="price-offer-old-price" tal:condition="has_price_offer">
+                    <del>${product.price} RON</del>
+                  </h5>
+                  <p tal:condition="has_price_offer">
+                    <h4 class="price-offer">${product.price_offer} RON</h4>
+                    <h5>(until ${api.format_date(product.expires_offer_date)})</h5>
+                  </p>
+                </td>
+                <td>${product.support_days}</td>
+                <td>
+                  <span tal:condition="product.featured is True">yes</span>
+                  <span tal:condition="product.featured is not True">no</span>
+                </td>
+                <td>${product.status}</td>
+                <td>
+                  <a class="btn btn-sm btn-warning" href="${api.url(product, '@@edit')}">Edit</a>
+                  <a class="btn btn-sm btn-primary" href="${api.url(product, '@@edit_price_offer')}">
+                    Offer
+                  </a>
+                  <a class="btn btn-sm btn-danger" href="${api.url(product, '@@delete')}">Delete</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- ADMIN PRODUCTS -->        
+        </tal:condition>
+
       </div>      
     </div>
   </article>
