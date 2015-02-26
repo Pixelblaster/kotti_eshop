@@ -27,6 +27,6 @@
 <!-- else display login link if right context but not logged in -->
 <tal:condition condition="(context.type_info.name == 'ShopProduct' or context.type_info.name == 'Shop') and logged_in_user == ''">
   <p class="pull-right">
-  	Welcome! You must <a href="#login-link">login in</a>.
+  	Welcome! You must <a href="${api.url(api.root, '@@login')}">log in</a>.
   </p>
 </tal:condition>
