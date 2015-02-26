@@ -1,0 +1,6 @@
+<div>
+	<p class="pull-right">
+		This is the shopping cart. Welcome, 
+		<a href="#cart-link">${logged_in_user}</a>!
+	</p>	
+</div>
