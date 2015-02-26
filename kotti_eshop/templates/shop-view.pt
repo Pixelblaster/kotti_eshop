@@ -20,10 +20,6 @@
     <p class="shop-description lead">
       ${shop.description}
     </p>
-    <!-- shopping cart -->
-
-    <!-- shopping cart -->
-
     <!-- shop carousel -->
     <div tal:condition="show_shop_carousel" class="shop-carousel-row row">
       <div class="shop-carousel-col col col-lg-12 col-md-12 col-sm-12 col-xs-12">
