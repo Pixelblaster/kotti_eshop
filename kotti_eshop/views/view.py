@@ -12,10 +12,13 @@ from pyramid.view import view_defaults
 
 @view_config(name='shopping_cart', permission='view',
              renderer='kotti_eshop:templates/shopping-cart.pt')
-def shopping_cart(self):
+def shopping_cart(self, request):
     """ Shopping cart view
     """
-    logged_in_user = "GhitaB"
+    if request.user:
+        logged_in_user = request.user.name
+    else:
+        logged_in_user = ''
     return {'logged_in_user': logged_in_user}
 
 
