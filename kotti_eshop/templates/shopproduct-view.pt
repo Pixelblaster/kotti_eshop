@@ -9,7 +9,7 @@
   <article metal:fill-slot="content"
            class="content"
            i18n:domain="kotti_eshop"
-           tal:define="product context">
+           tal:define="product context; shop product.parent">
 
     <h1>${product.title}</h1>
     <p class="lead">
@@ -38,11 +38,11 @@
       <h4>Categories</h4>
       <ul>
         <li>
-          <a href="${api.url(api.root)}@@search-products?category=${product.productcategories[0]}">
+          <a href="${api.url(shop)}@@search-products?category=${product.productcategories[0]}">
             ${product.productcategories[0]}
           </a>
           <span tal:repeat="category product.productcategories[1:]">
-            , <a href="${api.url(api.root)}@@search-products?category=${category}">${category}</a>
+            , <a href="${api.url(shop)}@@search-products?category=${category}">${category}</a>
           </span>
         </li>
       </ul>
@@ -52,11 +52,11 @@
       <h4>Materials</h4>
       <ul>
         <li>
-          <a href="${api.url(api.root)}@@search-products?material=${product.productmaterials[0]}">
+          <a href="${api.url(shop)}@@search-products?material=${product.productmaterials[0]}">
             ${product.productmaterials[0]}
           </a>
           <span tal:repeat="material product.productmaterials[1:]">
-            , <a href="${api.url(api.root)}@@search-products?material=${material}">${material}</a>
+            , <a href="${api.url(shop)}@@search-products?material=${material}">${material}</a>
           </span>
         </li>
       </ul>
@@ -66,11 +66,11 @@
       <h4>Topics</h4>
       <ul>
         <li>
-          <a href="${api.url(api.root)}@@search-products?topic=${product.producttopics[0]}">
+          <a href="${api.url(shop)}@@search-products?topic=${product.producttopics[0]}">
             ${product.producttopics[0]}
           </a>
           <span tal:repeat="topic product.producttopics[1:]">
-            , <a href="${api.url(api.root)}@@search-products?topic=${topic}">${topic}</a>
+            , <a href="${api.url(shop)}@@search-products?topic=${topic}">${topic}</a>
           </span>
         </li>
       </ul>
@@ -80,11 +80,11 @@
       <h4>Ages</h4>
       <ul>
         <li>
-          <a href="${api.url(api.root)}@@search-products?age=${product.productages[0]}">
+          <a href="${api.url(shop)}@@search-products?age=${product.productages[0]}">
             ${product.productages[0]}
           </a>
           <span tal:repeat="age product.productages[1:]">
-            , <a href="${api.url(api.root)}@@search-products?age=${age}">${age}</a>
+            , <a href="${api.url(shop)}@@search-products?age=${age}">${age}</a>
           </span>
         </li>
       </ul>
@@ -94,11 +94,11 @@
       <h4>Tags</h4>
       <ul>
         <li>
-          <a href="${api.url(api.root)}@@search-products?tag=${product.tags[0]}">
+          <a href="${api.url(shop)}@@search-products?tag=${product.tags[0]}">
             ${product.tags[0]}
           </a>
           <span tal:repeat="tag product.tags[1:]">
-            , <a href="${api.url(api.root)}@@search-products?tag=${tag}">${tag}</a>
+            , <a href="${api.url(shop)}@@search-products?tag=${tag}">${tag}</a>
           </span>
         </li>
       </ul>
