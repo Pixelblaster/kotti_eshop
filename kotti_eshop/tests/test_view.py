@@ -77,6 +77,45 @@ def test_shop_views(dummy_shop, dummy_request):
     assert 'show_featured_products' in shop_search_products_view
     assert 'show_shop_carousel' in shop_search_products_view
 
+    shop = views.context
+    get = dummy_request.GET
+    # Select products by CATEGORY
+    get['category'] = "A category"
+    if get.get('category') is not None:
+        category = get.get('category')
+        title_text = category + " in categories"
+        products = shop.get_products_by_category(category)
+        assert "in categories" in title_text
+
+    # Select products by TOPIC
+    get['topic'] = "A topic"
+    if get.get('topic') is not None:
+        topic = get.get('topic')
+        title_text = topic + " in topics"
+        products = shop.get_products_by_topic(topic)
+        assert "in topics" in title_text
+
+    # Select products by MATERIAL
+    get['material'] = "A material"
+    if get.get('material') is not None:
+        material = get.get('material')
+        title_text = material + " in materials"
+        products = shop.get_products_by_material(material)
+        assert "in materials" in title_text
+
+    # Select products by AGE
+    get['age'] = "Two years"
+    if get.get('age') is not None:
+        age = get.get('age')
+        title_text = age + " in recommended for ages"
+        products = shop.get_products_by_age(age)
+        assert "ages" in title_text
+
+    # No filters.
+    products = shop.get_all_products()
+    title_text = "products in shop"
+    assert products == products
+
     # test shopping cart view
     from kotti_eshop.views.view import shopping_cart
     shopping_cart_view = shopping_cart(dummy_request)
