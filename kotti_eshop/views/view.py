@@ -13,7 +13,7 @@ from pyramid.view import view_defaults
 
 @view_config(name='shopping_cart', permission='view',
              renderer='kotti_eshop:templates/shopping-cart.pt')
-def shopping_cart(self, request):
+def shopping_cart(request):
     """ Shopping cart view
     """
     if request.user:
@@ -24,7 +24,7 @@ def shopping_cart(self, request):
 
 
 @view_defaults(context=Shop, permission='view')
-class ShopView(BaseView):
+class ShopViews(BaseView):
     """ Views for ShopProduct """
 
     @view_config(name='admin', permission='view',
