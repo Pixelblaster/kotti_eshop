@@ -130,3 +130,37 @@ def test_edit_product(webtest, root):
     assert form['title'].value == u'Product'
     resp = form.submit('save').maybe_follow()
     assert u'Your changes have been saved.' in resp.body
+
+
+@mark.user('admin')
+def test_edit_product_price_offer(webtest, root):
+    """ Test: Edit a product price offer"""
+    from kotti_eshop.resources import Shop
+    from kotti_eshop.resources import ShopProduct
+
+    root['shop'] = Shop(title=u'Shop Title')
+    root['shop']['product'] = ShopProduct(
+        title=u'Product',
+        description=u'product description',
+        price=20,
+        support_days=365,
+        featured=True,
+        status=u'Not Available'
+        )
+
+    # edit price offer
+    product = root['shop']['product']
+    product.price = 20
+    product.price_offer = 10
+    import datetime
+    expires_date = datetime.date.today() + datetime.timedelta(days=10)
+    product.expires_offer_date = expires_date
+
+    # test changes
+    resp = webtest.get('/shop/product/@@edit_price_offer')
+    form = resp.forms['deform']
+    assert form['price'].value == '20.0'
+    assert form['price_offer'].value == '10.0'
+    assert product.expires_offer_date == expires_date
+    resp = form.submit('save').maybe_follow()
+    assert u'Your changes have been saved.' in resp.body
