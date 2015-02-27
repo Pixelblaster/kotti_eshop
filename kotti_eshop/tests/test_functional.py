@@ -182,7 +182,7 @@ def test_add_client(webtest, root):
     # submit valid form
     form = resp.forms['deform']
     form['name'] = u'GhitaB'
-    form['title'] = u'Ghiță Bizău'
+    form['title'] = u'Ghita Bizau'
     form['email'] = u'ghita_bizau@yahoo.com'
     form['paypal_email'] = u'ghita_bizau@yahoo.com'  # Please donate. :)
     form['deliver_address'] = u'My Address Here Romania'
@@ -191,3 +191,26 @@ def test_add_client(webtest, root):
     assert resp.status_code == 302
     resp = resp.follow()
     assert 'Item was added.' in resp.body
+
+
+@mark.user('admin')
+def test_edit_client(webtest, root):
+    """ Test: Edit a client details """
+    from kotti_eshop.resources import Shop
+    from kotti_eshop.resources import ShopClient
+
+    root['shop'] = Shop(title=u'Shop Title')
+    root['shop']['GhitaB'] = ShopClient(
+        name=u'GhitaB',
+        title=u'Ghita Bizau',
+        email=u'ghita_bizau@yahoo.com',
+        paypal_email=u'ghita_bizau@yahoo.com',
+        deliver_address=u'My Address Here Romania'
+        )
+
+    # test changes
+    resp = webtest.get('/shop/GhitaB/@@edit')
+    form = resp.forms['deform']
+    assert form['name'].value == u'GhitaB'
+    resp = form.submit('save').maybe_follow()
+    assert u'Your changes have been saved.' in resp.body
