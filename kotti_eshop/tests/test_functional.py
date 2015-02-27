@@ -2,8 +2,14 @@
 from pytest import mark
 
 
+# Login must be required for these views:
 def test_login_required(webtest, root):
+    # Demo [TODO] delete this
     resp = webtest.get('/add_custom_content')
+    assert resp.status_code == 302
+
+    # Add a shop to your site
+    resp = webtest.get('/add_shop')
     assert resp.status_code == 302
 
 
