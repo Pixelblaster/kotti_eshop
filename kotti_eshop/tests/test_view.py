@@ -68,6 +68,15 @@ def test_shop_views(dummy_shop, dummy_request):
     else:
         assert shop_view.get('show_featured_products') is False
 
+    # test shop search products view
+    shop_search_products_view = views.shop_search_products_view()
+    assert 'products' in shop_search_products_view
+    assert 'featured_products' in shop_search_products_view
+    assert 'custom_page_title' in shop_search_products_view
+    assert 'today' in shop_search_products_view
+    assert 'show_featured_products' in shop_search_products_view
+    assert 'show_shop_carousel' in shop_search_products_view
+
     # test shopping cart view
     from kotti_eshop.views.view import shopping_cart
     shopping_cart_view = shopping_cart(dummy_request)
