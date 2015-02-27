@@ -48,3 +48,22 @@ def test_edit(webtest, root):
     resp = form.submit('save').maybe_follow()
     assert u'Your changes have been saved.' in resp.body
     assert u'Bazinga' in resp.body
+
+
+@mark.user('admin')
+def test_add_shop(webtest, root):
+    """ Test: Add a shop """
+    resp = webtest.get('/add_shop')
+
+    # submit empty form
+    form = resp.forms['deform']
+    resp = form.submit('save')
+    assert 'There was a problem' in resp.body
+
+    # submit valid form
+    form = resp.forms['deform']
+    form['title'] = 'My Shop'
+    resp = form.submit('save')
+    assert resp.status_code == 302
+    resp = resp.follow()
+    assert 'Item was added.' in resp.body
