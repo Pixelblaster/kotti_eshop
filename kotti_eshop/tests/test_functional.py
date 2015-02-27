@@ -134,7 +134,7 @@ def test_edit_product(webtest, root):
 
 @mark.user('admin')
 def test_edit_product_price_offer(webtest, root):
-    """ Test: Edit a product price offer"""
+    """ Test: Edit a product price offer """
     from kotti_eshop.resources import Shop
     from kotti_eshop.resources import ShopProduct
 
@@ -164,3 +164,30 @@ def test_edit_product_price_offer(webtest, root):
     assert product.expires_offer_date == expires_date
     resp = form.submit('save').maybe_follow()
     assert u'Your changes have been saved.' in resp.body
+
+
+@mark.user('admin')
+def test_add_client(webtest, root):
+    """ Test: Add a client to shop """
+    from kotti_eshop.resources import Shop
+    root['shop'] = Shop(title=u'Shop Title')
+
+    resp = webtest.get('/shop/add_client')
+
+    # submit empty form
+    form = resp.forms['deform']
+    resp = form.submit('save')
+    assert 'There was a problem' in resp.body
+
+    # submit valid form
+    form = resp.forms['deform']
+    form['name'] = u'GhitaB'
+    form['title'] = u'Ghiță Bizău'
+    form['email'] = u'ghita_bizau@yahoo.com'
+    form['paypal_email'] = u'ghita_bizau@yahoo.com'  # Please donate. :)
+    form['deliver_address'] = u'My Address Here Romania'
+
+    resp = form.submit('save')
+    assert resp.status_code == 302
+    resp = resp.follow()
+    assert 'Item was added.' in resp.body
