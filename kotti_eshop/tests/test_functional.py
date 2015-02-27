@@ -67,3 +67,17 @@ def test_add_shop(webtest, root):
     assert resp.status_code == 302
     resp = resp.follow()
     assert 'Item was added.' in resp.body
+
+
+@mark.user('admin')
+def test_edit_shop(webtest, root):
+    """ Test: Edit a shop """
+    from kotti_eshop.resources import Shop
+
+    root['cc'] = Shop(title=u'Shop Title')
+
+    resp = webtest.get('/cc/@@edit')
+    form = resp.forms['deform']
+    assert form['title'].value == u'Shop Title'
+    resp = form.submit('save').maybe_follow()
+    assert u'Your changes have been saved.' in resp.body
