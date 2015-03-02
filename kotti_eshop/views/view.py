@@ -4,6 +4,7 @@ from kotti_eshop.resources import Shop
 from kotti_eshop.resources import ShopProduct
 from kotti_eshop.resources import ShopClient
 from kotti_eshop.views import BaseView
+from kotti.resources import get_root
 from pyramid.view import view_config
 from pyramid.view import view_defaults
 from webhelpers.paginate import PageURL, Page
@@ -102,33 +103,55 @@ class ShopViews(BaseView):
 
         products = []
         title_text = ""
+
+        # GET current page. SET to 1 if is None
+        get = self.request.GET
+        if get.get('page') is not None:
+            current_page = get.get('page')
+        else:
+            current_page = 1
+
         # Select products by CATEGORY
         if get.get('category') is not None:
             category = get.get('category')
             title_text = category + " in categories"
             products = shop.get_products_by_category(category)
-
+            url_for_page = PageURL(
+                self.request.resource_url(shop) +
+                '@@search-products',
+                {"category": category.encode("utf8"), "page": current_page})
         else:
             # Select products by TOPIC
             if get.get('topic') is not None:
                 topic = get.get('topic')
                 title_text = topic + " in topics"
                 products = shop.get_products_by_topic(topic)
-
+                url_for_page = PageURL(
+                    self.request.resource_url(shop) +
+                    '@@search-products',
+                    {"topic": topic.encode("utf8"), "page": current_page})
             else:
                 # Select products by MATERIAL
                 if get.get('material') is not None:
                     material = get.get('material')
                     title_text = material + " in materials"
                     products = shop.get_products_by_material(material)
-
+                    url_for_page = PageURL(
+                        self.request.resource_url(shop) +
+                        '@@search-products',
+                        {"material": material.encode("utf8"),
+                         "page": current_page})
                 else:
                     # Select products by AGE
                     if get.get('age') is not None:
                         age = get.get('age')
                         title_text = age + " in recommended for ages"
                         products = shop.get_products_by_age(age)
-
+                        url_for_page = PageURL(
+                            self.request.resource_url(shop) +
+                            '@@search-products',
+                            {"age": age.encode("utf8"),
+                             "page": current_page})
                     else:
                         # No filters.
                         products = shop.get_all_products()
@@ -138,17 +161,6 @@ class ShopViews(BaseView):
         show_shop_carousel = shop.carousel_visibility_search_view()
         show_featured_products = False
         featured_products = shop.get_featured_products()
-
-        # GET current page. SET to 1 if is None
-        get = self.request.GET
-        if get.get('page') is not None:
-            current_page = get.get('page')
-        else:
-            current_page = 1
-
-        # SET url format
-        url_for_page = PageURL(self.request.resource_url(self.context),
-                               {"page": current_page})
 
         # My collection to be paginated = all activities
         my_collection = products

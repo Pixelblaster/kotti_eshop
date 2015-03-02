@@ -203,8 +203,14 @@
               </a>
             </div>
           </tal:repeat>
-          ${my_page_pager} 
         </div><!-- ALL PRODUCTS or SEARCH RESULTS -->
+
+        <div class="row pager-row">
+          <div class="pager-col col col-lg-4 col-md-6 col-sm-12 col-xs-12">
+            ${my_page_pager}
+          </div>
+        </div>
+
       </div>      
     </div>
   </article>
