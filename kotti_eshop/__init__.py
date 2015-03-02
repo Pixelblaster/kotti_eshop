@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from kotti.resources import File
 from pyramid.i18n import TranslationStringFactory
 from kotti.views.slots import assign_slot
 
@@ -25,11 +24,9 @@ def kotti_configure(settings):
         ' kotti_eshop.resources.Shop' +
         ' kotti_eshop.resources.ShopProduct' +
         ' kotti_eshop.resources.ShopClient' +
-        ' kotti_eshop.resources.ProductImage' +
-        ' kotti_eshop.resources.CustomContent')
+        ' kotti_eshop.resources.ProductImage')
     settings['kotti.fanstatic.view_needed'] += \
         ' kotti_eshop.fanstatic.css_and_js'
-    File.type_info.addable_to.append('CustomContent')
 
 
 def includeme(config):

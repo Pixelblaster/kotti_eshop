@@ -7,7 +7,6 @@ from colander import String
 from deform.widget import SelectWidget
 from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
-from kotti_eshop.resources import CustomContent
 from kotti_eshop.resources import Shop
 from kotti_eshop.resources import ShopClient
 from kotti_eshop.resources import ShopProduct
@@ -36,14 +35,6 @@ class ProductTopics(SequenceSchema):
 
 class ProductAges(SequenceSchema):
     productage = SchemaNode(String(), title=_("productage"))
-
-
-class CustomContentSchema(ContentSchema):
-    """ Schema for CustomContent. """
-
-    custom_attribute = colander.SchemaNode(
-        colander.String(),
-        title=_(u"Custom attribute"))
 
 
 class ShopSchema(ContentSchema):
@@ -299,21 +290,3 @@ class ShopClientEditForm(EditFormView):
         self.context.email = appstruct['email']
         self.context.paypal_email = appstruct['paypal_email']
         self.context.deliver_address = appstruct['deliver_address']
-
-
-@view_config(name=CustomContent.type_info.add_view, permission='add',
-             renderer='kotti:templates/edit/node.pt')
-class CustomContentAddForm(AddFormView):
-    """ Form to add a new instance of CustomContent. """
-
-    schema_factory = CustomContentSchema
-    add = CustomContent
-    item_type = _(u"CustomContent")
-
-
-@view_config(name='edit', context=CustomContent, permission='edit',
-             renderer='kotti:templates/edit/node.pt')
-class CustomContentEditForm(EditFormView):
-    """ Form to edit existing CustomContent objects. """
-
-    schema_factory = CustomContentSchema

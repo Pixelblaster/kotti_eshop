@@ -34,23 +34,6 @@ def test_add(webtest, root):
 
 
 @mark.user('admin')
-def test_edit(webtest, root):
-
-    from kotti_eshop.resources import CustomContent
-
-    root['cc'] = CustomContent(title=u'Content Title')
-
-    resp = webtest.get('/cc/@@edit')
-    form = resp.forms['deform']
-    assert form['title'].value == u'Content Title'
-    assert form['custom_attribute'].value == u''
-    form['custom_attribute'] = u'Bazinga'
-    resp = form.submit('save').maybe_follow()
-    assert u'Your changes have been saved.' in resp.body
-    assert u'Bazinga' in resp.body
-
-
-@mark.user('admin')
 def test_add_shop(webtest, root):
     """ Test: Add a shop """
     resp = webtest.get('/add_shop')
