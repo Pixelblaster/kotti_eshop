@@ -74,15 +74,19 @@ def ShopProductSchema(title_missing=None):
 
         productmaterials = ProductMaterials(
             widget=get_selectize_widget(ProductMaterial),
+            title=_(u"Materials"),
             description=_("Type or select materials"))
         productcategories = ProductCategories(
             widget=get_selectize_widget(ProductCategory),
+            title=_(u"Categories"),
             description=_("Type or select categories"))
         producttopics = ProductTopics(
             widget=get_selectize_widget(ProductTopic),
+            title=_(u"Topics"),
             description=_("Type or select topics"))
         productages = ProductAges(
             widget=get_selectize_widget(ProductAge),
+            title=_(u"Ages"),
             description=_("Type or select ages"))
     return ShopProductSchema()
 
