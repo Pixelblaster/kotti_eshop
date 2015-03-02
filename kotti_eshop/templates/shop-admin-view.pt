@@ -90,7 +90,10 @@
                 <td>${client.deliver_address}</td>
                 <td>${client.status}</td>
                 <td>${client.last_ip_login}</td>
-                <td>Options here</td>
+                <td>
+                  <a class="btn btn-sm btn-warning" href="${api.url(client, '@@edit')}">Edit</a>
+                  <a class="btn btn-sm btn-danger" href="${api.url(client, '@@delete')}">Delete</a>
+                </td>
               </tr>
             </tbody>
           </table>
