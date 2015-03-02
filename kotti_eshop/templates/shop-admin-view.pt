@@ -21,7 +21,8 @@
     </h1>
 
     <div class="row"
-         tal:define="action request.GET.get('action', '')">
+         tal:define="action request.GET.get('action', '');
+                     shop_currency shop.currency()">
       <div class="col col-lg-2 col-md-2 col-sm-12 col-xs 12">
         <h3>Options</h3>
         <ul>
@@ -115,14 +116,14 @@
                 </td>
                 <td tal:define="has_price_offer python: product.price_offer and product.expires_offer_date >= today">
                   <!-- simple price -->
-                  <h4 class="price-simple" tal:condition="has_price_offer is not True">${product.price} RON</h4>
+                  <h4 class="price-simple" tal:condition="has_price_offer is not True">${product.price} ${shop_currency}</h4>
 
                   <!-- or old price + new price -->
                   <h5 class="price-offer-old-price" tal:condition="has_price_offer">
-                    <del>${product.price} RON</del>
+                    <del>${product.price} ${shop_currency}</del>
                   </h5>
                   <p tal:condition="has_price_offer">
-                    <h4 class="price-offer">${product.price_offer} RON</h4>
+                    <h4 class="price-offer">${product.price_offer} ${shop_currency}</h4>
                     <h5>(until ${api.format_date(product.expires_offer_date)})</h5>
                   </p>
                 </td>

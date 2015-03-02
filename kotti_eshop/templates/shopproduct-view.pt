@@ -9,7 +9,7 @@
   <article metal:fill-slot="content"
            class="content"
            i18n:domain="kotti_eshop"
-           tal:define="product context; shop product.parent">
+           tal:define="product context; shop product.parent; shop_currency shop.currency()">
 
     <h1>${product.title}</h1>
     <p class="lead">
@@ -25,13 +25,12 @@
     </div>
 
     <div class="product-details">
-      <p>PRICE: ${product.price}</p>
+      <h3>${product.price} ${shop_currency}</h3>
       <p tal:condition="python: product.price_offer and product.expires_offer_date >= today">
-        PRICE OFFER: ${product.price_offer}
+        ${product.price_offer} ${shop_currency}
       </p>
-      <p>SUPPORT DAYS: ${product.support_days}</p>
-      <p>FEATURED: ${product.featured}</p>
-      <p>STATUS: ${product.status}</p>
+      <p>Support days: ${product.support_days}</p>
+      <p>Status: ${product.status}</p>
     </div>
 
     <div tal:condition="product.productcategories">

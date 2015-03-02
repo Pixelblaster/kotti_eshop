@@ -9,7 +9,7 @@
   <article metal:fill-slot="content"
            class="content"
            i18n:domain="kotti_eshop"
-           tal:define="shop context">
+           tal:define="shop context; shop_currency shop.currency()">
 
     <h1 class="shop-title">
       <a href="${api.url(shop)}">
@@ -141,14 +141,16 @@
               <div class="product-details"
                    tal:define="has_price_offer python: product.price_offer and product.expires_offer_date >= today">
                 <!-- simple price -->
-                <h4 class="price-simple" tal:condition="has_price_offer is not True">${product.price} RON</h4>
+                <h4 class="price-simple" tal:condition="has_price_offer is not True">
+                  ${product.price} ${shop_currency}
+                </h4>
 
                 <!-- or old price + new price -->
                 <h5 class="price-offer-old-price" tal:condition="has_price_offer">
-                  <del>${product.price} RON</del>
+                  <del>${product.price} ${shop_currency}</del>
                 </h5>
                 <p tal:condition="has_price_offer">
-                  <h4 class="price-offer">${product.price_offer} RON</h4>
+                  <h4 class="price-offer">${product.price_offer} ${shop_currency}</h4>
                 </p>
                 <h5 class="product-status">${product.status}</h5>
               </div>
@@ -181,14 +183,16 @@
               <div class="product-details"
                    tal:define="has_price_offer python: product.price_offer and product.expires_offer_date >= today">
                 <!-- simple price -->
-                <h4 class="price-simple" tal:condition="has_price_offer is not True">${product.price} RON</h4>
+                <h4 class="price-simple" tal:condition="has_price_offer is not True">
+                  ${product.price} ${shop_currency}
+                </h4>
 
                 <!-- or old price + new price -->
                 <h5 class="price-offer-old-price" tal:condition="has_price_offer">
-                  <del>${product.price} RON</del>
+                  <del>${product.price} ${shop_currency}</del>
                 </h5>
                 <p tal:condition="has_price_offer">
-                  <h4 class="price-offer">${product.price_offer} RON</h4>
+                  <h4 class="price-offer">${product.price_offer} ${shop_currency}</h4>
                 </p>
 
                 <h5 class="product-status">${product.status}</h5>
