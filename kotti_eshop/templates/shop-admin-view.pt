@@ -25,7 +25,6 @@
       <div class="col col-lg-2 col-md-2 col-sm-12 col-xs 12">
         <h3>Options</h3>
         <ul>
-          <li>${test_details}</li>
           <li><a class="btn btn-xs btn-success" href="${api.url(shop,'@@admin')}">Main</a> - the administration panel main</li>
           <li>
             <a class="btn btn-xs btn-primary" href="${api.url(shop,'@@admin')}?action=products">
@@ -47,7 +46,13 @@
         <!-- ADMIN MAIN -->
         <tal:condition condition="python: action == ''">
           <h3>Admin main</h3>
-          <p>Maybe you want <a href="${api.url(shop, '@@admin')}?action=products">manage products</a>.</p>
+          <p>Maybe you want <a href="${api.url(shop, '@@admin')}?action=products">manage products</a> or
+             <a href="${api.url(shop, '@@admin')}?action=clients">clients</a>
+          </p>
+          <h4>Shop Settings</h4>
+          <p>Currency: ${shop.currency()}</p>
+          <p>Products per page: ${shop.products_per_page()}</p>
+          <p>You can change these <a href="${api.url(api.root, '@@settings')}">settings in Shop settings tab</a>.</p>
         </tal:condition>
         <!-- ADMIN MAIN -->
 

@@ -36,11 +36,9 @@ class ShopViews(BaseView):
         today = date.today()
         custom_page_title = "Administration Panel"
         products = shop.get_all_products()
-        test_details = shop.currency() + str(shop.products_per_page())
         return {'products': products,
                 'custom_page_title': custom_page_title,
-                'today': today,
-                'test_details': test_details}
+                'today': today}
 
     @view_config(name='view', permission='view',
                  renderer='kotti_eshop:templates/shop-view.pt')
