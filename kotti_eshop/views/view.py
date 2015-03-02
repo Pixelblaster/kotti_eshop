@@ -6,6 +6,7 @@ from kotti_eshop.resources import ShopClient
 from kotti_eshop.views import BaseView
 from pyramid.view import view_config
 from pyramid.view import view_defaults
+from webhelpers.paginate import PageURL, Page
 
 
 @view_config(name='shopping_cart', permission='view',
@@ -52,7 +53,38 @@ class ShopViews(BaseView):
             show_featured_products = True
         else:
             show_featured_products = False
-        return {'products': products,
+
+        # GET current page. SET to 1 if is None
+        get = self.request.GET
+        if get.get('page') is not None:
+            current_page = get.get('page')
+        else:
+            current_page = 1
+
+        # SET url format
+        url_for_page = PageURL(self.request.resource_url(self.context),
+                               {"page": current_page})
+
+        # My collection to be paginated = all activities
+        my_collection = products
+
+        # SET page, items, pager
+        items_per_page = 1
+        my_page = Page(my_collection, page=current_page, url=url_for_page,
+                       items_per_page=items_per_page)
+        my_page_items = my_page.items
+
+        my_page_pager = my_page.pager(
+            format="$link_previous ~2~ $link_next",
+            symbol_previous="prev",
+            symbol_next="next",
+            link_attr={"class": "btn small"},
+            curpage_attr={"class": "btn primary small disabled"},
+            dotdot_attr={"class": "btn small disabled"})
+
+        return {'products': my_page_items,
+                'my_page_pager': my_page_pager,
+                'current_page': current_page,
                 'featured_products': featured_products,
                 'custom_page_title': custom_page_title,
                 'today': today,
@@ -106,7 +138,37 @@ class ShopViews(BaseView):
         show_shop_carousel = shop.carousel_visibility_search_view()
         show_featured_products = False
         featured_products = shop.get_featured_products()
-        return {'products': products,
+
+        # GET current page. SET to 1 if is None
+        get = self.request.GET
+        if get.get('page') is not None:
+            current_page = get.get('page')
+        else:
+            current_page = 1
+
+        # SET url format
+        url_for_page = PageURL(self.request.resource_url(self.context),
+                               {"page": current_page})
+
+        # My collection to be paginated = all activities
+        my_collection = products
+
+        # SET page, items, pager
+        items_per_page = 1
+        my_page = Page(my_collection, page=current_page, url=url_for_page,
+                       items_per_page=items_per_page)
+        my_page_items = my_page.items
+
+        my_page_pager = my_page.pager(
+            format="$link_previous ~2~ $link_next",
+            symbol_previous="prev",
+            symbol_next="next",
+            link_attr={"class": "btn small"},
+            curpage_attr={"class": "btn primary small disabled"},
+            dotdot_attr={"class": "btn small disabled"})
+        return {'products': my_page_items,
+                'my_page_pager': my_page_pager,
+                'current_page': current_page,
                 'featured_products': featured_products,
                 'custom_page_title': custom_page_title,
                 'today': today,
