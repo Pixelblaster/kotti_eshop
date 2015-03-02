@@ -24,23 +24,31 @@
          tal:define="action request.GET.get('action', '');
                      shop_currency shop.currency()">
       <div class="col col-lg-2 col-md-2 col-sm-12 col-xs 12">
-        <h3>Options</h3>
-        <ul>
-          <li><a class="btn btn-xs btn-success" href="${api.url(shop,'@@admin')}">Main</a> - the administration panel main</li>
-          <li>
-            <a class="btn btn-xs btn-primary" href="${api.url(shop,'@@admin')}?action=products">
-              Manage products
-            </a>
-            - edit products details, delete products or give price offers
-          </li>
-          <li>
-            <a class="btn btn-xs btn-primary" href="${api.url(shop,'@@admin')}?action=clients">
-              Manage clients
-            </a>
-          </li>        
-          <li><a class="btn btn-xs btn-warning" href="${api.url(shop,'@@edit')}">Edit basic details</a> - edit shop name and description</li>
-          <li><a class="btn btn-xs btn-warning" href="${api.url(shop,'@@contents')}">Edit products</a> - edit shop contents</li>
-        </ul>
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">Options</div>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <a href="${api.url(shop,'@@admin')}">Main</a>
+            </li>
+            <li class="list-group-item">
+              <a href="${api.url(shop,'@@admin')}?action=products">
+                Manage products
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a href="${api.url(shop,'@@admin')}?action=clients">
+                Manage clients
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a href="${api.url(shop,'@@edit')}">Edit basic details</a>
+            </li>
+            <li class="list-group-item">
+              <a href="${api.url(shop,'@@contents')}">Edit products</a>
+            </li>
+          </ul>
+        </div>      
       </div>
 
       <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
