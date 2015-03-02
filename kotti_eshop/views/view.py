@@ -70,7 +70,7 @@ class ShopViews(BaseView):
         my_collection = products
 
         # SET page, items, pager
-        items_per_page = 1
+        items_per_page = shop.products_per_page()
         my_page = Page(my_collection, page=current_page, url=url_for_page,
                        items_per_page=items_per_page)
         my_page_items = my_page.items
@@ -166,7 +166,7 @@ class ShopViews(BaseView):
         my_collection = products
 
         # SET page, items, pager
-        items_per_page = 1
+        items_per_page = shop.products_per_page()
         my_page = Page(my_collection, page=current_page, url=url_for_page,
                        items_per_page=items_per_page)
         my_page_items = my_page.items
