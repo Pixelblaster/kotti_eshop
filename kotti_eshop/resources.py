@@ -6,6 +6,7 @@ from kotti.resources import Base
 from kotti.resources import Content
 from kotti.resources import DBSession
 from kotti.resources import Image
+from kotti_settings.util import get_setting
 from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import Date
@@ -159,6 +160,16 @@ class Shop(Content):
         title=_(u'Shop'),
         add_view=u'add_shop',
         addable_to=['Document', ],)
+
+    def currency(self):
+        """ Returns shop_currency setting from kotti_settings """
+        setting = get_setting('shop_currency')
+        return setting
+
+    def products_per_page(self):
+        """ Returns shop_products_per_page setting from kotti_settings """
+        setting = get_setting('shop_products_per_page')
+        return setting
 
     def get_all_clients(self):
         """ Returns all clients in this shop """
