@@ -1,28 +1,48 @@
-from colander import MappingSchema
-from colander import SchemaNode
-from colander import Range
-from colander import String
+from colander import Boolean
 from colander import Int
-
+from colander import MappingSchema
+from colander import Range
+from colander import SchemaNode
+from colander import String
 from kotti_settings.util import add_settings
 
 
 class ShopCurrencyNode(SchemaNode):
     name = 'shop_currency'
     title = 'Currency'
+    description = 'Price example: 12 USD'
     default = 'USD'
 
 
 class ShopProductsPerPageNode(SchemaNode):
     name = 'shop_products_per_page'
     title = 'Products per page'
+    description = 'How many products will be on a page with products.'
     validator = Range(1, 1000)
     default = 9
+
+
+class ShopCarouselVisibilityShopViewNode(SchemaNode):
+    name = 'shop_carousel_visibility_shop_view'
+    title = 'Carousel visibility in shop view'
+    description = 'Check it if you want carousel to be visible.'
+    default = True
+
+
+class ShopCarouselVisibilitySearchViewNode(SchemaNode):
+    name = 'shop_carousel_visibility_search_view'
+    title = 'Carousel visibility in search view'
+    description = 'Check it if you want carousel to be visible.'
+    default = False
 
 
 class ShopSettingsSchema(MappingSchema):
     shop_currency = ShopCurrencyNode(String())
     shop_products_per_page = ShopProductsPerPageNode(Int())
+    shop_carousel_visibility_shop_view = ShopCarouselVisibilityShopViewNode(
+        Boolean())
+    shop_carousel_visibility_search_view = \
+        ShopCarouselVisibilitySearchViewNode(Boolean())
 
 ShopSettings = {
     'name': 'shop_settings',

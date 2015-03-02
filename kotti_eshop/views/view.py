@@ -50,7 +50,7 @@ class ShopViews(BaseView):
         today = date.today()
         custom_page_title = "Products"
         featured_products = shop.get_featured_products()
-        show_shop_carousel = True
+        show_shop_carousel = shop.carousel_visibility_shop_view()
         if featured_products.count() > 0:
             show_featured_products = True
         else:
@@ -106,7 +106,7 @@ class ShopViews(BaseView):
                         title_text = "products in shop"
 
         custom_page_title = "Search for " + title_text
-        show_shop_carousel = False
+        show_shop_carousel = shop.carousel_visibility_search_view()
         show_featured_products = False
         featured_products = shop.get_featured_products()
         return {'products': products,

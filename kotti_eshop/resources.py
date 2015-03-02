@@ -161,6 +161,7 @@ class Shop(Content):
         add_view=u'add_shop',
         addable_to=['Document', ],)
 
+    # from SHOP SETTINGS
     def currency(self):
         """ Returns shop_currency setting from kotti_settings """
         setting = get_setting('shop_currency')
@@ -170,6 +171,17 @@ class Shop(Content):
         """ Returns shop_products_per_page setting from kotti_settings """
         setting = get_setting('shop_products_per_page')
         return setting
+
+    def carousel_visibility_search_view(self):
+        """ Carousel visibility - Search view """
+        setting = get_setting('shop_carousel_visibility_search_view')
+        return setting
+
+    def carousel_visibility_shop_view(self):
+        """ Carousel visibility - Shop view """
+        setting = get_setting('shop_carousel_visibility_shop_view')
+        return setting
+    # \\\ from SHOP SETTINGS
 
     def get_all_clients(self):
         """ Returns all clients in this shop """
