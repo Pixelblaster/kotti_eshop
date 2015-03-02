@@ -19,6 +19,7 @@ def kotti_configure(settings):
     :type settings: dict
     """
 
+    settings['kotti.populators'] += ' kotti_eshop.populate.populate'
     settings['pyramid.includes'] += ' kotti_eshop'
     settings['kotti.available_types'] += (
         ' kotti_eshop.resources.Shop' +
