@@ -270,6 +270,19 @@ class Shop(Content):
         return products
 
 
+class ShopCart(Content):
+    """ An shopping cart in a shop for a client
+    """
+    id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
+    # client_id
+    # products
+    type_info = Content.type_info.copy(
+        name=u'ShopCart',
+        title=_(u'ShopCart'),
+        add_view=u'add_order',
+        addable_to=['Shop', ],)
+
+
 class ShopOrder(Content):
     """ An order in eShop
     """
