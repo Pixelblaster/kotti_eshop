@@ -228,14 +228,25 @@ class ShopProductEditForm(EditFormView):
 
     def edit(self, **appstruct):
         super(ShopProductEditForm, self).edit(**appstruct)
-        self.context.productmaterials = appstruct['productmaterials']
-        self.context.productcategories = appstruct['productcategories']
-        self.context.producttopics = appstruct['producttopics']
-        self.context.productages = appstruct['productages']
+        product = self.context
+        product.productmaterials = appstruct['productmaterials']
+        product.productcategories = appstruct['productcategories']
+        product.producttopics = appstruct['producttopics']
+        product.productages = appstruct['productages']
         all_tags = set(
             appstruct['productcategories'] + appstruct['productmaterials'] +
             appstruct['producttopics'] + appstruct['productages'])
-        self.context.tags = all_tags
+        product.tags = all_tags
+        quantity = appstruct['quantity']
+        if quantity > 0:
+            if quantity > 5:
+                status = _("Available")
+            else:
+                status = _("Limited")
+        else:
+            status = _("Not available")
+        product.quantity = quantity
+        product.status = status
 
 
 @view_config(name='edit_price_offer', context=ShopProduct, permission='edit',
