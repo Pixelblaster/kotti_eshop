@@ -316,6 +316,7 @@ class ShopProduct(Content):
     expires_offer_date = Column(Date())
     support_days = Column(Integer())
     featured = Column(Boolean())
+    quantity = Column(Integer())
     status = Column(String())
 
     producttopics = association_proxy(

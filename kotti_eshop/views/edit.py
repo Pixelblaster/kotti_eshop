@@ -58,27 +58,31 @@ def ShopProductSchema(title_missing=None):
             title=_(u"Featured"),
             description=_(u"Do you want this product to be featured?"))
 
-        status = colander.SchemaNode(
-            colander.String(),
-            title=_(u"Status"),
-            description=_(u"Available, limited or not available?"))
+        quantity = colander.SchemaNode(
+            colander.Integer(),
+            title=_(u"Quantity"),
+            description=_(u"How many items of this product are in your shop?"))
 
         productmaterials = ProductMaterials(
             widget=get_selectize_widget(ProductMaterial),
             title=_(u"Materials"),
             description=_("Type or select materials"))
+
         productcategories = ProductCategories(
             widget=get_selectize_widget(ProductCategory),
             title=_(u"Categories"),
             description=_("Type or select categories"))
+
         producttopics = ProductTopics(
             widget=get_selectize_widget(ProductTopic),
             title=_(u"Topics"),
             description=_("Type or select topics"))
+
         productages = ProductAges(
             widget=get_selectize_widget(ProductAge),
             title=_(u"Ages"),
             description=_("Type or select ages"))
+
     return ShopProductSchema()
 
 
@@ -179,7 +183,14 @@ class ShopProductAddForm(AddFormView):
         price = appstruct['price']
         support_days = appstruct['support_days']
         featured = appstruct['featured']
-        status = appstruct['status']
+        quantity = appstruct['quantity']
+        if quantity > 0:
+            if quantity > 5:
+                status = _("Available")
+            else:
+                status = _("Limited")
+        else:
+            status = _("Not available")
 
         return self.item_class(
             productcategories=productcategories,
@@ -192,6 +203,7 @@ class ShopProductAddForm(AddFormView):
             price=price,
             support_days=support_days,
             featured=featured,
+            quantity=quantity,
             status=status
         )
 
