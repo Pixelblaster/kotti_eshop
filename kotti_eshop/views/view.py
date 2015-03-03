@@ -212,8 +212,17 @@ class ShopClientViews(BaseView):
 
     @view_config(name='view', permission='view',
                  renderer='kotti_eshop:templates/shopclient-view.pt')
-    def shop_product_view(self):
+    def shop_client_view(self):
         """ ShopClient View
+        """
+        today = date.today()
+        return {'today': today}
+
+    @view_config(name='cart', permission='view',
+                 renderer='kotti_eshop:templates/clientcart-view.pt')
+    def client_cart_view(self):
+        """ View current cart contents for this client
+            [TODO] This view must be visible only for the client and the admin
         """
         today = date.today()
         return {'today': today}
