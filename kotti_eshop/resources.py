@@ -269,6 +269,13 @@ class Shop(Content):
                 products.append(product)
         return products
 
+    def add_product_to_cart(self, id_client, id_product, quantity=1):
+        """ Add a product to a client cart
+        """
+        client = DBSession.query(ShopClient).filter(ShopClient.id == id_client)
+        if client:
+            print "AAA"
+
 
 class ShopOrder(Content):
     """ An order in eShop

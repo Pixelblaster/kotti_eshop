@@ -9,7 +9,7 @@
   <article metal:fill-slot="content"
            class="content"
            i18n:domain="kotti_eshop"
-           tal:define="client context">
+           tal:define="client context; shop client.parent">
 
     <h1>${client.nickname}</h1>
     <p class="lead">
@@ -17,6 +17,9 @@
     </p>
     <p>
       ${client.description}
+      <!-- test add to cart -->
+      ${shop.add_product_to_cart(id_client=4, id_product=7, quantity=2)}
+      <!-- test add to cart -->
     </p>
   </article>
 </html>

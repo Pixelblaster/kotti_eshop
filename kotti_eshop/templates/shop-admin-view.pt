@@ -74,6 +74,7 @@
           <table class="table table-condensed">
             <thead>
               <tr>
+                <th>ID</th>
                 <th>Nickname (Fullname)</th>
                 <th>Email (Paypal email)</th>
                 <th>Deliver Address</th>
@@ -84,8 +85,9 @@
             </thead>
             <tbody>
               <tr tal:repeat="client shop.get_all_clients()">
+                <td>${client.id}</td>
                 <td>
-                  ${client.nickname} (${client.fullname})
+                  <a href="${api.url(client)}">${client.nickname}</a> (${client.fullname})
                 </td>
                 <td>
                   ${client.email} (${client.paypal_email})
@@ -110,6 +112,7 @@
           <table class="table table-condensed">
             <thead>
               <tr>
+                <th>ID</th>
                 <th>Name, description, images</th>
                 <th>Price</th>
                 <th>Support days</th>
@@ -120,7 +123,8 @@
             </thead>
             <tbody>
               <tr tal:repeat="product products">
-                <td><b>${product.title}</b> - ${product.description}
+                <td>${product.id}</td>
+                <td><b><a href="${api.url(product)}">${product.title}</a></b> - ${product.description}
                   <div class="product-gallery">
                     <div class="product-image-div"
                          tal:repeat="productimage product.get_all_images().all()">
