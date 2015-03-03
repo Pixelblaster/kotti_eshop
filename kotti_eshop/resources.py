@@ -272,13 +272,29 @@ class Shop(Content):
     def add_product_to_cart(self, id_client, id_product, quantity=1):
         """ Add a product to a client cart
         """
-        client = DBSession.query(ShopClient).filter(
-            ShopClient.id == id_client).first()
-        if client:
-            product = DBSession.query(ShopProduct).filter(
-                ShopProduct.id == id_product).first()
-            if product:
-                # [TODO] add to cart
+        clients = DBSession.query(ShopClient).filter(
+            ShopClient.id == id_client)
+        if clients.count() > 0:
+            products = DBSession.query(ShopProduct).filter(
+                ShopProduct.id == id_product)
+            client = clients.first()
+            if products.count() > 0:
+                product = products.first()
+
+                # Client and product exists. Get old cart content:
+                current_shopping_cart_content = client.shopping_cart
+                try:
+                    import ast
+                    shopping_cart_list = ast.literal_eval(
+                        current_shopping_cart_content)
+                except:
+                    shopping_cart_list = []
+
+                # Add record to cart
+                record = (client.id, product.id)
+                shopping_cart_list.append(record)
+                client.shopping_cart = str(shopping_cart_list)
+
                 message = _("Product added to cart.")
             else:
                 message = _("Product missing.")
