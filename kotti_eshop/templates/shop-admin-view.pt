@@ -94,8 +94,9 @@
                 <td>${client.status}</td>
                 <td>${client.last_ip_login}</td>
                 <td>
-                  <a class="btn btn-sm btn-warning" href="${api.url(client, '@@edit')}">Edit</a>
-                  <a class="btn btn-sm btn-danger" href="${api.url(client, '@@delete')}">Delete</a>
+                  <a class="btn btn-xs btn-warning" href="${api.url(client, '@@edit')}">Edit</a>
+                  <a class="btn btn-xs btn-danger" href="${api.url(client, '@@delete')}">Delete</a>
+                  <a class="btn btn-xs btn-primary" href="${api.url(client, '@@cart')}">View cart</a>
                 </td>
               </tr>
             </tbody>
