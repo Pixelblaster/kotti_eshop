@@ -36,6 +36,13 @@ class ShopCarouselVisibilitySearchViewNode(SchemaNode):
     default = False
 
 
+class FeaturedProductsVisibilitySearchViewNode(SchemaNode):
+    name = 'featured_products_visibility_search_view'
+    title = 'Featured products visibility in search view'
+    description = 'Check it to show featured products in search view.'
+    default = False
+
+
 class ShopSettingsSchema(MappingSchema):
     shop_currency = ShopCurrencyNode(String())
     shop_products_per_page = ShopProductsPerPageNode(Int())
@@ -43,6 +50,8 @@ class ShopSettingsSchema(MappingSchema):
         Boolean())
     shop_carousel_visibility_search_view = \
         ShopCarouselVisibilitySearchViewNode(Boolean())
+    featured_products_visibility_search_view = \
+        FeaturedProductsVisibilitySearchViewNode(Boolean())
 
 ShopSettings = {
     'name': 'shop_settings',

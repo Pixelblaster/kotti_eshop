@@ -4,7 +4,6 @@ from kotti_eshop.resources import Shop
 from kotti_eshop.resources import ShopProduct
 from kotti_eshop.resources import ShopClient
 from kotti_eshop.views import BaseView
-from kotti.resources import get_root
 from pyramid.view import view_config
 from pyramid.view import view_defaults
 from webhelpers.paginate import PageURL, Page
@@ -159,8 +158,14 @@ class ShopViews(BaseView):
 
         custom_page_title = "Search for " + title_text
         show_shop_carousel = shop.carousel_visibility_search_view()
-        show_featured_products = False
+
+        show_featured_setting = shop.featured_products_visibility_search_view()
         featured_products = shop.get_featured_products()
+
+        if featured_products.count() > 0 and show_featured_setting is True:
+            show_featured_products = True
+        else:
+            show_featured_products = False
 
         # My collection to be paginated = all activities
         my_collection = products

@@ -179,6 +179,11 @@ class Shop(Content):
         """ Carousel visibility - Shop view """
         setting = get_setting('shop_carousel_visibility_shop_view')
         return setting
+
+    def featured_products_visibility_search_view(self):
+        """ Featured products visibility - Search view """
+        setting = get_setting('featured_products_visibility_search_view')
+        return setting
     # \\\ from SHOP SETTINGS
 
     def get_all_clients(self):
