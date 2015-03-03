@@ -24,13 +24,22 @@
       </div>
     </div>
 
-    <div class="product-details">
-      <h3>${product.price} ${shop_currency}</h3>
-      <p tal:condition="python: product.price_offer and product.expires_offer_date >= today">
-        ${product.price_offer} ${shop_currency}
+    <div class="product-details"
+         tal:define="has_price_offer python: product.price_offer and product.expires_offer_date >= today">
+      <!-- simple price -->
+      <h4 class="price-simple" tal:condition="has_price_offer is not True">
+        ${product.price} ${shop_currency}
+      </h4>
+
+      <!-- or old price + new price -->
+      <h5 class="price-offer-old-price" tal:condition="has_price_offer">
+        <del>${product.price} ${shop_currency}</del>
+      </h5>
+      <p tal:condition="has_price_offer">
+        <h4 class="price-offer">${product.price_offer} ${shop_currency}</h4>
       </p>
       <p>Support days: ${product.support_days}</p>
-      <p>Status: ${product.status}</p>
+      <h5 class="product-status">${product.status}</h5>
     </div>
 
     <div tal:condition="product.productcategories">
