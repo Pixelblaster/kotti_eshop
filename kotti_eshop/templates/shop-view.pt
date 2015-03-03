@@ -155,9 +155,20 @@
                 <h5 class="product-status">${product.status}</h5>
               </div>
 
-              <a class="shop-add-btn btn btn-primary" href="#add-to-cart-link">
-                Add to cart
-              </a>
+              <!-- IF Available -->
+              <tal:condition condition="product.quantity > 0">
+                <a class="shop-add-btn btn btn-primary" href="#add-to-cart-link">
+                  Add to cart
+                </a>
+              </tal:condition>
+
+              <!-- IF Not Available -->
+              <tal:condition condition="product.quantity == 0">
+                <a class="shop-add-btn btn btn-default" href="#add-to-wishlist-link">
+                  Add to wishlist
+                </a>
+              </tal:condition>
+
             </div>
           </tal:repeat>
         </div><!-- FEATURED PRODUCTS -->
@@ -198,9 +209,19 @@
                 <h5 class="product-status">${product.status}</h5>
               </div>
 
-              <a class="shop-add-btn btn btn-primary" href="#add-to-cart-link">
-                Add to cart
-              </a>
+              <!-- IF Available -->
+              <tal:condition condition="product.quantity > 0">
+                <a class="shop-add-btn btn btn-primary" href="#add-to-cart-link">
+                  Add to cart
+                </a>
+              </tal:condition>
+
+              <!-- IF Not Available -->
+              <tal:condition condition="product.quantity == 0">
+                <a class="shop-add-btn btn btn-default" href="#add-to-wishlist-link">
+                  Add to wishlist
+                </a>
+              </tal:condition>
             </div>
           </tal:repeat>
         </div><!-- ALL PRODUCTS or SEARCH RESULTS -->
