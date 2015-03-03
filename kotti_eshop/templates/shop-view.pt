@@ -152,7 +152,7 @@
                 <p tal:condition="has_price_offer">
                   <h4 class="price-offer">${product.price_offer} ${shop_currency}</h4>
                 </p>
-                <h5 class="product-status">${product.status}</h5>
+                <h5 class="product-status">${product.quantity}</h5>
               </div>
 
               <!-- IF Available -->
@@ -206,7 +206,7 @@
                   <h4 class="price-offer">${product.price_offer} ${shop_currency}</h4>
                 </p>
 
-                <h5 class="product-status">${product.status}</h5>
+                <h5 class="product-status">${product.quantity}</h5>
               </div>
 
               <!-- IF Available -->

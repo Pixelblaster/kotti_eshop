@@ -39,7 +39,7 @@
         <h4 class="price-offer">${product.price_offer} ${shop_currency}</h4>
       </p>
       <p>Support days: ${product.support_days}</p>
-      <h5 class="product-status">${product.status}</h5>
+      <h5 class="product-status">${product.quantity}</h5>
     </div>
 
     <div tal:condition="product.productcategories">

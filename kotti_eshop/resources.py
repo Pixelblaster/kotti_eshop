@@ -184,6 +184,11 @@ class Shop(Content):
         """ Featured products visibility - Search view """
         setting = get_setting('featured_products_visibility_search_view')
         return setting
+
+    def shop_products_limited_quantity(self):
+        """ Quantity limit for a product to call it Limited """
+        setting = get_setting('shop_products_limited_quantity')
+        return setting
     # \\\ from SHOP SETTINGS
 
     def get_all_clients(self):
@@ -317,7 +322,6 @@ class ShopProduct(Content):
     support_days = Column(Integer())
     featured = Column(Boolean())
     quantity = Column(Integer())
-    status = Column(String())
 
     producttopics = association_proxy(
         'shopproduct_topics',

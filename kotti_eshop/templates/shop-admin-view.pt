@@ -146,7 +146,7 @@
                   <span tal:condition="product.featured is True">yes</span>
                   <span tal:condition="product.featured is not True">no</span>
                 </td>
-                <td>${product.status} (${product.quantity})</td>
+                <td>${product.quantity} (${product.quantity})</td>
                 <td>
                   <a class="btn btn-sm btn-warning" href="${api.url(product, '@@edit')}">Edit</a>
                   <a class="btn btn-sm btn-primary" href="${api.url(product, '@@edit_price_offer')}">

@@ -184,13 +184,6 @@ class ShopProductAddForm(AddFormView):
         support_days = appstruct['support_days']
         featured = appstruct['featured']
         quantity = appstruct['quantity']
-        if quantity > 0:
-            if quantity > 5:
-                status = _("Available")
-            else:
-                status = _("Limited")
-        else:
-            status = _("Not available")
 
         return self.item_class(
             productcategories=productcategories,
@@ -203,8 +196,7 @@ class ShopProductAddForm(AddFormView):
             price=price,
             support_days=support_days,
             featured=featured,
-            quantity=quantity,
-            status=status
+            quantity=quantity
         )
 
     def before(self, form):
@@ -238,15 +230,7 @@ class ShopProductEditForm(EditFormView):
             appstruct['producttopics'] + appstruct['productages'])
         product.tags = all_tags
         quantity = appstruct['quantity']
-        if quantity > 0:
-            if quantity > 5:
-                status = _("Available")
-            else:
-                status = _("Limited")
-        else:
-            status = _("Not available")
         product.quantity = quantity
-        product.status = status
 
 
 @view_config(name='edit_price_offer', context=ShopProduct, permission='edit',
