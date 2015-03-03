@@ -365,3 +365,20 @@ class ShopProduct(Content):
             Image.parent_id == self.id)
 
         return images
+
+    def quantity_status(self):
+        """ Returns quantity status for this product based on quantity
+            and the setting in shop settings
+        """
+        product = self
+        shop = product.parent
+        limited_quantity_number = shop.shop_products_limited_quantity()
+        if product.quantity > limited_quantity_number:
+            status = _("Available")
+        else:
+            if product.quantity > 0:
+                status = _("Limited")
+            else:
+                status = _("Not available")
+
+        return status
