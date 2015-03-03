@@ -290,12 +290,15 @@ class Shop(Content):
                 except:
                     shopping_cart_list = []
 
-                # Add record to cart
-                # [TODO] Check if given quantity is available for this product
-                record = (product.id, quantity)
-                shopping_cart_list.append(record)
-                client.shopping_cart = str(shopping_cart_list)
+                # CHECK if quantity is available
+                if quantity <= product.quantity:
+                    record = (product.id, quantity)
+                    shopping_cart_list.append(record)
+                    # [TODO] merge quantities for the same product
 
+                    # MOVE records form shop to cart
+                    client.shopping_cart = str(shopping_cart_list)
+                    product.quantity = product.quantity - quantity
                 message = _("Product added to cart.")
             else:
                 message = _("Product missing.")
