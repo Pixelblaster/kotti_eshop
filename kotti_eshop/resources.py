@@ -327,7 +327,6 @@ class Shop(Content):
                 # product exists in database
                 product = products.first()
                 record = (product, product_quantity)
-                print record
                 cart_content.append(record)
         return cart_content
 

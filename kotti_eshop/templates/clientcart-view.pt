@@ -9,17 +9,15 @@
   <article metal:fill-slot="content"
            class="content"
            i18n:domain="kotti_eshop"
-           tal:define="client context; shop client.parent">
+           tal:define="client context; shop client.parent; cart_contents shop.get_shopping_cart(id_client=client.id)">
 
-    <h1>${client.nickname}</h1>
-    <p class="lead">
-      ${client.fullname}
+    <h1>${client.nickname} - shopping cart</h1>
+
+    <h2>Cart content</h2>
+    <p tal:repeat="record cart_contents">
+      <span tal:define="product record[0]; product_quantity record[1]">
+        <a href="${api.url(product)}">${product.title}</a> - ${product_quantity}
+      </span>
     </p>
-    <p>
-      ${client.description}
-    </p>
-    <p>
-      CART CONTENTS: ${shop.get_shopping_cart(id_client=client.id)}
-    </p>    
   </article>
 </html>
