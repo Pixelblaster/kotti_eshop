@@ -291,7 +291,8 @@ class Shop(Content):
                     shopping_cart_list = []
 
                 # Add record to cart
-                record = (client.id, product.id)
+                # [TODO] Check if given quantity is available for this product
+                record = (product.id, quantity)
                 shopping_cart_list.append(record)
                 client.shopping_cart = str(shopping_cart_list)
 
@@ -302,6 +303,33 @@ class Shop(Content):
             message = _("Client missing.")
 
         return message
+
+    def get_shopping_cart(self, id_client):
+        """ Get cart for a given client in this shop
+        """
+        clients = DBSession.query(ShopClient).filter(
+            ShopClient.id == id_client)
+        if clients.count() > 0:
+            client = clients.first()
+            current_shopping_cart_content = client.shopping_cart
+            try:
+                import ast
+                shopping_cart_list = ast.literal_eval(
+                    current_shopping_cart_content)
+            except:
+                shopping_cart_list = []
+
+        cart_content = []
+        for product_id, product_quantity in shopping_cart_list:
+            products = DBSession.query(ShopProduct).filter(
+                ShopProduct.id == product_id)
+            if products.count() > 0:
+                # product exists in database
+                product = products.first()
+                record = (product, product_quantity)
+                print record
+                cart_content.append(record)
+        return cart_content
 
 
 class ShopOrder(Content):
