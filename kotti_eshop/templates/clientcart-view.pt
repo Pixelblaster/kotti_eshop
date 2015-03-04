@@ -12,12 +12,14 @@
            tal:define="client context; shop client.parent; cart_contents shop.get_shopping_cart(id_client=client.id)">
 
     <h1>${client.nickname} - shopping cart</h1>
-
-    <h2>Cart content</h2>
+    <h2>Shopping cart</h2>
     <p tal:repeat="record cart_contents">
       <span tal:define="product record[0]; product_quantity record[1]">
         <a href="${api.url(product)}">${product.title}</a> - ${product_quantity}
       </span>
     </p>
+
+    <h2>Wishlist</h2>
+    ${client.wishlist}
   </article>
 </html>

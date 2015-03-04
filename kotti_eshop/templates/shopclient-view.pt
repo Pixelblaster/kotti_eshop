@@ -19,8 +19,9 @@
       ${client.shopping_cart}
       ${client.description}
       <!-- test add to cart -->
-      ${shop.add_product_to_cart(id_client=4, id_product=5, quantity=1)}
-      ${shop.remove_product_from_cart(id_client=4, id_product=7, quantity=1)}
+      ${shop.add_product_to_cart(id_client=9, id_product=8, quantity=1)}
+      ${shop.remove_product_from_cart(id_client=9, id_product=4, quantity=1)}
+      ${shop.add_product_to_wishlist(id_client=9, id_product=6)}
       <!-- test add to cart -->
     </p>
   </article>

@@ -277,6 +277,8 @@ class ShopClientAddForm(AddFormView):
             paypal_email=paypal_email,
             deliver_address=deliver_address,
             status=status,
+            wishlist="",
+            shopping_cart="",
             last_ip_login=last_ip_login
         )
 

@@ -400,6 +400,36 @@ class Shop(Content):
                 cart_content.append(record)
         return cart_content
 
+    def add_product_to_wishlist(self, id_client, id_product):
+        """ Add a product to a client wishlist
+        """
+        # GET client
+        clients = DBSession.query(ShopClient).filter(
+            ShopClient.id == id_client)
+        if clients.count() > 0:
+            client = clients.first()
+
+            # GET product
+            products = DBSession.query(ShopProduct).filter(
+                ShopProduct.id == id_product)
+            if products.count() > 0:
+                product = products.first()
+
+                # GET wishlist
+                wishlist = string_to_list(client.wishlist)
+                if product.id not in wishlist:
+                    wishlist.append(product.id)
+                    client.wishlist = str(wishlist)
+                    message = _("Product added to wishlist.")
+                else:
+                    message = _("Product already in wishlist.")
+            else:
+                message = _("Product missing.")
+        else:
+            message = _("Client missing.")
+
+        return message
+
 
 class ShopOrder(Content):
     """ An order in eShop
@@ -432,6 +462,7 @@ class ShopClient(Content):
     #     {'product_id' : 3, 'product_quantity' : 2},
     #     {'product_id' : 6, 'product_quantity' : 5}
     # ]
+    wishlist = Column(String())    # Example: [1, 2, 3] - list of products ids
     nickname = Column(String())
     fullname = Column(String())
     email = Column(String())
