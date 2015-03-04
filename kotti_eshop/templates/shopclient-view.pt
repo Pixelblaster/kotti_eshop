@@ -32,18 +32,7 @@
           </tr>
         </tbody>
       </table>
-    </tal:condition>
+    </tal:condition><!-- wishlist -->
 
-    <p>
-      <!-- tests [TODO] remove these -->
-      [client shopping cart: ${client.shopping_cart}]<br />
-      [client wishlist: ${client.wishlist}]<br />
-      [add product to cart: ${shop.add_product_to_cart(id_client=9, id_product=8, quantity=1)}]<br />
-      [remove product from cart: ${shop.remove_product_from_cart(id_client=9, id_product=4, quantity=1)}]<br />
-      [add product to wishlist: ${shop.add_product_to_wishlist(id_client=9, id_product=6)}]<br />
-      [add product to wishlist: ${shop.add_product_to_wishlist(id_client=9, id_product=4)}]<br />
-      [remove product from wishlist: ${shop.remove_product_from_wishlist(id_client=9, id_product=6)}]<br />
-      <!-- tests -->
-    </p>
   </article>
 </html>
