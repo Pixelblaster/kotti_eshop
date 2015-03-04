@@ -18,7 +18,7 @@
     <p>
       ${client.description}
       <!-- test add to cart -->
-      ${shop.add_product_to_cart(id_client=4, id_product=7, quantity=2)}
+      ${shop.add_product_to_cart(id_client=4, id_product=5, quantity=1)}
       <!-- test add to cart -->
     </p>
   </article>

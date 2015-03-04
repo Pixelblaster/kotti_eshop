@@ -294,8 +294,17 @@ class Shop(Content):
                 if quantity <= product.quantity:
                     record = {'product_id': product.id,
                               'product_quantity': quantity}
-                    shopping_cart_list.append(record)
-                    # [TODO] merge quantities for the same product
+
+                    product_already_in_cart = False
+                    for p in shopping_cart_list:
+                        if p['product_id'] == product.id:
+                            # MERGE quantities
+                            p['product_quantity'] += quantity
+                            product_already_in_cart = True
+
+                    if product_already_in_cart is False:
+                        # or ADD product to cart
+                        shopping_cart_list.append(record)
 
                     # MOVE records form shop to cart
                     client.shopping_cart = str(shopping_cart_list)
