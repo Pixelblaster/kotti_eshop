@@ -157,14 +157,16 @@
 
               <!-- IF Available -->
               <tal:condition condition="product.quantity > 0">
-                <a class="shop-add-btn btn btn-primary" href="#add-to-cart-link">
+                <a class="add-to-cart shop-add-btn btn btn-primary" 
+                   product-id="${product.id}" href="">
                   Add to cart
                 </a>
               </tal:condition>
 
               <!-- IF Not Available -->
               <tal:condition condition="product.quantity == 0">
-                <a class="shop-add-btn btn btn-default" href="#add-to-wishlist-link">
+                <a class="add-to-wishlist shop-add-btn btn btn-default"
+                   product-id="${product.id}" href="">
                   Add to wishlist
                 </a>
               </tal:condition>
@@ -211,14 +213,16 @@
 
               <!-- IF Available -->
               <tal:condition condition="product.quantity > 0">
-                <a class="shop-add-btn btn btn-primary" href="#add-to-cart-link">
+                <a class="add-to-cart shop-add-btn btn btn-primary" 
+                   product-id="${product.id}" href="">
                   Add to cart
                 </a>
               </tal:condition>
 
               <!-- IF Not Available -->
               <tal:condition condition="product.quantity == 0">
-                <a class="shop-add-btn btn btn-default" href="#add-to-wishlist-link">
+                <a class="add-to-wishlist shop-add-btn btn btn-default"
+                   product-id="${product.id}" href="#">
                   Add to wishlist
                 </a>
               </tal:condition>
