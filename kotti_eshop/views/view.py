@@ -49,9 +49,16 @@ class ShopViews(BaseView):
         if 'add_to_wishlist' in self.request.GET:
             client_id = int(self.request.GET.get('client_id'))
             product_id = int(self.request.GET.get('product_id'))
-            print "Ajax: Product ID: ", product_id, " Client ID: ", client_id
             shop.add_product_to_wishlist(
                 id_client=client_id, id_product=product_id)
+
+        # AJAX. Add to cart button pressed:
+        if 'add_to_cart' in self.request.GET:
+            client_id = int(self.request.GET.get('client_id'))
+            product_id = int(self.request.GET.get('product_id'))
+            quantity = int(self.request.GET.get('quantity'))
+            shop.add_product_to_cart(
+                id_client=client_id, id_product=product_id, quantity=quantity)
 
         products = shop.get_all_products()
         today = date.today()
