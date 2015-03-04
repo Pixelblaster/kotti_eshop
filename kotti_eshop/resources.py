@@ -424,9 +424,40 @@ class Shop(Content):
                 else:
                     message = _("Product already in wishlist.")
             else:
-                message = _("Product missing.")
+                message = _("Product not in database.")
         else:
-            message = _("Client missing.")
+            message = _("Client not in database.")
+
+        return message
+
+    def remove_product_from_wishlist(self, id_client, id_product):
+        """ Remove a product from a client wishlist
+        """
+        # GET client
+        clients = DBSession.query(ShopClient).filter(
+            ShopClient.id == id_client)
+        if clients.count() > 0:
+            client = clients.first()
+
+            # GET product
+            products = DBSession.query(ShopProduct).filter(
+                ShopProduct.id == id_product)
+            if products.count() > 0:
+                product = products.first()
+
+                # GET wishlist
+                wishlist = string_to_list(client.wishlist)
+                if product.id in wishlist:
+                    wishlist = [product_id for product_id in wishlist if
+                                product_id != product.id]
+                    client.wishlist = str(wishlist)
+                    message = _("Product removed from wishlist.")
+                else:
+                    message = _("Product not in wishlist.")
+            else:
+                message = _("Product not in database.")
+        else:
+            message = _("Client not in database.")
 
         return message
 
