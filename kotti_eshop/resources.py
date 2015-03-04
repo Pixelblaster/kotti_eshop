@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from kotti_eshop import _
+from kotti_eshop.utils import string_to_list
 from kotti.resources import Base
 from kotti.resources import Content
 from kotti.resources import DBSession
@@ -269,26 +270,78 @@ class Shop(Content):
                 products.append(product)
         return products
 
-    def add_product_to_cart(self, id_client, id_product, quantity=1):
-        """ Add a product to a client cart
+    def remove_product_from_cart(self, id_client, id_product, quantity=0):
+        """ Remove a quantity of this product from client's shopping cart
+
+            quantity=0 means remove all quantity for
+            and sure you will prefer to use it like this:
+            shop.remove_product_from_cart(id_client=cid, id_product=pid)
         """
+        # GET client
         clients = DBSession.query(ShopClient).filter(
             ShopClient.id == id_client)
         if clients.count() > 0:
+            client = clients.first()
+
+            # GET product
             products = DBSession.query(ShopProduct).filter(
                 ShopProduct.id == id_product)
+            if products.count() > 0:
+                product = products.first()
+
+                # Client and product exists. Get cart content:
+                shopping_cart_list = string_to_list(client.shopping_cart)
+
+                product_in_cart = False
+                remove_product = False
+                for p in shopping_cart_list:
+                    if p['product_id'] == product.id:
+                        product_in_cart = True
+
+                        # CHECK quantity
+                        if (p['product_quantity'] > quantity
+                                and quantity != 0):
+                            # REMOVE given quantity
+                            p['product_quantity'] -= quantity
+                            message = _("Quantity removed for this product.")
+                        else:
+                            remove_product = True
+                if remove_product:
+                    # REMOVE PRODUCT
+                    shopping_cart_list[:] = [
+                        d for d in shopping_cart_list
+                        if d.get('product_id') != product.id]
+                    message = _("Product removed from cart.")
+
+                # UPDATE cart and product quantity in shop
+                client.shopping_cart = str(shopping_cart_list)
+                product.quantity = product.quantity + quantity
+
+                if product_in_cart is False:
+                    message = _("Product not in cart.")
+            else:
+                message = _("Product not in database.")
+        else:
+            message = _("Client missing.")
+        return message
+
+    def add_product_to_cart(self, id_client, id_product, quantity=1):
+        """ Add a product to a client cart
+        """
+        # GET client
+        clients = DBSession.query(ShopClient).filter(
+            ShopClient.id == id_client)
+        if clients.count() > 0:
             client = clients.first()
+
+            # GET product
+            products = DBSession.query(ShopProduct).filter(
+                ShopProduct.id == id_product)
             if products.count() > 0:
                 product = products.first()
 
                 # Client and product exists. Get old cart content:
-                current_shopping_cart_content = client.shopping_cart
-                try:
-                    import ast
-                    shopping_cart_list = ast.literal_eval(
-                        current_shopping_cart_content)
-                except:
-                    shopping_cart_list = []
+                shopping_cart_list = string_to_list(client.shopping_cart)
 
                 # CHECK if quantity is available
                 if quantity <= product.quantity:
