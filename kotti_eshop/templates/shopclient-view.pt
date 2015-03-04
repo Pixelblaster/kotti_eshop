@@ -9,7 +9,8 @@
   <article metal:fill-slot="content"
            class="content"
            i18n:domain="kotti_eshop"
-           tal:define="client context; shop client.parent">
+           tal:define="client context; shop client.parent"
+           shop-url="${api.url(shop)}">
 
     <h1>${client.nickname}</h1>
     <p class="lead">
@@ -28,7 +29,12 @@
         <tbody>
           <tr tal:repeat="product shop.get_wishlist(client.id)">
             <td><a href="${api.url(product)}">${product.title}</a></td>
-            <td><a class="btn btn-sm btn-danger" href="#remove-link">Remove</a></td>
+            <td>
+              <a class="remove-from-wishlist btn btn-sm btn-danger"
+                 product-id="${product.id}" href="">
+                Remove
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>

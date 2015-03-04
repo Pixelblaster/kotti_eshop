@@ -52,6 +52,13 @@ class ShopViews(BaseView):
             shop.add_product_to_wishlist(
                 id_client=client_id, id_product=product_id)
 
+        # AJAX. Remove from wishlist button pressed:
+        if 'remove_from_wishlist' in self.request.GET:
+            client_id = int(self.request.GET.get('client_id'))
+            product_id = int(self.request.GET.get('product_id'))
+            shop.remove_product_from_wishlist(
+                id_client=client_id, id_product=product_id)
+
         # AJAX. Add to cart button pressed:
         if 'add_to_cart' in self.request.GET:
             client_id = int(self.request.GET.get('client_id'))
