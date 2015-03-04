@@ -44,6 +44,15 @@ class ShopViews(BaseView):
         """ Shop View
         """
         shop = self.context
+
+        # AJAX. Add to wishlist button pressed:
+        if 'add_to_wishlist' in self.request.GET:
+            client_id = int(self.request.GET.get('client_id'))
+            product_id = int(self.request.GET.get('product_id'))
+            print "Ajax: Product ID: ", product_id, " Client ID: ", client_id
+            shop.add_product_to_wishlist(
+                id_client=client_id, id_product=product_id)
+
         products = shop.get_all_products()
         today = date.today()
         custom_page_title = "Products"

@@ -13,8 +13,21 @@ $(document).ready(function(){
 	// 	* class="add-to-wishlist"
 	// 	* product-id="product.id"
 	$(".add-to-wishlist").on("click", function(evt){
+		var shop_url = $("article").attr("shop-url");
 		var product_id = $(this).attr("product-id");
+		var client_id = 9; // [TODO] Logged in client id must be here.
 		alert("Added to wishlist. Product id: " + product_id);
 		evt.preventDefault();
+
+		$.ajax({
+			type:'GET',
+			url: shop_url,
+			data: { 'add_to_wishlist': true,
+					'product_id': product_id,
+					'client_id': client_id},
+			contentType: 'application/json; charset=utf-8'
+		}).done(function() {
+			alert("Done!");
+		});
 	});
 });
