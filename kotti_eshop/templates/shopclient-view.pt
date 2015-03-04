@@ -15,15 +15,34 @@
     <p class="lead">
       ${client.fullname}
     </p>
+
+    <!-- wishlist -->
+    <tal:condition condition="client.wishlist != u'[]' and client.wishlist != ''">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr tal:repeat="product shop.get_wishlist(client.id)">
+            <td><a href="${api.url(product)}">${product.title}</a></td>
+            <td><a class="btn btn-sm btn-danger" href="#remove-link">Remove</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </tal:condition>
+
     <p>
-      ${client.shopping_cart}
-      ${client.description}
-      <!-- tests -->
-      ${shop.add_product_to_cart(id_client=9, id_product=8, quantity=1)}
-      ${shop.remove_product_from_cart(id_client=9, id_product=4, quantity=1)}
-      ${shop.add_product_to_wishlist(id_client=9, id_product=6)}
-      ${shop.add_product_to_wishlist(id_client=9, id_product=4)}
-      ${shop.remove_product_from_wishlist(id_client=9, id_product=6)}
+      <!-- tests [TODO] remove these -->
+      [client shopping cart: ${client.shopping_cart}]<br />
+      [client wishlist: ${client.wishlist}]<br />
+      [add product to cart: ${shop.add_product_to_cart(id_client=9, id_product=8, quantity=1)}]<br />
+      [remove product from cart: ${shop.remove_product_from_cart(id_client=9, id_product=4, quantity=1)}]<br />
+      [add product to wishlist: ${shop.add_product_to_wishlist(id_client=9, id_product=6)}]<br />
+      [add product to wishlist: ${shop.add_product_to_wishlist(id_client=9, id_product=4)}]<br />
+      [remove product from wishlist: ${shop.remove_product_from_wishlist(id_client=9, id_product=6)}]<br />
       <!-- tests -->
     </p>
   </article>
