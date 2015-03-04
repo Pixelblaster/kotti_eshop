@@ -9,7 +9,7 @@
   <article metal:fill-slot="content"
            class="content"
            i18n:domain="kotti_eshop"
-           tal:define="client context; shop client.parent; cart_contents shop.get_shopping_cart(id_client=client.id)">
+           tal:define="client context; shop client.parent; cart_contents shop.get_shopping_cart(id_client=client.id); wishlist_products shop.get_wishlist(id_client=client.id)">
 
     <h1>${client.nickname} - shopping cart</h1>
     <h2>Shopping cart</h2>
@@ -20,6 +20,8 @@
     </p>
 
     <h2>Wishlist</h2>
-    ${client.wishlist}
+    <p tal:repeat="product wishlist_products">
+      <a href="${api.url(product)}">${product.title}</a>
+    </p>
   </article>
 </html>

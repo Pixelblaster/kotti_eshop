@@ -379,13 +379,7 @@ class Shop(Content):
             ShopClient.id == id_client)
         if clients.count() > 0:
             client = clients.first()
-            current_shopping_cart_content = client.shopping_cart
-            try:
-                import ast
-                shopping_cart_list = ast.literal_eval(
-                    current_shopping_cart_content)
-            except:
-                shopping_cart_list = []
+            shopping_cart_list = string_to_list(client.shopping_cart)
 
         cart_content = []
         for product in shopping_cart_list:
@@ -460,6 +454,28 @@ class Shop(Content):
             message = _("Client not in database.")
 
         return message
+
+    def get_wishlist(self, id_client):
+        """ Get wishlist for a given client in this shop
+        """
+        # GET client
+        clients = DBSession.query(ShopClient).filter(
+            ShopClient.id == id_client)
+        if clients.count() > 0:
+            client = clients.first()
+
+            # GET wishlist
+            wishlist = string_to_list(client.wishlist)
+
+        wishlist_products = []
+        for product_id in wishlist:
+            products = DBSession.query(ShopProduct).filter(
+                ShopProduct.id == product_id)
+            if products.count() > 0:
+                # product exists in database
+                product = products.first()
+                wishlist_products.append(product)
+        return wishlist_products
 
 
 class ShopOrder(Content):
