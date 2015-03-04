@@ -16,6 +16,7 @@
       ${client.fullname}
     </p>
     <p>
+      ${client.shopping_cart}
       ${client.description}
       <!-- test add to cart -->
       ${shop.add_product_to_cart(id_client=4, id_product=5, quantity=1)}
