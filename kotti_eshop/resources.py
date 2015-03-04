@@ -292,14 +292,17 @@ class Shop(Content):
 
                 # CHECK if quantity is available
                 if quantity <= product.quantity:
-                    record = (product.id, quantity)
+                    record = {'product_id': product.id,
+                              'product_quantity': quantity}
                     shopping_cart_list.append(record)
                     # [TODO] merge quantities for the same product
 
                     # MOVE records form shop to cart
                     client.shopping_cart = str(shopping_cart_list)
                     product.quantity = product.quantity - quantity
-                message = _("Product added to cart.")
+                    message = _("Product added to cart.")
+                else:
+                    message = _("Not enough quantity.")
             else:
                 message = _("Product missing.")
         else:
@@ -323,7 +326,9 @@ class Shop(Content):
                 shopping_cart_list = []
 
         cart_content = []
-        for product_id, product_quantity in shopping_cart_list:
+        for product in shopping_cart_list:
+            product_id = product.get('product_id', 0)
+            product_quantity = product.get('product_quantity', 0)
             products = DBSession.query(ShopProduct).filter(
                 ShopProduct.id == product_id)
             if products.count() > 0:
@@ -361,7 +366,10 @@ class ShopClient(Content):
     """
     id = Column(Integer(), ForeignKey('contents.id'), primary_key=True)
     shopping_cart = Column(String())    # Example:
-    # [(3, 4), (23, 5), (2, 3), ..., (shopproduct_id, items_number)]
+    # [
+    #     {'product_id' : 3, 'product_quantity' : 2},
+    #     {'product_id' : 6, 'product_quantity' : 5}
+    # ]
     nickname = Column(String())
     fullname = Column(String())
     email = Column(String())
