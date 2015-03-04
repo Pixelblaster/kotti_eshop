@@ -67,6 +67,14 @@ class ShopViews(BaseView):
             shop.add_product_to_cart(
                 id_client=client_id, id_product=product_id, quantity=quantity)
 
+        # AJAX. Remove from cart button pressed:
+        if 'remove_from_cart' in self.request.GET:
+            client_id = int(self.request.GET.get('client_id'))
+            product_id = int(self.request.GET.get('product_id'))
+            quantity = int(self.request.GET.get('quantity'))
+            shop.remove_product_from_cart(
+                id_client=client_id, id_product=product_id, quantity=quantity)
+
         products = shop.get_all_products()
         today = date.today()
         custom_page_title = "Products"
