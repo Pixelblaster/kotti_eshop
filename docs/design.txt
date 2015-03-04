@@ -1,0 +1,16 @@
+* nu e nevoie de Shop ca si container. Se poate adauga un view care poate fi
+  selectat ca si default view pe un container.
+
+* nu e nevoie de produs ca content type separat. explic mai jos
+
+* pentru ca toate produsele de shop sunt "globale" pe site (adica nu vor exista
+  shopuri multiple pe site), butonul manage shop se poate muta in menul de
+  administrare
+
+* ar trebui sa existe un link "Make this a product" in menul de Actions. Te duce
+  pe un formular in care completezi detalii despre produs. Pe "itemurile" care au
+  un produs atasat va aparea un buton de "buy"
+
+* Actiune in menul de actiuni: "toggle featured product".
+
+* nu se vede nicaieri vizibil shopping cartul meu
