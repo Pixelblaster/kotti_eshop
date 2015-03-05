@@ -9,19 +9,41 @@
   <article metal:fill-slot="content"
            class="content"
            i18n:domain="kotti_eshop"
-           tal:define="client context; shop client.parent; cart_contents shop.get_shopping_cart(id_client=client.id); wishlist_products shop.get_wishlist(id_client=client.id)">
+           tal:define="client context; shop client.parent; shop_currency shop.currency(); cart_contents shop.get_shopping_cart(id_client=client.id); wishlist_products shop.get_wishlist(id_client=client.id)">
 
     <h1>${client.nickname} - shopping cart</h1>
     <h2>Shopping cart</h2>
-    <p tal:repeat="record cart_contents">
-      <span tal:define="product record[0]; product_quantity record[1]">
-        <a href="${api.url(product)}">${product.title}</a> - ${product_quantity}
-      </span>
-    </p>
-
-    <h2>Wishlist</h2>
-    <p tal:repeat="product wishlist_products">
-      <a href="${api.url(product)}">${product.title}</a>
-    </p>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Product name</th>
+          <th>Quantity</th>
+          <th>Unit price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tal:repeat repeat="record cart_contents">
+          <tr tal:define="product record[0]; product_quantity record[1]">
+            <td>${product.id}</td>
+            <td><a href="${api.url(product)}">${product.title}</a></td>
+            <td>${product_quantity}</td>
+            <td tal:define="has_price_offer python: product.price_offer and product.expires_offer_date >= today">  <!-- simple price -->
+              <span class="price-simple" tal:condition="has_price_offer is not True">
+                ${product.price} ${shop_currency}
+              </span>
+              <!-- or offer price -->
+              <span tal:condition="has_price_offer" class="price-offer">
+                ${product.price_offer} ${shop_currency}
+              </span>
+            </td> <!-- [TODO] get offer price if exists -->
+            <td tal:define="total_product_price python: product_quantity * product.price">
+              ${total_product_price}
+            </td>
+          </tr>
+        </tal:repeat>
+      </tbody>
+    </table>
   </article>
 </html>
