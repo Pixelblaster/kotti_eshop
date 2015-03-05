@@ -31,12 +31,10 @@ class ShopViews(BaseView):
         """ Shop administration panel
         """
         shop = self.context
-        today = date.today()
         custom_page_title = "Administration Panel"
         products = shop.get_all_products()
         return {'products': products,
-                'custom_page_title': custom_page_title,
-                'today': today}
+                'custom_page_title': custom_page_title}
 
     @view_config(name='view', permission='view',
                  renderer='kotti_eshop:templates/shop-view.pt')
@@ -76,7 +74,6 @@ class ShopViews(BaseView):
                 id_client=client_id, id_product=product_id, quantity=quantity)
 
         products = shop.get_all_products()
-        today = date.today()
         custom_page_title = "Products"
         featured_products = shop.get_featured_products()
         show_shop_carousel = shop.carousel_visibility_shop_view()
@@ -118,7 +115,6 @@ class ShopViews(BaseView):
                 'current_page': current_page,
                 'featured_products': featured_products,
                 'custom_page_title': custom_page_title,
-                'today': today,
                 'show_shop_carousel': show_shop_carousel,
                 'show_featured_products': show_featured_products}
 
@@ -127,7 +123,6 @@ class ShopViews(BaseView):
     def shop_search_products_view(self):
         """ Shop Search Products View
         """
-        today = date.today()
         get = self.request.GET
         shop = self.context
 
@@ -219,7 +214,6 @@ class ShopViews(BaseView):
                 'current_page': current_page,
                 'featured_products': featured_products,
                 'custom_page_title': custom_page_title,
-                'today': today,
                 'show_shop_carousel': show_shop_carousel,
                 'show_featured_products': show_featured_products}
 
@@ -233,8 +227,7 @@ class ShopProductViews(BaseView):
     def shop_product_view(self):
         """ ShopProduct View
         """
-        today = date.today()
-        return {'today': today}
+        return {}
 
 
 @view_defaults(context=ShopClient, permission='view')
@@ -246,8 +239,7 @@ class ShopClientViews(BaseView):
     def shop_client_view(self):
         """ ShopClient View
         """
-        today = date.today()
-        return {'today': today}
+        return {}
 
     @view_config(name='cart', permission='view',
                  renderer='kotti_eshop:templates/clientcart-view.pt')
@@ -255,5 +247,4 @@ class ShopClientViews(BaseView):
         """ View current cart contents for this client
             [TODO] This view must be visible only for the client and the admin
         """
-        today = date.today()
-        return {'today': today}
+        return {}
