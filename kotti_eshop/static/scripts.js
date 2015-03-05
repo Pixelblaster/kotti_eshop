@@ -75,7 +75,6 @@ $(document).ready(function(){
 	// 	* class="remove-to-wishlist"
 	// 	* product-id="product.id"
 	$(".remove-from-wishlist").on("click", function(evt){
-		alert("Clicked");
 		var shop_url = $("article").attr("shop-url");
 		var product_id = $(this).attr("product-id");
 		var client_id = 9; // [TODO] Logged in client id must be here.
