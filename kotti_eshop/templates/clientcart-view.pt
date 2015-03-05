@@ -29,17 +29,9 @@
             <td>${product.id}</td>
             <td><a href="${api.url(product)}">${product.title}</a></td>
             <td>${product_quantity}</td>
-            <td tal:define="has_price_offer python: product.price_offer and product.expires_offer_date >= today">  <!-- simple price -->
-              <span class="price-simple" tal:condition="has_price_offer is not True">
-                ${product.price} ${shop_currency}
-              </span>
-              <!-- or offer price -->
-              <span tal:condition="has_price_offer" class="price-offer">
-                ${product.price_offer} ${shop_currency}
-              </span>
-            </td> <!-- [TODO] get offer price if exists -->
+            <td>${product.final_price()} ${shop_currency}</td>
             <td tal:define="total_product_price python: product_quantity * product.price">
-              ${total_product_price}
+              ${total_product_price} ${shop_currency}
             </td>
           </tr>
         </tal:repeat>

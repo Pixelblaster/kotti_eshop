@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from datetime import date
 from kotti_eshop import _
 from kotti_eshop.utils import string_to_list
 from kotti.resources import Base
@@ -596,3 +596,22 @@ class ShopProduct(Content):
                 status = _("Not available")
 
         return status
+
+    def has_price_offer(self):
+        """ Check if this product has price offer
+        """
+        product = self
+        today = date.today()
+        if product.price_offer and product.expires_offer_date >= today:
+            return True
+        else:
+            return False
+
+    def final_price(self):
+        """ Returns final price for this product
+        """
+        product = self
+        if product.has_price_offer():
+            return product.price_offer
+        else:
+            return product.price
