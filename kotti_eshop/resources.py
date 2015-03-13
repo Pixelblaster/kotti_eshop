@@ -360,3 +360,7 @@ class ShopProduct(Content):
             return product.price_offer
         else:
             return product.price
+
+from kotti.resources import Content, Link
+
+Content.type_info.edit_links.append(Link("edit-as-product", "Edit as Product"))
