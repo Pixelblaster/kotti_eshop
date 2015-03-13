@@ -31,9 +31,6 @@ def shop_admin_view(self):
 def shop_view(self):
     """ Shop view
     """
-    custom_page_title = "Administration Panel"
-    products = get_all_products()
     return {'shop_products_per_page': get_setting('shop_products_per_page'),
             'shop_currency': get_setting('shop_currency'),
-            'products': products,
-            'custom_page_title': custom_page_title}
+            'products': get_all_products()}
