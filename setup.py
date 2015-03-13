@@ -17,7 +17,8 @@ version = '0.1dev'
 
 install_requires = [
     'Kotti>=0.10b1',
-    'webhelpers'
+    'webhelpers',
+    'kotti_settings',
 ]
 
 
