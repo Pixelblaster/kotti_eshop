@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from pyramid.i18n import TranslationStringFactory
+from kotti.util import ViewLink
 from kotti.views.slots import assign_slot
+from kotti.views.site_setup import CONTROL_PANEL_LINKS
 
 _ = TranslationStringFactory('kotti_eshop')
 
@@ -27,6 +29,9 @@ def kotti_configure(settings):
         ' kotti_eshop.resources.ProductImage')
     settings['kotti.fanstatic.view_needed'] += \
         ' kotti_eshop.fanstatic.css_and_js'
+
+    settings = ViewLink('settings', title=_(u'Settings2'))
+    CONTROL_PANEL_LINKS.append(settings)
 
 
 def includeme(config):
