@@ -1,32 +1,13 @@
 <!-- display cart only in the right context and if logged in-->
-<tal:condition condition="(context.type_info.name == 'ShopProduct' or context.type_info.name == 'Shop') and logged_in_user">
+<tal:condition condition="logged_in_user">
   <p class="pull-right">
-  	Welcome, <a href="#cart-link">${logged_in_user}</a>!
-  
-	<!-- show admin link only for admin -->
-	<tal:condition condition="logged_in_user == 'admin'">
-	  <tal:condition condition="context.type_info.name == 'ShopProduct'">
-	  	<span tal:define="shop context.parent">
-	  	  <a class="btn btn-xs btn-success" href="${api.url(shop)}@@admin">
-	  	  	Manage shop
-	  	  </a>
-	  	</span>
-	  </tal:condition>
-
-	  <tal:condition condition="context.type_info.name == 'Shop'">
-	  	<span tal:define="shop context">
-	  	  <a class="btn btn-xs btn-success" href="${api.url(shop)}@@admin">
-	  	    Manage shop
-	  	  </a>
-	  	</span>
-	  </tal:condition>
-	<tal:condition>
+  	Welcome, <a href="#cart-link">${logged_in_user} </a>! [TODO] Cart here.
   </p>
 </tal:condition>
 
 <!-- else display login link if right context but not logged in -->
-<tal:condition condition="(context.type_info.name == 'ShopProduct' or context.type_info.name == 'Shop') and logged_in_user == ''">
+<tal:condition condition="logged_in_user == ''">
   <p class="pull-right">
-  	Welcome! You must <a href="${api.url(api.root, '@@login')}">log in</a>.
+  	Welcome! You must <a href="${api.url(api.root, '@@login')}">log in</a>. [TODO] Cart here. 
   </p>
 </tal:condition>
