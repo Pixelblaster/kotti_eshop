@@ -8,14 +8,13 @@
 
   <article metal:fill-slot="content"
            class="content"
-           i18n:domain="kotti_eshop"
-           tal:define="shop context">
+           i18n:domain="kotti_eshop">
 
     <h1 class="shop-title">
       <a href="${api.url(shop)}">
         ${shop.title}
       </a> - 
-      <a href="${api.url(shop, '@@admin')}">
+      <a href="${api.url(api.root, '@@shop_admin')}">
         ${custom_page_title}
       </a>
     </h1>
@@ -29,15 +28,15 @@
           <div class="panel-heading">Options</div>
           <ul class="list-group">
             <li class="list-group-item">
-              <a href="${api.url(shop,'@@admin')}">Main</a>
+              <a href="${api.url(api.root,'@@shop_admin')}">Main</a>
             </li>
             <li class="list-group-item">
-              <a href="${api.url(shop,'@@admin')}?action=products">
+              <a href="${api.url(api.root,'@@shop_admin')}?action=products">
                 Manage products
               </a>
             </li>
             <li class="list-group-item">
-              <a href="${api.url(shop,'@@admin')}?action=clients">
+              <a href="${api.url(api.root,'@@shop_admin')}?action=clients">
                 Manage clients
               </a>
             </li>
@@ -58,8 +57,8 @@
         <!-- ADMIN MAIN -->
         <tal:condition condition="python: action == ''">
           <h3>Admin main</h3>
-          <p>Maybe you want <a href="${api.url(shop, '@@admin')}?action=products">manage products</a> or
-             <a href="${api.url(shop, '@@admin')}?action=clients">clients</a>
+          <p>Maybe you want <a href="${api.url(api.root, '@@shop_admin')}?action=products">manage products</a> or
+             <a href="${api.url(api.root, '@@shop_admin')}?action=clients">clients</a>
           </p>
           <h4>Shop Settings</h4>
           <p>Currency: ${shop.currency()}</p>

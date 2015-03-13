@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import date
+from kotti.resources import DBSession
 from kotti_eshop.resources import Shop
 from kotti_eshop.resources import ShopProduct
 from kotti_eshop.resources import ShopClient
@@ -21,20 +21,22 @@ def shopping_cart(request):
     return {'logged_in_user': logged_in_user}
 
 
+@view_config(name='shop_admin', permission='view',
+             renderer='kotti_eshop:templates/shop-admin-view.pt')
+def shop_admin_view(self):
+    """ Shop administration panel
+    """
+    shop = DBSession.query(Shop).first()
+    custom_page_title = "Administration Panel"
+    products = shop.get_all_products()
+    return {'shop': shop,
+            'products': products,
+            'custom_page_title': custom_page_title}
+
+
 @view_defaults(context=Shop, permission='view')
 class ShopViews(BaseView):
     """ Views for ShopProduct """
-
-    @view_config(name='admin', permission='view',
-                 renderer='kotti_eshop:templates/shop-admin-view.pt')
-    def shop_admin_view(self):
-        """ Shop administration panel
-        """
-        shop = self.context
-        custom_page_title = "Administration Panel"
-        products = shop.get_all_products()
-        return {'products': products,
-                'custom_page_title': custom_page_title}
 
     @view_config(name='view', permission='view',
                  renderer='kotti_eshop:templates/shop-view.pt')

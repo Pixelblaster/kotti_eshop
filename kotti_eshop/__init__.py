@@ -30,7 +30,7 @@ def kotti_configure(settings):
     settings['kotti.fanstatic.view_needed'] += \
         ' kotti_eshop.fanstatic.css_and_js'
 
-    settings = ViewLink('settings', title=_(u'Settings2'))
+    settings = ViewLink('shop_admin', title=_(u'Shop Admin'))
     CONTROL_PANEL_LINKS.append(settings)
 
 
