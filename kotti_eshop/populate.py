@@ -21,18 +21,9 @@ class ShopProductsPerPageNode(SchemaNode):
     default = 9
 
 
-class ProductsLimitedQuantityNode(SchemaNode):
-    name = 'shop_products_limited_quantity'
-    title = 'Limited quantity'
-    description = 'How many items means a product quantity is limited'
-    validator = Range(1, 1000)
-    default = 5
-
-
 class ShopSettingsSchema(MappingSchema):
     shop_currency = ShopCurrencyNode(String())
     shop_products_per_page = ShopProductsPerPageNode(Int())
-    shop_products_limited_quantity = ProductsLimitedQuantityNode(Int())
 
 
 ShopSettings = {
