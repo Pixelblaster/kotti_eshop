@@ -22,6 +22,9 @@
           <div class="panel-heading">Options</div>
           <ul class="list-group">
             <li class="list-group-item">
+              <a href="${api.url(api.root,'@@add-product')}">Add a product</a>
+            </li>
+            <li class="list-group-item">
               <a href="${api.url(api.root,'@@shop_admin')}">Main</a>
             </li>
             <li class="list-group-item">
