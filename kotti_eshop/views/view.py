@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from pyramid.view import view_config
-from kotti_eshop.resources import currency
 from kotti_eshop.resources import get_all_clients
 from kotti_eshop.resources import get_all_products
-from kotti_eshop.resources import products_per_page
+from kotti_settings.util import get_setting
 
 
 @view_config(name='shopping_cart', permission='view',
@@ -23,8 +22,8 @@ def shopping_cart(request):
 def shop_admin_view(self):
     """ Shop administration panel
     """
-    return {'shop_products_per_page': products_per_page(),
-            'shop_currency': currency(),
+    return {'shop_products_per_page': get_setting('shop_products_per_page'),
+            'shop_currency': get_setting('shop_currency'),
             'shop_clients': get_all_clients(),
             'products': get_all_products()}
 
@@ -36,8 +35,8 @@ def shop_view(self):
     """
     custom_page_title = "Administration Panel"
     products = get_all_products()
-    return {'shop_products_per_page': products_per_page(),
-            'shop_currency': currency(),
+    return {'shop_products_per_page': get_setting('shop_products_per_page'),
+            'shop_currency': get_setting('shop_currency'),
             'shop_clients': get_all_clients(),
             'products': products,
             'custom_page_title': custom_page_title}

@@ -5,7 +5,6 @@ from kotti_eshop.utils import string_to_list
 from kotti.resources import Content
 from kotti.resources import DBSession
 from kotti.resources import Image
-from kotti_settings.util import get_setting
 from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import Date
@@ -13,44 +12,6 @@ from sqlalchemy import Float
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import String
-
-
-# /// from SHOP SETTINGS
-def currency():
-    """ Returns shop_currency setting from kotti_settings """
-    setting = get_setting('shop_currency')
-    return setting
-
-
-def products_per_page():
-    """ Returns shop_products_per_page setting from kotti_settings """
-    setting = get_setting('shop_products_per_page')
-    return setting
-
-
-def carousel_visibility_search_view():
-    """ Carousel visibility - Search view """
-    setting = get_setting('shop_carousel_visibility_search_view')
-    return setting
-
-
-def carousel_visibility_shop_view():
-    """ Carousel visibility - Shop view """
-    setting = get_setting('shop_carousel_visibility_shop_view')
-    return setting
-
-
-def featured_products_visibility_search_view():
-    """ Featured products visibility - Search view """
-    setting = get_setting('featured_products_visibility_search_view')
-    return setting
-
-
-def shop_products_limited_quantity():
-    """ Quantity limit for a product to call it Limited """
-    setting = get_setting('shop_products_limited_quantity')
-    return setting
-# \\\ from SHOP SETTINGS
 
 
 def get_all_clients():
