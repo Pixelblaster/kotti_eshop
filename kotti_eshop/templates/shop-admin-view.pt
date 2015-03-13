@@ -10,18 +10,11 @@
            class="content"
            i18n:domain="kotti_eshop">
 
-    <h1 class="shop-title">
-      <a href="${api.url(shop)}">
-        ${shop.title}
-      </a> - 
-      <a href="${api.url(api.root, '@@shop_admin')}">
-        ${custom_page_title}
-      </a>
-    </h1>
+    <h1 i18n:translate="">Shop Administration Panel</h1>
 
     <div class="row"
-         tal:define="action request.GET.get('action', '');
-                     shop_currency shop.currency()">
+         tal:define="action request.GET.get('action', '');">
+
       <!-- menu left -->
       <div class="col col-lg-2 col-md-2 col-sm-12 col-xs 12">
         <div class="panel panel-default">
@@ -41,12 +34,6 @@
               </a>
             </li>
             <li class="list-group-item">
-              <a href="${api.url(shop,'@@edit')}">Edit basic details</a>
-            </li>
-            <li class="list-group-item">
-              <a href="${api.url(shop,'@@contents')}">Edit products</a>
-            </li>
-            <li class="list-group-item">
               <a href="${api.url(api.root,'@@settings')}">Edit shop settings</a>
             </li>            
           </ul>
@@ -61,8 +48,8 @@
              <a href="${api.url(api.root, '@@shop_admin')}?action=clients">clients</a>
           </p>
           <h4>Shop Settings</h4>
-          <p>Currency: ${shop.currency()}</p>
-          <p>Products per page: ${shop.products_per_page()}</p>
+          <p>Currency: ${shop_currency}</p>
+          <p>Products per page: ${shop_products_per_page}</p>
           <p>You can change these <a href="${api.url(api.root, '@@settings')}">settings in Shop settings tab</a>.</p>
         </tal:condition>
         <!-- ADMIN MAIN -->
@@ -83,7 +70,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr tal:repeat="client shop.get_all_clients()">
+              <tr tal:repeat="client shop_clients">
                 <td>${client.id}</td>
                 <td>
                   <a href="${api.url(client)}">${client.nickname}</a> (${client.fullname})

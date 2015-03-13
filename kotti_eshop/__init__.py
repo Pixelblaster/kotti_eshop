@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from pyramid.i18n import TranslationStringFactory
+from kotti.resources import Document
 from kotti.util import ViewLink
 from kotti.views.slots import assign_slot
 from kotti.views.site_setup import CONTROL_PANEL_LINKS
@@ -22,16 +23,14 @@ def kotti_configure(settings):
 
     settings['kotti.populators'] += ' kotti_eshop.populate.populate'
     settings['pyramid.includes'] += ' kotti_eshop'
-    settings['kotti.available_types'] += (
-        ' kotti_eshop.resources.Shop' +
-        ' kotti_eshop.resources.ShopProduct' +
-        ' kotti_eshop.resources.ShopClient' +
-        ' kotti_eshop.resources.ProductImage')
     settings['kotti.fanstatic.view_needed'] += \
         ' kotti_eshop.fanstatic.css_and_js'
 
     settings = ViewLink('shop_admin', title=_(u'Shop Admin'))
     CONTROL_PANEL_LINKS.append(settings)
+
+    Document.type_info.selectable_default_views.append(
+        ('shop_view', 'Shop View'))
 
 
 def includeme(config):
