@@ -6,14 +6,15 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="api.macro('kotti:templates/view/master.pt')">
 
+  <div metal:fill-slot="editor-bar">Aici vine edit</div>
+
   <article metal:fill-slot="content"
            class="content"
            i18n:domain="kotti_eshop">
 
-    <h1 i18n:translate="">Shop Administration Panel</h1>
+    <h1 i18n:translate="">Global shop settings</h1>
 
-    <div class="row"
-         tal:define="action request.GET.get('action', '');">
+    <div class="row" tal:define="action request.GET.get('action', '');">
 
       <!-- menu left -->
       <div class="col col-lg-2 col-md-2 col-sm-12 col-xs 12">
