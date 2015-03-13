@@ -6,46 +6,36 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="api.macro('kotti:templates/view/master.pt')">
 
+  <div metal:fill-slot="editor-bar">Aici vine edit</div>
+
   <article metal:fill-slot="content"
            class="content"
-           i18n:domain="kotti_eshop"
-           tal:define="shop context">
+           i18n:domain="kotti_eshop">
 
-    <h1 class="shop-title">
-      <a href="${api.url(shop)}">
-        ${shop.title}
-      </a> - 
-      <a href="${api.url(shop, '@@admin')}">
-        ${custom_page_title}
-      </a>
-    </h1>
+    <h1 i18n:translate="">Global shop settings</h1>
 
-    <div class="row"
-         tal:define="action request.GET.get('action', '');
-                     shop_currency shop.currency()">
+    <div class="row" tal:define="action request.GET.get('action', '');">
+
       <!-- menu left -->
       <div class="col col-lg-2 col-md-2 col-sm-12 col-xs 12">
         <div class="panel panel-default">
           <div class="panel-heading">Options</div>
           <ul class="list-group">
             <li class="list-group-item">
-              <a href="${api.url(shop,'@@admin')}">Main</a>
+              <a href="${api.url(api.root,'@@add-product')}">Add a product</a>
             </li>
             <li class="list-group-item">
-              <a href="${api.url(shop,'@@admin')}?action=products">
+              <a href="${api.url(api.root,'@@shop_admin')}">Main</a>
+            </li>
+            <li class="list-group-item">
+              <a href="${api.url(api.root,'@@shop_admin')}?action=products">
                 Manage products
               </a>
             </li>
             <li class="list-group-item">
-              <a href="${api.url(shop,'@@admin')}?action=clients">
+              <a href="${api.url(api.root,'@@shop_admin')}?action=clients">
                 Manage clients
               </a>
-            </li>
-            <li class="list-group-item">
-              <a href="${api.url(shop,'@@edit')}">Edit basic details</a>
-            </li>
-            <li class="list-group-item">
-              <a href="${api.url(shop,'@@contents')}">Edit products</a>
             </li>
             <li class="list-group-item">
               <a href="${api.url(api.root,'@@settings')}">Edit shop settings</a>
@@ -58,12 +48,12 @@
         <!-- ADMIN MAIN -->
         <tal:condition condition="python: action == ''">
           <h3>Admin main</h3>
-          <p>Maybe you want <a href="${api.url(shop, '@@admin')}?action=products">manage products</a> or
-             <a href="${api.url(shop, '@@admin')}?action=clients">clients</a>
+          <p>Maybe you want <a href="${api.url(api.root, '@@shop_admin')}?action=products">manage products</a> or
+             <a href="${api.url(api.root, '@@shop_admin')}?action=clients">clients</a>
           </p>
           <h4>Shop Settings</h4>
-          <p>Currency: ${shop.currency()}</p>
-          <p>Products per page: ${shop.products_per_page()}</p>
+          <p>Currency: ${shop_currency}</p>
+          <p>Products per page: ${shop_products_per_page}</p>
           <p>You can change these <a href="${api.url(api.root, '@@settings')}">settings in Shop settings tab</a>.</p>
         </tal:condition>
         <!-- ADMIN MAIN -->
@@ -84,7 +74,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr tal:repeat="client shop.get_all_clients()">
+              <tr tal:repeat="client shop_clients">
                 <td>${client.id}</td>
                 <td>
                   <a href="${api.url(client)}">${client.nickname}</a> (${client.fullname})
