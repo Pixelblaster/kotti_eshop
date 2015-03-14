@@ -19,9 +19,7 @@ class ProductAddForm(AddFormView):
     item_type = _(u"Product")
 
 
-@view_config(name='edit-as-product', permission='view',
-             renderer='kotti_eshop:templates/edit/product.pt')
-def edit_as_product(context, request):
+@view_config(name='assign-product', permission='view',
+             renderer='kotti_eshop:templates/edit/assign.pt')
+def assign_product(context, request):
     return {}
-
-
