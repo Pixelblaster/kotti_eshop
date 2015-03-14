@@ -13,8 +13,13 @@ from sqlalchemy import Integer
 #from sqlalchemy import ForeignKey
 
 
-class ShopProduct(Base):
-    """ A product in this eShop
+class BackendProduct(Base):
+    """ A backend product in this eShop
+
+    This is the simplest product definition. It is meant to be linked, from
+    the front-end, to any document or page of the Kotti website and make those
+    "the real products".
+
     """
     __tablename__ = 'kotti_eshop_products'
 
