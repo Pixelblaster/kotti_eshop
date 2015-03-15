@@ -9,9 +9,6 @@ from kotti_eshop.views.widget import SelectizeWidget
 from pyramid.view import view_config
 import colander
 
-#import colander
-#from kotti.views.edit.content import ContentSchema
-
 
 class BackendProductSchema(colander.MappingSchema):
     """
@@ -26,7 +23,7 @@ class BackendProductSchema(colander.MappingSchema):
         widget=TextAreaWidget(cols=40, rows=5),
         missing=u"",
         )
-    body = colander.SchemaNode(
+    text = colander.SchemaNode(
         colander.String(),
         title=_(u'Product details'),
         widget=RichTextWidget(
@@ -50,7 +47,9 @@ class BackendProductAddForm(BaseFormView):
     success_message = _(u"Product added")
 
     def save_success(self, appstruct):
-        product = BackendProduct()
+        import pdb; pdb.set_trace()
+        appstruct.pop('csrf_token', None)
+        product = BackendProduct(**appstruct)
         DBSession.add(product)
 
 
@@ -60,9 +59,14 @@ class Products(colander.SequenceSchema):
     )
 
 
+class ProductSelectWidget(SelectizeWidget):
+    def deserialize(self, field, pstruct):
+        import pdb; pdb.set_trace()
+
+
 def deferred_products_widget(node, **kw):
     values = DBSession.query(BackendProduct.id, BackendProduct.title).all()
-    return SelectizeWidget(values=values)
+    return ProductSelectWidget(values=values)
 
 
 class AssignBackendProductSchema(colander.MappingSchema):
@@ -84,6 +88,3 @@ class AssignBackendProductForm(BaseFormView):
 
     def save_success(self, appstruct):
         pass
-
-
-def includeme(config):

@@ -1,16 +1,20 @@
-# -*- coding: utf-8 -*-
-
 from kotti.resources import Base
+from kotti.resources import Content
 from sqlalchemy import Column
 from sqlalchemy import DateTime
 from sqlalchemy import Float
-from sqlalchemy import Unicode
+from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
+from sqlalchemy import Table
+from sqlalchemy import Unicode
+from sqlalchemy.orm import relationship
 
-#from datetime import date
-#from kotti.resources import DBSession
-#from kotti.resources import Image
-#from sqlalchemy import ForeignKey
+
+product_association_table = Table(
+    'contents_to_products', Base.metadata,
+    Column('backendproduct_id', Integer(), ForeignKey('backend_products.id')),
+    Column('contents_id', Integer(), ForeignKey('contents.id')),
+)
 
 
 class BackendProduct(Base):
@@ -21,7 +25,7 @@ class BackendProduct(Base):
     "the real products".
 
     """
-    __tablename__ = 'kotti_eshop_products'
+    __tablename__ = 'backend_products'
 
     id = Column(Integer(), primary_key=True)
     title = Column(Unicode(512), index=True)
@@ -29,6 +33,15 @@ class BackendProduct(Base):
     text = Column(Unicode())
     price = Column(Float(asdecimal=True))
     created = Column(DateTime())
+
+    assigned_content = relationship(Content,
+                                    backref="backend_products",
+                                    secondary=product_association_table)
+
+    def __init__(self, **kw):
+        super(BackendProduct, self).__init__(**kw)
+        self.__dict__.update(kw)
+
 
     # def get_all_images(self):
     #     """ Returns all images added to this product """
