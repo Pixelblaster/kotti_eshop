@@ -146,6 +146,7 @@ class AssignBackendProductForm(BaseFormView):
 
 
 class AdminViews(BaseView):
+
     @view_config(name='shop_admin', permission='view',
                  renderer='kotti_eshop:templates/shop-admin-view.pt')
     def shop_admin_view(self):
@@ -162,3 +163,9 @@ class AdminViews(BaseView):
                     return HTTPFound(location=self.request.resource_url(root) +
                                      '@@shop_admin?action=products')
         return {}
+
+
+@view_config(name="assign-product-menu-entry", permission="edit",
+             renderer="kotti_eshop:templates/edit/assign-product-menu-entry.pt")
+def assign_product_menu_entry(context, request):
+    return {}

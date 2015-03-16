@@ -1,2 +1,2 @@
--r https://raw.githubusercontent.com/Kotti/Kotti/stable/requirements.txt
+-r https://raw.githubusercontent.com/Kotti/Kotti/master/requirements.txt
 -e git+ssh://git@github.com/j23d/kotti_settings.git#egg=kotti_settings

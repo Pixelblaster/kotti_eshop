@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from kotti.resources import Content
+#from kotti.resources import Content
+from kotti.resources import default_actions
 from kotti.resources import Document
-from kotti.util import Link
+from kotti.util import Link, LinkRenderer
 from kotti.views.site_setup import CONTROL_PANEL_LINKS
 from kotti.views.slots import assign_slot
 from pyramid.i18n import TranslationStringFactory
@@ -23,8 +24,7 @@ def kotti_configure(settings):
     Document.type_info.selectable_default_views.append(
         ('shop_view', 'Shop View'))
 
-    Content.type_info.edit_links.append(Link("assign-product",
-                                             _("Assign a product")))
+    default_actions.children.append(LinkRenderer("assign-product-menu-entry"))
 
 
 def includeme(config):
