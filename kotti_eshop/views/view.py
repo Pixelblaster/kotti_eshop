@@ -2,7 +2,6 @@
 from kotti_settings.util import get_setting
 from pyramid.exceptions import PredicateMismatch
 from pyramid.view import view_config
-from kotti_eshop.resources import get_all_backend_products
 
 
 @view_config(name='shopping_cart', permission='view',
@@ -29,8 +28,7 @@ def shop_admin_view(self):
     """ Shop administration panel
     """
     return {'shop_products_per_page': get_setting('shop_products_per_page'),
-            'shop_currency': get_setting('shop_currency'),
-            'backend_products': get_all_backend_products()}
+            'shop_currency': get_setting('shop_currency')}
 
 
 @view_config(name='shop_view', permission='view',

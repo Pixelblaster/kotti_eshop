@@ -11,11 +11,11 @@ _ = TranslationStringFactory('kotti_eshop')
 
 
 def kotti_configure(settings):
-
-    settings['kotti.populators'] += ' kotti_eshop.populate.populate'
-    settings['pyramid.includes'] += ' kotti_eshop'
-    settings['kotti.fanstatic.view_needed'] += \
-        ' kotti_eshop.fanstatic.css_and_js'
+    s = settings
+    s['kotti.populators'] += ' kotti_eshop.populate.populate'
+    s['pyramid.includes'] += ' kotti_eshop'
+    s['kotti.fanstatic.view_needed'] += ' kotti_eshop.fanstatic.css_and_js'
+    s['kotti.templates.api'] = 'kotti_eshop.resources.TemplateAPI'
 
     settings = Link('shop_admin', title=_(u'Shop Admin'))
     CONTROL_PANEL_LINKS.append(settings)

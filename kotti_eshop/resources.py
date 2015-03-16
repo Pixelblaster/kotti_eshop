@@ -9,6 +9,17 @@ from sqlalchemy import Integer
 from sqlalchemy import Table
 from sqlalchemy import Unicode
 from sqlalchemy.orm import relationship
+from kotti.views.util import TemplateAPI as BaseTemplateAPI
+
+
+class TemplateAPI(BaseTemplateAPI):
+
+    def get_all_backend_products(self):
+        """ Returns all backend products
+        """
+        products = DBSession.query(BackendProduct).order_by(
+            BackendProduct.created)
+        return products
 
 
 product_association_table = Table(
@@ -70,7 +81,3 @@ class BackendProduct(Base):
     #         return product.price_offer
     #     else:
     #         return product.price
-
-def get_all_backend_products():
-    products = DBSession.query(BackendProduct).order_by(BackendProduct.created)
-    return products
