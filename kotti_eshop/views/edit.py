@@ -4,6 +4,7 @@ from deform.widget import TextAreaWidget
 from kotti.resources import DBSession
 from kotti.views.form import BaseFormView
 from kotti_eshop import _
+from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
 from kotti_eshop.views.widget import SelectizeWidget
 from pyramid.view import view_config
@@ -47,26 +48,30 @@ class BackendProductAddForm(BaseFormView):
     success_message = _(u"Product added")
 
     def save_success(self, appstruct):
-        import pdb; pdb.set_trace()
         appstruct.pop('csrf_token', None)
         product = BackendProduct(**appstruct)
         DBSession.add(product)
 
 
+class ProductType(colander.Integer):
+    def deserialize(self, node, cstruct):
+        import pdb; pdb.set_trace()
+        ids = [int(x) for x in cstruct]
+        products = DBSession.query(BackendProduct).filter(
+            BackendProduct.id.in_(ids)).all()
+        return products
+
+
 class Products(colander.SequenceSchema):
     product_id = colander.SchemaNode(
-        colander.Integer(),
+        ProductType(),
     )
 
 
-class ProductSelectWidget(SelectizeWidget):
-    def deserialize(self, field, pstruct):
-        import pdb; pdb.set_trace()
-
-
-def deferred_products_widget(node, **kw):
+@colander.deferred
+def deferred_products_widget(node, kw):
     values = DBSession.query(BackendProduct.id, BackendProduct.title).all()
-    return ProductSelectWidget(values=values)
+    return SelectizeWidget(values=values)
 
 
 class AssignBackendProductSchema(colander.MappingSchema):
@@ -80,11 +85,17 @@ class AssignBackendProductSchema(colander.MappingSchema):
 
 
 @view_config(name='assign-product', permission='view',
-             renderer='kotti_eshop:templates/edit/assign.pt')
+             #renderer='kotti_eshop:templates/edit/assign.pt')
+             renderer='kotti:templates/edit/node.pt')
 class AssignBackendProductForm(BaseFormView):
     """ A form view to assign a ShopProduct to the context Content derivate
     """
     schema_factory = AssignBackendProductSchema
 
     def save_success(self, appstruct):
+        import pdb; pdb.set_trace()
         pass
+
+    def before(self, form):
+        selectize.need()
+        return super(AssignBackendProductForm, self).before(form)

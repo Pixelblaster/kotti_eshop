@@ -6,7 +6,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="api.macro('kotti:templates/site-setup/master.pt')">
 
-  <div metal:fill-slot="editor-bar">Aici vine edit</div>
+  <div metal:fill-slot="editor-bar"></div>
 
   <article metal:fill-slot="content"
            class="content"
