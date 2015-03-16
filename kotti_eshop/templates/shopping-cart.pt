@@ -1,13 +1,17 @@
-<!-- display cart only in the right context and if logged in-->
 <tal:condition condition="logged_in_user">
   <p class="pull-right">
-  	Welcome, <a href="#cart-link">${logged_in_user} </a>! [TODO] Cart here.
+	<a class="add-to-cart shop-add-btn btn btn-primary" 
+       product-id="${product.id}" href="">
+       Add to cart (${product.title}, ${product.price})
+    </a>
+    <a class="view-cart shop-view-btn btn btn-default" href="">
+       View cart
+    </a>
   </p>
 </tal:condition>
 
-<!-- else display login link if right context but not logged in -->
 <tal:condition condition="logged_in_user == ''">
   <p class="pull-right">
-  	Welcome! You must <a href="${api.url(api.root, '@@login')}">log in</a>. [TODO] Cart here. 
+  	<a href="${api.url(api.root, '@@login')}">Log in</a> to buy this.
   </p>
 </tal:condition>

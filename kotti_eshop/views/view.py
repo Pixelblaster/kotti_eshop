@@ -1,19 +1,24 @@
 # -*- coding: utf-8 -*-
-from pyramid.view import view_config
-#from kotti_eshop.resources import get_all_products
 from kotti_settings.util import get_setting
+from pyramid.exceptions import PredicateMismatch
+from pyramid.view import view_config
 
 
 @view_config(name='shopping_cart', permission='view',
              renderer='kotti_eshop:templates/shopping-cart.pt')
-def shopping_cart(request):
+def shopping_cart(self, request):
     """ Shopping cart view
     """
+    if not self.backend_products:
+        raise PredicateMismatch()
+    else:
+        product = self.backend_products[0]
     if request.user:
         logged_in_user = request.user.name
     else:
         logged_in_user = ''
-    return {'logged_in_user': logged_in_user}
+    return {'logged_in_user': logged_in_user,
+            'product': product}
 
 
 @view_config(name='shop_admin', permission='view',
