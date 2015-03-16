@@ -1,5 +1,6 @@
 from kotti.resources import Base
 from kotti.resources import Content
+from kotti.resources import DBSession
 from sqlalchemy import Column
 from sqlalchemy import DateTime
 from sqlalchemy import Float
@@ -69,3 +70,7 @@ class BackendProduct(Base):
     #         return product.price_offer
     #     else:
     #         return product.price
+
+def get_all_backend_products():
+    products = DBSession.query(BackendProduct).order_by(BackendProduct.created)
+    return products

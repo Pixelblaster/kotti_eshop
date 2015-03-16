@@ -98,56 +98,28 @@
 
         <!-- PRODUCTS -->
         <tal:condition condition="python: action == 'products'">
-          <h3>Products</h3>
+          <h3>Backend products</h3>
           <table class="table table-condensed">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Name, description, images</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Assigned to</th>
                 <th>Price</th>
-                <th>Support days</th>
-                <th>Featured</th>
-                <th>Status (Quantity)</th>
                 <th>Options</th>
               </tr>
             </thead>
             <tbody>
-              <tr tal:repeat="product products">
-                <td>${product.id}</td>
-                <td><b><a href="${api.url(product)}">${product.title}</a></b> - ${product.description}
-                  <div class="product-gallery">
-                    <div class="product-image-div"
-                         tal:repeat="productimage product.get_all_images().all()">
-                      <img width="150px" tal:condition="productimage.data" class="product-image"
-                       src="${request.resource_url(productimage)}image" />
-                    </div>
-                  </div>
-                </td>
-                <td tal:define="has_price_offer python: product.price_offer and product.expires_offer_date >= today">
-                  <!-- simple price -->
-                  <h4 class="price-simple" tal:condition="has_price_offer is not True">${product.price} ${shop_currency}</h4>
-
-                  <!-- or old price + new price -->
-                  <h5 class="price-offer-old-price" tal:condition="has_price_offer">
-                    <del>${product.price} ${shop_currency}</del>
-                  </h5>
-                  <p tal:condition="has_price_offer">
-                    <h4 class="price-offer">${product.price_offer} ${shop_currency}</h4>
-                    <h5>(until ${api.format_date(product.expires_offer_date)})</h5>
-                  </p>
-                </td>
-                <td>${product.support_days}</td>
+              <tr tal:repeat="product backend_products">
+                <td>${product.product_id}</td>
+                <td>${product.title}</td>
+                <td>${product.description}</td>
+                <td>${product.assigned_content}</td>
+                <td>${python: float(product.price)} ${shop_currency}</td>
                 <td>
-                  <span tal:condition="product.featured is True">yes</span>
-                  <span tal:condition="product.featured is not True">no</span>
-                </td>
-                <td>${product.quantity_status()} (${product.quantity})</td>
-                <td>
-                  <a class="btn btn-sm btn-warning" href="${api.url(product, '@@edit')}">Edit</a>
-                  <a class="btn btn-sm btn-primary" href="${api.url(product, '@@edit_price_offer')}">
-                    Offer
-                  </a>
-                  <a class="btn btn-sm btn-danger" href="${api.url(product, '@@delete')}">Delete</a>
+                  <a class="btn btn-sm btn-warning" href="#edit-link">Edit</a>
+                  <a class="btn btn-sm btn-danger" href="#delete-link">Delete</a>
                 </td>
               </tr>
             </tbody>
