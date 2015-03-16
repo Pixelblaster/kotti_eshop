@@ -122,8 +122,9 @@
                 </td>
                 <td>${python: float(product.price)} ${api.shop_currency()}</td>
                 <td>
-                  <a class="btn btn-sm btn-warning" href="#edit-link">Edit</a>
                   <form method="POST" action="${request.resource_url(api.root, '@@shop_admin')}">
+                    <a class="btn btn-sm btn-warning"
+                       href="${api.url(api.root)}@@edit-product?product_id=${product.id}">Edit</a>
                     <button class="btn btn-sm btn-danger" name="delete_backend_product">Delete</button>
                     <input type="hidden" name="backend_product_id" value="${product.id}">
                   </form>

@@ -61,7 +61,7 @@ class BackendProductSchema(colander.MappingSchema):
 @view_config(name="add-product", permission="view",
              renderer="kotti:templates/edit/node.pt")
 class BackendProductAddForm(BaseFormView):
-    """ A form view to instantiate a new ShopProduct
+    """ A form view to instantiate a new BackendProduct
     """
     schema_factory = BackendProductSchema
     success_message = _(u"Product added")
@@ -70,6 +70,26 @@ class BackendProductAddForm(BaseFormView):
         appstruct.pop('csrf_token', None)
         product = BackendProduct(**appstruct)
         DBSession.add(product)
+
+
+@view_config(name="edit-product", permission="view",
+             renderer="kotti:templates/edit/node.pt")
+class BackendProductEditForm(BaseFormView):
+    """ A form view to edit a BackendProduct
+        Example: www.mykottisite.com/@@edit_product?product_id=3
+    """
+    schema_factory = BackendProductSchema
+    success_message = _(u"Product details saved.")
+
+    def before(self, form):
+        # [TODO] INIT appstruct
+        pass
+
+    def save_success(self, appstruct):
+        # [TODO] SAVE changes
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root) +
+                         '@@shop_admin?action=products')
 
 
 class ProductType(colander.Integer):
