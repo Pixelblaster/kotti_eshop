@@ -55,11 +55,7 @@ class BackendProductAddForm(BaseFormView):
 
 class ProductType(colander.Integer):
     def deserialize(self, node, cstruct):
-        import pdb; pdb.set_trace()
-        ids = [int(x) for x in cstruct]
-        products = DBSession.query(BackendProduct).filter(
-            BackendProduct.id.in_(ids)).all()
-        return products
+        return DBSession.query(BackendProduct).get(int(cstruct))
 
 
 class Products(colander.SequenceSchema):
@@ -93,7 +89,6 @@ class AssignBackendProductForm(BaseFormView):
     schema_factory = AssignBackendProductSchema
 
     def save_success(self, appstruct):
-        import pdb; pdb.set_trace()
         pass
 
     def before(self, form):
