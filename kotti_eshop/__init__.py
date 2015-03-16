@@ -12,7 +12,7 @@ _ = TranslationStringFactory('kotti_eshop')
 
 def kotti_configure(settings):
 
-    #settings['kotti.populators'] += ' kotti_eshop.populate.populate'
+    settings['kotti.populators'] += ' kotti_eshop.populate.populate'
     settings['pyramid.includes'] += ' kotti_eshop'
     settings['kotti.fanstatic.view_needed'] += \
         ' kotti_eshop.fanstatic.css_and_js'

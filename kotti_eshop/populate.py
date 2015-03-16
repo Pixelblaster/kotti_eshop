@@ -13,17 +13,17 @@ class ShopCurrencyNode(SchemaNode):
     default = 'USD'
 
 
-class ShopProductsPerPageNode(SchemaNode):
-    name = 'shop_products_per_page'
-    title = 'Products per page'
-    description = 'How many products will be on a page with products.'
-    validator = Range(1, 1000)
-    default = 9
+# class ShopProductsPerPageNode(SchemaNode):
+#     name = 'shop_products_per_page'
+#     title = 'Products per page'
+#     description = 'How many products will be on a page with products.'
+#     validator = Range(1, 1000)
+#     default = 9
 
 
 class ShopSettingsSchema(MappingSchema):
     shop_currency = ShopCurrencyNode(String())
-    shop_products_per_page = ShopProductsPerPageNode(Int())
+    # shop_products_per_page = ShopProductsPerPageNode(Int())
 
 
 ShopSettings = {

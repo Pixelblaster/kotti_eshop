@@ -18,7 +18,8 @@ def shopping_cart(self, request):
     else:
         logged_in_user = ''
     return {'logged_in_user': logged_in_user,
-            'backend_product': backend_product}
+            'backend_product': backend_product,
+            'shop_currency': get_setting('shop_currency')}
 
 
 @view_config(name='shop_admin', permission='view',

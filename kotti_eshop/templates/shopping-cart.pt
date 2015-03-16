@@ -2,7 +2,7 @@
 	<div class="product-short-description">
 		<h3>${backend_product.title}</h3>
 		<p>${backend_product.description}</p>
-		<h4>${python: float(backend_product.price)}</h4>
+		<h4>${python: float(backend_product.price)} ${shop_currency}</h4>
 	</div>
 
 	<tal:condition condition="logged_in_user">
