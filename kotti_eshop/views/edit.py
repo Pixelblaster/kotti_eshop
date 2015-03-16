@@ -8,6 +8,7 @@ from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
 from kotti_eshop.views.widget import SelectizeWidget
+from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 import colander
 
@@ -132,10 +133,8 @@ class AdminViews(BaseView):
         if 'delete_backend_product' in self.request.params:
             product_id = self.request.params.get('backend_product_id', None)
             if product_id is not None:
-                import pdb; pdb.set_trace( )
-                message = self.context.request.api.delete_backend_product(
-                    product_id)
-                # [FIXME]
-                # AttributeError: 'Request' object has no attribute 'api'
-                self.session.flash(message, 'success')
+                product = DBSession.query(BackendProduct).filter(
+                    BackendProduct.id == product_id).first()
+                if product:
+                    DBSession.delete(product)
         return {}
