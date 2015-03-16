@@ -88,8 +88,11 @@ class AssignBackendProductForm(BaseFormView):
     """
     schema_factory = AssignBackendProductSchema
 
+    def appstruct(self):
+        return {'products': [x.id for x in self.context.backend_products]}
+
     def save_success(self, appstruct):
-        pass
+        self.context.backend_products = list(appstruct['products'])
 
     def before(self, form):
         selectize.need()
