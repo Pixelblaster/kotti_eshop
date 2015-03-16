@@ -1,6 +1,7 @@
 from deform.widget import MoneyInputWidget
 from deform.widget import RichTextWidget
 from deform.widget import TextAreaWidget
+from kotti_eshop.views import BaseView
 from kotti.resources import DBSession
 from kotti.views.form import BaseFormView
 from kotti_eshop import _
@@ -122,15 +123,19 @@ class AssignBackendProductForm(BaseFormView):
         return super(AssignBackendProductForm, self).before(form)
 
 
-@view_config(name='shop_admin', permission='view',
-             renderer='kotti_eshop:templates/shop-admin-view.pt')
-def shop_admin_view(self):
-    """ Shop administration panel
-    """
-    if 'delete_backend_product' in self.params:
-        product_id = self.params.get('backend_product_id', None)
-        if product_id is not None:
-            message = self.api.delete_backend_product(product_id)
-            # [FIXME] AttributeError: 'Request' object has no attribute 'api'
-            self.session.flash(message, 'success')
-    return {}
+class AdminViews(BaseView):
+    @view_config(name='shop_admin', permission='view',
+                 renderer='kotti_eshop:templates/shop-admin-view.pt')
+    def shop_admin_view(self):
+        """ Shop administration panel
+        """
+        if 'delete_backend_product' in self.request.params:
+            product_id = self.request.params.get('backend_product_id', None)
+            if product_id is not None:
+                import pdb; pdb.set_trace( )
+                message = self.context.request.api.delete_backend_product(
+                    product_id)
+                # [FIXME]
+                # AttributeError: 'Request' object has no attribute 'api'
+                self.session.flash(message, 'success')
+        return {}
