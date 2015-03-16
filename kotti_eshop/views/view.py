@@ -20,14 +20,6 @@ def shopping_cart(self, request):
             'backend_product': backend_product}
 
 
-@view_config(name='shop_admin', permission='view',
-             renderer='kotti_eshop:templates/shop-admin-view.pt')
-def shop_admin_view(self):
-    """ Shop administration panel
-    """
-    return {}
-
-
 @view_config(name='shop_view', permission='view',
              renderer='kotti_eshop:templates/shop-view.pt')
 def shop_view(self):

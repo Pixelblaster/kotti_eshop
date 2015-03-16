@@ -120,3 +120,17 @@ class AssignBackendProductForm(BaseFormView):
     def before(self, form):
         selectize.need()
         return super(AssignBackendProductForm, self).before(form)
+
+
+@view_config(name='shop_admin', permission='view',
+             renderer='kotti_eshop:templates/shop-admin-view.pt')
+def shop_admin_view(self):
+    """ Shop administration panel
+    """
+    if 'delete_backend_product' in self.params:
+        product_id = self.params.get('backend_product_id', None)
+        if product_id is not None:
+            message = self.api.delete_backend_product(product_id)
+            # [FIXME] AttributeError: 'Request' object has no attribute 'api'
+            self.session.flash(message, 'success')
+    return {}

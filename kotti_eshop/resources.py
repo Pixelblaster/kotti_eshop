@@ -27,6 +27,20 @@ class TemplateAPI(BaseTemplateAPI):
             BackendProduct.created)
         return products
 
+    def get_backend_product(self, product_id):
+        """ Get backend product by id
+        """
+        product = DBSession.query(BackendProduct).filter(
+            BackendProduct.id == product_id)
+        return product
+
+    def delete_backend_product(self, product_id):
+        """ Delete a backend product by id
+        """
+        # message = self.get_backend_product(product_id)
+        message = "Deleted."
+        return message
+
 
 product_association_table = Table(
     'contents_to_products', Base.metadata,
