@@ -11,6 +11,17 @@ from pyramid.view import view_config
 import colander
 
 
+def unique_product_id(node, value):
+    """ Product ID must be unique.
+    """
+    products = DBSession.query(BackendProduct).filter_by(
+        product_id=value).all()
+    if products:
+        message = _(u'Product with ID $product_id is already in database.',
+                    mapping={'product_id': value})
+        raise colander.Invalid(node, message)
+
+
 class BackendProductSchema(colander.MappingSchema):
     """
     """
@@ -36,7 +47,12 @@ class BackendProductSchema(colander.MappingSchema):
         colander.Decimal(),
         title=_(u'Base Price'),
         widget=MoneyInputWidget(),
-    )
+        )
+    product_id = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Product ID'),
+        validator=unique_product_id,
+        )
 
 
 @view_config(name="add-product", permission="view",

@@ -28,6 +28,7 @@ class BackendProduct(Base):
     __tablename__ = 'backend_products'
 
     id = Column(Integer(), primary_key=True)
+    product_id = Column(Unicode(512))
     title = Column(Unicode(512), index=True)
     description = Column(Unicode())
     text = Column(Unicode())
