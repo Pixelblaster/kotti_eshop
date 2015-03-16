@@ -3,6 +3,7 @@ from deform.widget import RichTextWidget
 from deform.widget import TextAreaWidget
 from kotti_eshop.views import BaseView
 from kotti.resources import DBSession
+from kotti.resources import get_root
 from kotti.views.form import BaseFormView
 from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
@@ -137,4 +138,7 @@ class AdminViews(BaseView):
                     BackendProduct.id == product_id).first()
                 if product:
                     DBSession.delete(product)
+                    root = get_root()
+                    return HTTPFound(location=self.request.resource_url(root) +
+                                     '@@shop_admin?action=products')
         return {}
