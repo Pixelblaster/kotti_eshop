@@ -52,8 +52,7 @@
              <a href="${api.url(api.root, '@@shop_admin')}?action=clients">clients</a>
           </p>
           <h4>Shop Settings</h4>
-          <p>Currency: ${shop_currency}</p>
-          <p>Products per page: ${shop_products_per_page}</p>
+          <p>Currency: ${api.shop_currency()}</p>
           <p>You can change these <a href="${api.url(api.root, '@@settings')}">settings in Shop settings tab</a>.</p>
         </tal:condition>
         <!-- ADMIN MAIN -->
@@ -121,7 +120,7 @@
                     ${content_item.title}
                   </a>
                 </td>
-                <td>${python: float(product.price)} ${shop_currency}</td>
+                <td>${python: float(product.price)} ${api.shop_currency()}</td>
                 <td>
                   <a class="btn btn-sm btn-warning" href="#edit-link">Edit</a>
                   <a class="btn btn-sm btn-danger" href="#delete-link">Delete</a>

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from kotti_settings.util import get_setting
 from pyramid.exceptions import PredicateMismatch
 from pyramid.view import view_config
 
@@ -18,8 +17,7 @@ def shopping_cart(self, request):
     else:
         logged_in_user = ''
     return {'logged_in_user': logged_in_user,
-            'backend_product': backend_product,
-            'shop_currency': get_setting('shop_currency')}
+            'backend_product': backend_product}
 
 
 @view_config(name='shop_admin', permission='view',
@@ -27,8 +25,7 @@ def shopping_cart(self, request):
 def shop_admin_view(self):
     """ Shop administration panel
     """
-    return {'shop_products_per_page': get_setting('shop_products_per_page'),
-            'shop_currency': get_setting('shop_currency')}
+    return {}
 
 
 @view_config(name='shop_view', permission='view',
@@ -36,6 +33,4 @@ def shop_admin_view(self):
 def shop_view(self):
     """ Shop view
     """
-    return {'shop_products_per_page': get_setting('shop_products_per_page'),
-            'shop_currency': get_setting('shop_currency'),
-            'products': []}
+    return {}

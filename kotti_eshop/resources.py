@@ -1,6 +1,8 @@
 from kotti.resources import Base
 from kotti.resources import Content
 from kotti.resources import DBSession
+from kotti.views.util import TemplateAPI as BaseTemplateAPI
+from kotti_settings.util import get_setting
 from sqlalchemy import Column
 from sqlalchemy import DateTime
 from sqlalchemy import Float
@@ -9,10 +11,14 @@ from sqlalchemy import Integer
 from sqlalchemy import Table
 from sqlalchemy import Unicode
 from sqlalchemy.orm import relationship
-from kotti.views.util import TemplateAPI as BaseTemplateAPI
 
 
 class TemplateAPI(BaseTemplateAPI):
+    def shop_currency(self):
+        """ Returns shop currency (ex: USD)
+            from kotti_settings
+        """
+        return get_setting('shop_currency')
 
     def get_all_backend_products(self):
         """ Returns all backend products
