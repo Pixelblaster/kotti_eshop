@@ -1,17 +1,25 @@
-<tal:condition condition="logged_in_user">
-  <p class="pull-right">
-	<a class="add-to-cart shop-add-btn btn btn-primary" 
-       product-id="${product.id}" href="">
-       Add to cart (${product.title}, ${product.price})
-    </a>
-    <a class="view-cart shop-view-btn btn btn-default" href="">
-       View cart
-    </a>
-  </p>
-</tal:condition>
+<div class="shopping-cart-row row">
+	<div class="product-short-description">
+		<h3>${backend_product.title}</h3>
+		<p>${backend_product.description}</p>
+		<h4>${python: float(backend_product.price)}</h4>
+	</div>
 
-<tal:condition condition="logged_in_user == ''">
-  <p class="pull-right">
-  	<a href="${api.url(api.root, '@@login')}">Log in</a> to buy this.
-  </p>
-</tal:condition>
+	<tal:condition condition="logged_in_user">
+	  <p class="pull-right">
+			<a class="add-to-cart shop-add-btn btn btn-primary" 
+	       backend-product-id="${backend_product.id}" href="">
+	       Add to cart
+	    </a>
+	    <a class="view-cart shop-view-btn btn btn-default" href="">
+	       View cart
+	    </a>
+	  </p>
+	</tal:condition>
+
+	<tal:condition condition="logged_in_user == ''">
+	  <p class="pull-right">
+	  	<a href="${api.url(api.root, '@@login')}">Log in</a> to buy ${backend_product.title}.
+	  </p>
+	</tal:condition>
+</div>

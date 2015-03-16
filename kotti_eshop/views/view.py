@@ -12,13 +12,13 @@ def shopping_cart(self, request):
     if not self.backend_products:
         raise PredicateMismatch()
     else:
-        product = self.backend_products[0]
+        backend_product = self.backend_products[0]
     if request.user:
         logged_in_user = request.user.name
     else:
         logged_in_user = ''
     return {'logged_in_user': logged_in_user,
-            'product': product}
+            'backend_product': backend_product}
 
 
 @view_config(name='shop_admin', permission='view',
