@@ -267,6 +267,26 @@ class AdminViews(BaseView):
         return {}
 
 
+@view_defaults(permission="view")
+class ShoppingCartViews(BaseView):
+
+    @view_config(name='cart_operations',
+                 renderer='renderer="kotti:templates/edit/node.pt"')
+    def cart_operations(self):
+        """ Operation with a shopping cart
+        """
+        # ADD to cart
+        import pdb; pdb.set_trace( )
+        if 'add_to_cart' in self.request.params:
+            product_id = self.request.params.get('backend_product_id', None)
+            quantity = int(self.request.params.get('quantity', 0))
+            if product_id is not None and quantity > 0:
+                pass
+                # add product to cart
+
+        return {}
+
+
 @view_config(
     name="assign-product-menu-entry", permission="edit",
     renderer="kotti_eshop:templates/edit/assign-product-menu-entry.pt")

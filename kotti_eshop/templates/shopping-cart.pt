@@ -11,13 +11,16 @@
   <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
     <tal:condition condition="request.user">
       <p class="pull-right">
-        <a class="add-to-cart shop-add-btn btn btn-primary" 
-          backend-product-id="${product.id}" href="">
-          Add to cart
-        </a>
-        <a class="view-cart shop-view-btn btn btn-default" href="">
-          View cart
-        </a>
+        <form method="POST" action="${request.resource_url(api.root, '@@cart_operations')}">
+          <button class="add-to-cart shop-add-btn btn btn-primary" name="add_to_cart">
+            Add to cart
+          </button>
+          <a class="view-cart shop-view-btn btn btn-default" href="">
+            View cart
+          </a>
+          <input type="hidden" name="backend_product_id" value="${product.id}">
+          <input type="hidden" name="quantity" value="3"><!-- [TODO] option change quantity -->
+        </form>
       </p>
     </tal:condition>
 

@@ -79,11 +79,10 @@ class ShoppingCart(Base):
     uuid = Column(Unicode(512))
     creation_date = Column(DateTime())  # a shopping cart can live 30 days
 
-    products = relationship("ShoppingCartsToProductsAssociation",
-                            backref="shopping_cart")
+    products = relationship("ProductCartPlacement", backref="shopping_cart")
 
 
-class ShoppingCartsToProductsAssociation(Base):
+class ProductCartPlacement(Base):
     __tablename__ = 'shopping_carts_to_products_association'
     shopping_cart_id = Column(Integer, ForeignKey('shopping_carts.id'),
                               primary_key=True)
