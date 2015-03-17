@@ -12,6 +12,7 @@ from kotti_eshop.resources import BackendProduct
 from kotti_eshop.views.widget import SelectizeWidget
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
+from pyramid.view import view_defaults
 import colander
 
 
