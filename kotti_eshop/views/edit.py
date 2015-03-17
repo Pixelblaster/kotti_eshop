@@ -11,6 +11,7 @@ from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
 from kotti_eshop.views.widget import SelectizeWidget
+from pyramid.decorator import reify
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 from pyramid.view import view_defaults
@@ -84,6 +85,13 @@ class BackendProductEditForm(EditFormView):
     """
     schema_factory = BackendProductSchema
     success_message = _(u"Product details saved.")
+    first_heading = (u"Edit product details")
+
+    @reify
+    def success_url(self):
+        root = get_root()
+        return self.request.resource_url(root) + \
+            '@@shop_admin?action=products'
 
     def before(self, form):
         get = self.request.GET
