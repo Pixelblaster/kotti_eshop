@@ -24,7 +24,8 @@ def shopping_cart(context, request):
     else:
         logged_in_user = ''
 
-    return {'logged_in_user': logged_in_user,
+    return {'has_backend_products': has_backend_products,
+            'logged_in_user': logged_in_user,
             'backend_product': backend_product}
 
 

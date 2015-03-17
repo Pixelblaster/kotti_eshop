@@ -1,25 +1,29 @@
 <div class="shopping-cart-row row">
 	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-		<h3 class="product-details">
-				<span class="product-title">${backend_product.title}</span>
-				<small class="product-description">${backend_product.description}</small>
-				<span class="product-price">${python: float(backend_product.price)} ${api.shop_currency()}</span>
-		</h3>
+		<tal:condition condition="has_backend_products is True">
+			<h3 class="product-details">
+					<span class="product-title">${backend_product.title}</span>
+					<small class="product-description">${backend_product.description}</small>
+					<span class="product-price">${python: float(backend_product.price)} ${api.shop_currency()}</span>
+			</h3>
+		</tal:condition>
 	</div>
 	<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 		<tal:condition condition="logged_in_user">
 		  <p class="pull-right">
+			<tal:condition condition="has_backend_products is True">
 				<a class="add-to-cart shop-add-btn btn btn-primary" 
-		       backend-product-id="${backend_product.id}" href="">
-		       Add to cart
-		    </a>
+			       backend-product-id="${backend_product.id}" href="">
+			       Add to cart
+			    </a>
+		    </tal:condition>
 		    <a class="view-cart shop-view-btn btn btn-default" href="">
 		       View cart
 		    </a>
 		  </p>
 		</tal:condition>
 
-		<tal:condition condition="logged_in_user == ''">
+		<tal:condition condition="logged_in_user == '' and has_backend_products is True">
 		  <p class="pull-right">
 		  	<a href="${api.url(api.root, '@@login')}">Log in</a> to buy ${backend_product.title}.
 		  </p>
