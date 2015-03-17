@@ -53,7 +53,7 @@ class BackendProduct(Base):
     __tablename__ = 'backend_products'
 
     id = Column(Integer(), primary_key=True)
-    product_id = Column(Unicode(512))
+    pin = Column(Unicode(512))  # product identification number
     title = Column(Unicode(512), index=True)
     description = Column(Unicode())
     text = Column(Unicode())

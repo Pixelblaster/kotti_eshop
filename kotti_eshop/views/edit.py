@@ -18,36 +18,33 @@ from pyramid.view import view_defaults
 import colander
 
 
-def unique_product_id(node, product_id):
-    """ Product ID must be unique.
+def unique_pin(node, pin):
+    """ Product Identification Number must be unique.
     """
-    products = DBSession.query(BackendProduct.id).filter_by(
-        product_id=product_id).count()
+    products = DBSession.query(BackendProduct.id).filter_by(pin=pin).count()
 
     if products:
-        msg = _(u'Product with ID $product_id is already in database.',
-                mapping={'product_id': product_id})
+        msg = _(u'Product with pin $pin is already in database.',
+                mapping={'pin': pin})
         raise colander.Invalid(node, msg)
 
 
 @colander.deferred
 def deferred_edit_product_validator(node, kw):
-    def unique_edit_product_id(node, product_id):
-        """ Check if the given product_id already exists for Edit view
+    def unique_edit_pin(node, pin):
+        """ Check if the given pin already exists for Edit view
         """
         request = kw.get('request')
-        old_product_id = request.GET.get('product_id', 0)
-
-        product = DBSession.query(BackendProduct).filter_by(
-            product_id=product_id).first()
-        if product:
-            # There is no problem if product_id is not changed in edit,
-            # so new product_id CAN BE == old product_id ELSE:
-            if product.product_id != old_product_id:
-                msg = _(u'Product with ID $product_id is already in database.',
-                        mapping={'product_id': product_id})
-                raise colander.Invalid(node, msg)
-    return unique_edit_product_id
+        product_id = request.GET.get('product_id', 0)
+        this_product = DBSession.query(BackendProduct).filter_by(
+            id=product_id).first()
+        product_with_new_pin = DBSession.query(BackendProduct).filter_by(
+            pin=pin).first()
+        if product_with_new_pin != this_product:
+            msg = _(u'Product with pin $pin is already in database.',
+                    mapping={'pin': pin})
+            raise colander.Invalid(node, msg)
+    return unique_edit_pin
 
 
 class BackendProductAddSchema(colander.MappingSchema):
@@ -76,10 +73,10 @@ class BackendProductAddSchema(colander.MappingSchema):
         title=_(u'Base Price'),
         widget=MoneyInputWidget(),
         )
-    product_id = colander.SchemaNode(
+    pin = colander.SchemaNode(
         colander.String(),
-        title=_(u'Unique product ID'),
-        validator=unique_product_id,
+        title=_(u'Product Identification Number'),
+        validator=unique_pin,
         )
 
 
@@ -109,9 +106,9 @@ class BackendProductEditSchema(colander.MappingSchema):
         title=_(u'Base Price'),
         widget=MoneyInputWidget(),
         )
-    product_id = colander.SchemaNode(
+    pin = colander.SchemaNode(
         colander.String(),
-        title=_(u'Unique product ID'),
+        title=_(u'Product Identification Number'),
         validator=deferred_edit_product_validator,
         )
 
@@ -155,7 +152,7 @@ class BackendProductEditForm(EditFormView):
             if product:
                 form.appstruct = get_appstruct(self.context, self.schema)
                 form.appstruct.update({
-                    'product_id': product.product_id,
+                    'pin': product.pin,
                     'title': product.title,
                     'description': product.description,
                     'text': product.description,
@@ -169,7 +166,7 @@ class BackendProductEditForm(EditFormView):
             product = DBSession.query(BackendProduct).filter(
                 BackendProduct.id == product_id).first()
             if product:
-                product.product_id = appstruct['product_id']
+                product.pin = appstruct['pin']
                 product.title = appstruct['title']
                 product.description = appstruct['description']
                 product.text = appstruct['text']

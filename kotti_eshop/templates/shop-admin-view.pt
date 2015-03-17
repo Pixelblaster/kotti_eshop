@@ -111,7 +111,7 @@
             </thead>
             <tbody>
               <tr tal:repeat="product api.get_all_backend_products()">
-                <td>${product.product_id}</td>
+                <td>${product.pin}</td>
                 <td>${product.title}</td>
                 <td>${product.description}</td>
                 <td>
