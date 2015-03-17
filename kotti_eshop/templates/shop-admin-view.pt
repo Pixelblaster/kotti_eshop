@@ -101,7 +101,7 @@
           <table class="table table-condensed">
             <thead>
               <tr>
-                <th>Product ID</th>
+                <th>PIN</th>
                 <th>Title</th>
                 <th>Description</th>
                 <th>Assigned to</th>

@@ -1,6 +1,6 @@
 <div class="shopping-cart-row row">
 	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-		<tal:condition condition="has_backend_products is True">
+		<tal:condition condition="has_backend_products != 0">
 			<h3 class="product-details">
 					<span class="product-title">${backend_product.title}</span>
 					<small class="product-description">${backend_product.description}</small>
@@ -11,7 +11,7 @@
 	<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 		<tal:condition condition="logged_in_user">
 		  <p class="pull-right">
-			<tal:condition condition="has_backend_products is True">
+			<tal:condition condition="has_backend_products != 0">
 				<a class="add-to-cart shop-add-btn btn btn-primary" 
 			       backend-product-id="${backend_product.id}" href="">
 			       Add to cart
@@ -23,7 +23,7 @@
 		  </p>
 		</tal:condition>
 
-		<tal:condition condition="logged_in_user == '' and has_backend_products is True">
+		<tal:condition condition="logged_in_user == '' and has_backend_products != 0">
 		  <p class="pull-right">
 		  	<a href="${api.url(api.root, '@@login')}">Log in</a> to buy ${backend_product.title}.
 		  </p>
