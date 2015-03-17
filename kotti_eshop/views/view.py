@@ -16,15 +16,26 @@ def shopping_cart(context, request):
         raise PredicateMismatch()
 
     backend_product = None
+    backend_product_id = None
+    backend_product_title = ""
+    backend_product_description = ""
+    backend_product_price = None
     if context.backend_products:
         backend_product = context.backend_products[0]
-
+        backend_product_id = backend_product.id
+        backend_product_title = backend_product.title
+        backend_product_description = backend_product.description
+        backend_product_price = float(backend_product.price)
     if request.user:
         logged_in_user = request.user.name
     else:
         logged_in_user = ''
 
     return {'has_backend_products': has_backend_products,
+            'backend_product_id': backend_product_id,
+            'backend_product_title': backend_product_title,
+            'backend_product_description': backend_product_description,
+            'backend_product_price': backend_product_price,
             'logged_in_user': logged_in_user,
             'backend_product': backend_product}
 
