@@ -5,7 +5,7 @@ $(document).ready(function(){
 	// 	* product-id="product.id"
 	// 	* quantity
 	// 	* client_id
-	$(".add-to-cart").on("click", function(evt){
+/*	$(".add-to-cart").on("click", function(evt){
 		var shop_url = $("article").attr("shop-url");
 		var product_id = $(this).attr("product-id");
 		var client_id = 9; // [TODO] Logged in client id must be here.
@@ -23,14 +23,14 @@ $(document).ready(function(){
 		}).done(function() {
 			// DONE [TODO] Message?
 		});
-	});
+	});*/
 
 	// REMOVE FROM CART
 	// 	* class="remove-from-cart"
 	// 	* product-id="product.id"
 	// 	* quantity
 	// 	* client_id
-	$(".remove-from-cart").on("click", function(evt){
+	/*$(".remove-from-cart").on("click", function(evt){
 		var shop_url = $("article").attr("shop-url");
 		var product_id = $(this).attr("product-id");
 		var client_id = 9; // [TODO] Logged in client id must be here.
@@ -48,5 +48,5 @@ $(document).ready(function(){
 		}).done(function() {
 			// DONE [TODO] Message?
 		});
-	});
+	});*/
 });
