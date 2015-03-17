@@ -43,14 +43,6 @@ product_association_table = Table(
 )
 
 
-shopping_carts_to_products_table = Table(
-    "shopping_carts_to_products", Base.metadata,
-    Column("shopping_cart_id", Integer, ForeignKey("shopping_carts.id")),
-    Column("backendproduct_id", Integer, ForeignKey("backend_products.id")),
-    Column("quantity", Integer, default=1),
-)
-
-
 class BackendProduct(Base):
     """ A backend product in this eShop
 
@@ -87,6 +79,15 @@ class ShoppingCart(Base):
     uuid = Column(Unicode(512))
     creation_date = Column(DateTime())  # a shopping cart can live 30 days
 
-    products = relationship(BackendProduct,
-                            backref="shopping_carts",
-                            secondary=shopping_carts_to_products_table)
+    products = relationship("ShoppingCartsToProductsAssociation",
+                            backref="shopping_cart")
+
+
+class ShoppingCartsToProductsAssociation(Base):
+    __tablename__ = 'shopping_carts_to_products_association'
+    shopping_cart_id = Column(Integer, ForeignKey('shopping_carts.id'),
+                              primary_key=True)
+    product_id = Column(Integer, ForeignKey('backend_products.id'),
+                        primary_key=True)
+    quantity = Integer()
+    products = relationship("BackendProduct", backref="shopping_carts")
