@@ -6,6 +6,7 @@ from kotti.resources import DBSession
 from kotti.resources import get_root
 from kotti.views.form import BaseFormView
 from kotti.views.form import EditFormView
+from kotti.views.form import get_appstruct
 from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
@@ -81,13 +82,37 @@ class BackendProductEditForm(EditFormView):
     """ A form view to edit a BackendProduct
         Example: www.mykottisite.com/@@edit_product?product_id=3
     """
-    schema = BackendProductSchema
+    schema_factory = BackendProductSchema
     success_message = _(u"Product details saved.")
 
-    def save_success(self, appstruct):
-        appstruct.pop('csrf_token', None)
-        self.edit(**appstruct)
-        self.request.session.flash(self.success_message, 'success')
+    def before(self, form):
+        get = self.request.GET
+        product_id = get.get('product_id', None)
+        if product_id is not None:
+            product = DBSession.query(BackendProduct).filter(
+                BackendProduct.id == product_id).first()
+            if product:
+                form.appstruct = get_appstruct(self.context, self.schema)
+                form.appstruct.update({
+                    'product_id': product.product_id,
+                    'title': product.title,
+                    'description': product.description,
+                    'text': product.description,
+                    'price': float(product.price),
+                })
+
+    def edit(self, **appstruct):
+        get = self.request.GET
+        product_id = get.get('product_id', None)
+        if product_id is not None:
+            product = DBSession.query(BackendProduct).filter(
+                BackendProduct.id == product_id).first()
+            if product:
+                product.product_id = appstruct['product_id']
+                product.title = appstruct['title']
+                product.description = appstruct['description']
+                product.text = appstruct['text']
+                product.price = appstruct['price']
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
                          '@@shop_admin?action=products')
