@@ -18,20 +18,40 @@ from pyramid.view import view_defaults
 import colander
 
 
-def unique_product_id(node, value):
+def unique_product_id(node, product_id):
     """ Product ID must be unique.
     """
     products = DBSession.query(BackendProduct.id).filter_by(
-        product_id=value).count()
+        product_id=product_id).count()
 
     if products:
         msg = _(u'Product with ID $product_id is already in database.',
-                mapping={'product_id': value})
+                mapping={'product_id': product_id})
         raise colander.Invalid(node, msg)
 
 
-class BackendProductSchema(colander.MappingSchema):
-    """
+@colander.deferred
+def deferred_edit_product_validator(node, kw):
+    def unique_edit_product_id(node, product_id):
+        """ Check if the given product_id already exists for Edit view
+        """
+        request = kw.get('request')
+        old_product_id = request.GET.get('product_id', 0)
+
+        product = DBSession.query(BackendProduct).filter_by(
+            product_id=product_id).first()
+        if product:
+            # There is no problem if product_id is not changed in edit,
+            # so new product_id CAN BE == old product_id ELSE:
+            if product.product_id != old_product_id:
+                msg = _(u'Product with ID $product_id is already in database.',
+                        mapping={'product_id': product_id})
+                raise colander.Invalid(node, msg)
+    return unique_edit_product_id
+
+
+class BackendProductAddSchema(colander.MappingSchema):
+    """ Schema for add product
     """
     title = colander.SchemaNode(
         colander.String(),
@@ -63,12 +83,45 @@ class BackendProductSchema(colander.MappingSchema):
         )
 
 
+class BackendProductEditSchema(colander.MappingSchema):
+    """ Schema for edit product
+    """
+    title = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Title'),
+        )
+    description = colander.SchemaNode(
+        colander.String(),
+        title=_('Description'),
+        widget=TextAreaWidget(cols=40, rows=5),
+        missing=u"",
+        )
+    text = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Product details'),
+        widget=RichTextWidget(
+            # theme='advanced', width=790, height=500
+        ),
+        missing=u"",
+        )
+    price = colander.SchemaNode(
+        colander.Decimal(),
+        title=_(u'Base Price'),
+        widget=MoneyInputWidget(),
+        )
+    product_id = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Unique product ID'),
+        validator=deferred_edit_product_validator,
+        )
+
+
 @view_config(name="add-product", permission="view",
              renderer="kotti:templates/edit/node.pt")
 class BackendProductAddForm(BaseFormView):
     """ A form view to instantiate a new BackendProduct
     """
-    schema_factory = BackendProductSchema
+    schema_factory = BackendProductAddSchema
     success_message = _(u"Product added")
 
     def save_success(self, appstruct):
@@ -83,7 +136,7 @@ class BackendProductEditForm(EditFormView):
     """ A form view to edit a BackendProduct
         Example: www.mykottisite.com/@@edit_product?product_id=3
     """
-    schema_factory = BackendProductSchema
+    schema_factory = BackendProductEditSchema
     success_message = _(u"Product details saved.")
     first_heading = (u"Edit product details")
 
