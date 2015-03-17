@@ -12,6 +12,8 @@
            class="content"
            i18n:domain="kotti_eshop">
 
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
     <h1 i18n:translate="">Global shop settings</h1>
 
     <div class="row" tal:define="action request.GET.get('action', '');">
@@ -115,10 +117,16 @@
                 <td>${product.title}</td>
                 <td>${product.description}</td>
                 <td>
-                  <a tal:repeat="content_item product.assigned_content"
-                     href="api.url(content_item)">
-                    ${content_item.title}
-                  </a>
+                  <tal:repeat repeat="content_item product.assigned_content">
+                    <form method="POST" action="${request.resource_url(api.root, '@@shop_admin')}">
+                      <a href="${api.url(content_item)}">${content_item.title}</a>
+                      <button class="btn btn-xs btn-danger" name="delete_product_assignment">
+                        <i class="fa fa-times"></i>
+                      </button>
+                      <input type="hidden" name="backend_product_id" value="${product.id}">
+                      <input type="hidden" name="content_item_id" value="${content_item.id}">
+                    </form>
+                  </tal:repeat>
                 </td>
                 <td>${python: float(product.price)} ${api.shop_currency()}</td>
                 <td>

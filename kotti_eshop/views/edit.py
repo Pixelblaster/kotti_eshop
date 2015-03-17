@@ -237,6 +237,7 @@ class AdminViews(BaseView):
     def shop_admin_view(self):
         """ Shop administration panel
         """
+        # DELETE product
         if 'delete_backend_product' in self.request.params:
             product_id = self.request.params.get('backend_product_id', None)
             if product_id is not None:
@@ -244,6 +245,22 @@ class AdminViews(BaseView):
                     BackendProduct.id == product_id).first()
                 if product:
                     DBSession.delete(product)
+                    root = get_root()
+                    return HTTPFound(location=self.request.resource_url(root) +
+                                     '@@shop_admin?action=products')
+
+        # DELETE assignment
+        if 'delete_product_assignment' in self.request.params:
+            product_id = self.request.params.get('backend_product_id', None)
+            content_item_id = self.request.params.get('content_item_id', None)
+            if product_id is not None and content_item_id is not None:
+                product = DBSession.query(BackendProduct).filter(
+                    BackendProduct.id == product_id).first()
+                if product:
+                    for content in product.assigned_content:
+                        if content.id == int(content_item_id):
+                            product.assigned_content.remove(content)
+
                     root = get_root()
                     return HTTPFound(location=self.request.resource_url(root) +
                                      '@@shop_admin?action=products')
