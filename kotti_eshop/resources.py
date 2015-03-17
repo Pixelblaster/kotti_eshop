@@ -43,6 +43,14 @@ product_association_table = Table(
 )
 
 
+shopping_carts_to_products_table = Table(
+    "shopping_carts_to_products", Base.metadata,
+    Column("shopping_cart_id", Integer, ForeignKey("shopping_carts.id")),
+    Column("backendproduct_id", Integer, ForeignKey("backend_products.id")),
+    Column("quantity", Integer, default=1),
+)
+
+
 class BackendProduct(Base):
     """ A backend product in this eShop
 
@@ -70,28 +78,15 @@ class BackendProduct(Base):
         self.__dict__.update(kw)
 
 
-    # def get_all_images(self):
-    #     """ Returns all images added to this product """
-    #     images = DBSession.query(Image).filter(
-    #         Image.parent_id == self.id)
-    #
-    #     return images
-    #
-    # def has_price_offer(self):
-    #     """ Check if this product has price offer
-    #     """
-    #     product = self
-    #     today = date.today()
-    #     if product.price_offer and product.expires_offer_date >= today:
-    #         return True
-    #     else:
-    #         return False
-    #
-    # def final_price(self):
-    #     """ Returns final price for this product
-    #     """
-    #     product = self
-    #     if product.has_price_offer():
-    #         return product.price_offer
-    #     else:
-    #         return product.price
+class ShoppingCart(Base):
+    """ A shopping cart in this eShop
+    """
+    __tablename__ = 'shopping_carts'
+
+    id = Column(Integer(), primary_key=True)
+    uuid = Column(Unicode(512))
+    creation_date = Column(DateTime())  # a shopping cart can live 30 days
+
+    products = relationship(BackendProduct,
+                            backref="shopping_carts",
+                            secondary=shopping_carts_to_products_table)
