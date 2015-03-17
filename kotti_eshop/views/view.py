@@ -15,6 +15,7 @@ def shopping_cart(context, request):
     if not has_backend_products:
         raise PredicateMismatch()
 
+    backend_product = None
     if context.backend_products:
         backend_product = context.backend_products[0]
 
