@@ -271,20 +271,23 @@ class AdminViews(BaseView):
 class ShoppingCartViews(BaseView):
 
     @view_config(name='cart_operations',
-                 renderer='renderer="kotti:templates/edit/node.pt"')
+                 renderer='kotti:templates/edit/node.pt')
     def cart_operations(self):
         """ Operation with a shopping cart
         """
         # ADD to cart
-        import pdb; pdb.set_trace( )
         if 'add_to_cart' in self.request.params:
             product_id = self.request.params.get('backend_product_id', None)
             quantity = int(self.request.params.get('quantity', 0))
             if product_id is not None and quantity > 0:
                 pass
-                # add product to cart
-
-        return {}
+                # [TODO]
+                # check session for uuid
+                # create or get shopping cart with this uuid
+                # add product * quantity to cart
+                # redirect to cart view?
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root))
 
 
 @view_config(
