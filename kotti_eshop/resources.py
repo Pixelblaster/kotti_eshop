@@ -14,6 +14,7 @@ from sqlalchemy.orm import relationship
 
 
 class TemplateAPI(BaseTemplateAPI):
+
     def shop_currency(self):
         """ Returns shop currency (ex: USD)
             from kotti_settings

@@ -24,8 +24,8 @@ def unique_pin(node, pin):
     products = DBSession.query(BackendProduct.id).filter_by(pin=pin).count()
 
     if products:
-        msg = _(u'Product with pin $pin is already in database.',
-                mapping={'pin': pin})
+        msg = _(u'This Unique Product Identification Number $pin is already '
+                u'in database.', mapping={'pin': pin})
         raise colander.Invalid(node, msg)
 
 
@@ -41,8 +41,8 @@ def deferred_edit_product_validator(node, kw):
         product_with_new_pin = DBSession.query(BackendProduct).filter_by(
             pin=pin).first()
         if product_with_new_pin != this_product:
-            msg = _(u'Product with pin $pin is already in database.',
-                    mapping={'pin': pin})
+            msg = _(u'This Unique Product Identification Number $pin is '
+                    u'already in database.', mapping={'pin': pin})
             raise colander.Invalid(node, msg)
     return unique_edit_pin
 
@@ -75,7 +75,7 @@ class BackendProductAddSchema(colander.MappingSchema):
         )
     pin = colander.SchemaNode(
         colander.String(),
-        title=_(u'Product Identification Number'),
+        title=_(u'Unique Product Identification Number'),
         validator=unique_pin,
         )
 
@@ -86,13 +86,13 @@ class BackendProductEditSchema(colander.MappingSchema):
     title = colander.SchemaNode(
         colander.String(),
         title=_(u'Title'),
-        )
+    )
     description = colander.SchemaNode(
         colander.String(),
         title=_('Description'),
         widget=TextAreaWidget(cols=40, rows=5),
         missing=u"",
-        )
+    )
     text = colander.SchemaNode(
         colander.String(),
         title=_(u'Product details'),
@@ -100,17 +100,17 @@ class BackendProductEditSchema(colander.MappingSchema):
             # theme='advanced', width=790, height=500
         ),
         missing=u"",
-        )
+    )
     price = colander.SchemaNode(
         colander.Decimal(),
         title=_(u'Base Price'),
         widget=MoneyInputWidget(),
-        )
+    )
     pin = colander.SchemaNode(
         colander.String(),
         title=_(u'Product Identification Number'),
         validator=deferred_edit_product_validator,
-        )
+    )
 
 
 @view_config(name="add-product", permission="view",
