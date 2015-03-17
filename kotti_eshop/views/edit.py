@@ -5,6 +5,7 @@ from kotti_eshop.views import BaseView
 from kotti.resources import DBSession
 from kotti.resources import get_root
 from kotti.views.form import BaseFormView
+from kotti.views.form import EditFormView
 from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
@@ -17,12 +18,13 @@ import colander
 def unique_product_id(node, value):
     """ Product ID must be unique.
     """
-    products = DBSession.query(BackendProduct).filter_by(
-        product_id=value).all()
+    products = DBSession.query(BackendProduct.id).filter_by(
+        product_id=value).count()
+
     if products:
-        message = _(u'Product with ID $product_id is already in database.',
-                    mapping={'product_id': value})
-        raise colander.Invalid(node, message)
+        msg = _(u'Product with ID $product_id is already in database.',
+                mapping={'product_id': value})
+        raise colander.Invalid(node, msg)
 
 
 class BackendProductSchema(colander.MappingSchema):
@@ -46,14 +48,14 @@ class BackendProductSchema(colander.MappingSchema):
         ),
         missing=u"",
         )
-    price = colander.SchemaNode(
+    base_price = colander.SchemaNode(
         colander.Decimal(),
         title=_(u'Base Price'),
         widget=MoneyInputWidget(),
         )
     product_id = colander.SchemaNode(
         colander.String(),
-        title=_(u'Product ID'),
+        title=_(u'Unique product ID'),
         validator=unique_product_id,
         )
 
@@ -74,19 +76,17 @@ class BackendProductAddForm(BaseFormView):
 
 @view_config(name="edit-product", permission="view",
              renderer="kotti:templates/edit/node.pt")
-class BackendProductEditForm(BaseFormView):
+class BackendProductEditForm(EditFormView):
     """ A form view to edit a BackendProduct
         Example: www.mykottisite.com/@@edit_product?product_id=3
     """
-    schema_factory = BackendProductSchema
+    schema = BackendProductSchema
     success_message = _(u"Product details saved.")
 
-    def before(self, form):
-        # [TODO] INIT appstruct
-        pass
-
     def save_success(self, appstruct):
-        # [TODO] SAVE changes
+        appstruct.pop('csrf_token', None)
+        self.edit(**appstruct)
+        self.request.session.flash(self.success_message, 'success')
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
                          '@@shop_admin?action=products')
@@ -145,9 +145,10 @@ class AssignBackendProductForm(BaseFormView):
         return super(AssignBackendProductForm, self).before(form)
 
 
+@view_defaults(permission="manage")
 class AdminViews(BaseView):
 
-    @view_config(name='shop_admin', permission='view',
+    @view_config(name='shop_admin',
                  renderer='kotti_eshop:templates/shop-admin-view.pt')
     def shop_admin_view(self):
         """ Shop administration panel
