@@ -19,14 +19,9 @@ def shopping_cart(context, request):
     if context.backend_products:
         backend_product = context.backend_products[0]
 
-    if request.user:
-        logged_in_user = request.user.name
-    else:
-        logged_in_user = ''
-
-    return {'has_backend_products': has_backend_products,
-            'logged_in_user': logged_in_user,
-            'backend_product': backend_product}
+    return {
+        'product': backend_product
+    }
 
 
 @view_config(name='shop_view', permission='view',
