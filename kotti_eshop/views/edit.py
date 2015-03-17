@@ -49,7 +49,7 @@ class BackendProductSchema(colander.MappingSchema):
         ),
         missing=u"",
         )
-    base_price = colander.SchemaNode(
+    price = colander.SchemaNode(
         colander.Decimal(),
         title=_(u'Base Price'),
         widget=MoneyInputWidget(),
@@ -128,7 +128,7 @@ class AssignBackendProductSchema(colander.MappingSchema):
 
 
 @view_config(name='assign-product', permission='view',
-             #renderer='kotti_eshop:templates/edit/assign.pt')
+             # renderer='kotti_eshop:templates/edit/assign.pt')
              renderer='kotti:templates/edit/node.pt')
 class AssignBackendProductForm(BaseFormView):
     """ A form view to assign a ShopProduct to the context Content derivate
@@ -167,7 +167,8 @@ class AdminViews(BaseView):
         return {}
 
 
-@view_config(name="assign-product-menu-entry", permission="edit",
-             renderer="kotti_eshop:templates/edit/assign-product-menu-entry.pt")
+@view_config(
+    name="assign-product-menu-entry", permission="edit",
+    renderer="kotti_eshop:templates/edit/assign-product-menu-entry.pt")
 def assign_product_menu_entry(context, request):
     return {}
