@@ -1,0 +1,11 @@
+<tal:condition i18n:domain="kotti-eshop">
+  <li class="divider"></li>
+  <li role="presentation" class="dropdown-header" i18n:translate="">
+    Kotti Eshop
+  </li>
+  <li>
+    <a i18n:translate="" href="${request.resource_url(context, 'assign-product')}">
+      Assign backend product
+    </a>
+  </li>
+</tal:condition>
