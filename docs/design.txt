@@ -14,3 +14,19 @@
 * Actiune in menul de actiuni: "toggle featured product".
 
 * nu se vede nicaieri vizibil shopping cartul meu
+
+
+
+ShoppingCart
+    - uuid
+    - creation_date: a shopping cart can live 30 days
+user fills in shopping cart
+    - relation to backend product
+        - quantity
+    - coupon
+user checksout
+    - user fills in details
+        - an account is created
+    - user finishes order
+        - an OrderItem is created
+            - keeps a reference to ShoppingCart

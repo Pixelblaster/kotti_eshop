@@ -88,19 +88,30 @@ class ShoppingCart(Base):
     def add_to_cart(self, product_id=None, quantity=1):
         """ Add product to cart
         """
-        shopping_cart = self
-        association = ProductCartPlacement(quantity=quantity)
-        product = DBSession.query(BackendProduct).filter(
-            BackendProduct.id == product_id).first()
-        association.products = product
-        shopping_cart.products.append(association)
+        product = DBSession.query(BackendProduct).get(product_id)
+        pcp = ProductCartPlacement(shopping_cart=self, product=product,
+                                   quantity=quantity)
+        DBSession.add(pcp)
 
 
 class ProductCartPlacement(Base):
     __tablename__ = 'shopping_carts_to_products_association'
+
     shopping_cart_id = Column(Integer, ForeignKey('shopping_carts.id'),
                               primary_key=True)
     product_id = Column(Integer, ForeignKey('backend_products.id'),
                         primary_key=True)
-    quantity = Integer()
-    products = relationship("BackendProduct", backref="shopping_carts")
+
+    quantity = Column(Integer())
+
+    product = relationship(BackendProduct, backref="placed_in_cart")
+    shopping_cart = relationship(ShoppingCart, backref="shopping_cart")
+
+    def __init__(self, shopping_cart=None, product=None):
+        super(ProductCartPlacement, self).__init__()
+
+        if shopping_cart is not None:
+            self.shopping_cart = shopping_cart
+
+        if product is not None:
+            self.product = product
