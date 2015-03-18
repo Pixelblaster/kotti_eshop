@@ -1,6 +1,7 @@
 from deform.widget import MoneyInputWidget
 from deform.widget import RichTextWidget
 from deform.widget import TextAreaWidget
+from deform.widget import HiddenWidget
 from kotti_eshop.views import BaseView
 from kotti.resources import DBSession
 from kotti.resources import get_root
@@ -53,6 +54,14 @@ def deferred_edit_product_validator(node, kw):
             raise colander.Invalid(node, msg)
 
     return unique_pin
+
+
+class CameFromSchema(colander.Schema):
+    came_from = colander.SchemaNode(
+        colander.String(),
+        widget=HiddenWidget(),
+        default='',
+    )
 
 
 class BackendProductSchema(colander.MappingSchema):
@@ -205,12 +214,13 @@ class AssignBackendProductForm(BaseFormView):
 
 
 @view_config(name='shop_admin', permission="manage",
-                renderer='kotti_eshop:templates/shop-admin-view.pt')
+             renderer='kotti_eshop:templates/shop-admin-view.pt')
 class AdminViews(BaseFormView):
     """ Shop administration panel
     """
 
-    schema_factory = SchemaNode
+    schema_factory = CameFromSchema
+    import pdb; pdb.set_trace( )
 
     def delete_backend_product_success(self, appstruct):
         product_id = self.request.params.get('backend_product_id', None)
@@ -221,7 +231,7 @@ class AdminViews(BaseFormView):
                 DBSession.delete(product)
                 root = get_root()
                 return HTTPFound(location=self.request.resource_url(root) +
-                                    '@@shop_admin?action=products')
+                                 '@@shop_admin?action=products')
 
     def delete_product_assignment_success(self):
         product_id = self.request.params.get('backend_product_id', None)
@@ -236,7 +246,7 @@ class AdminViews(BaseFormView):
 
                 root = get_root()
                 return HTTPFound(location=self.request.resource_url(root) +
-                                    '@@shop_admin?action=products')
+                                 '@@shop_admin?action=products')
 
 
 @view_defaults(permission="view")
