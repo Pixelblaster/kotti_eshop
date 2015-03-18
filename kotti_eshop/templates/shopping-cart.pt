@@ -15,6 +15,9 @@
           <button class="add-to-cart shop-add-btn btn btn-primary" name="add_to_cart">
             Add to cart
           </button>
+          <button class="remove-from-cart shop-remove-btn btn btn-danger" name="remove_from_cart">
+            Remove from cart
+          </button>
           <a class="view-cart shop-view-btn btn btn-default" href="">
             View cart
           </a>

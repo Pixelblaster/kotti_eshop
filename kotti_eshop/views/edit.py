@@ -283,6 +283,17 @@ class ShoppingCartViews(BaseView):
                 # ADD product
                 cart.add_to_cart(product_id=int(product_id), quantity=quantity)
 
+        # REMOVE from cart
+        if 'remove_from_cart' in self.request.params:
+            product_id = self.request.params.get('backend_product_id', None)
+            if 'shoppingcart_uid' in self.request.session:
+                shoppingcart_uid = str(
+                    self.request.session['shoppingcart_uid'])
+                cart = DBSession.query(ShoppingCart).filter_by(
+                    shoppingcart_uid=shoppingcart_uid).first()
+                cart.change_product_quantity(
+                    product_id=int(product_id), delta=0)
+
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root))
 
