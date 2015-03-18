@@ -123,7 +123,7 @@
                       <button class="btn btn-xs btn-danger" name="delete_product_assignment">
                         <i class="fa fa-times"></i>
                       </button>
-                      <input type="hidden" name="backend_product_id" value="${product.id}">
+                      <input type="hidden" name="backend_product" value="${product.id}">
                       <input type="hidden" name="content_item_id" value="${content_item.id}">
                     </form>
                   </tal:repeat>
@@ -134,7 +134,7 @@
                     <a class="btn btn-sm btn-warning"
                        href="${api.url(api.root)}@@edit-product?product_id=${product.id}">Edit</a>
                     <button class="btn btn-sm btn-danger" name="delete_backend_product">Delete</button>
-                    <input type="hidden" name="backend_product_id" value="${product.id}">
+                    <input type="hidden" name="backend_product" value="${product.id}">
                   </form>
                 </td>
               </tr>

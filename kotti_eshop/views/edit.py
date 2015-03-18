@@ -19,6 +19,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 from pyramid.view import view_defaults
 import colander
+import deform
 import uuid
 
 
@@ -176,7 +177,7 @@ class ProductType(colander.Integer):
 
 
 class Products(colander.SequenceSchema):
-    product_id = colander.SchemaNode(
+    product = colander.SchemaNode(
         ProductType(),
     )
 
@@ -216,39 +217,52 @@ class AssignBackendProductForm(BaseFormView):
         return super(AssignBackendProductForm, self).before(form)
 
 
+class ProductOperationSchema(colander.Schema):
+    backend_product = colander.SchemaNode(
+        ProductType()
+    )
+
+
 @view_config(name='shop_admin', permission="manage",
              renderer='kotti_eshop:templates/shop-admin-view.pt')
 class AdminViews(BaseFormView):
     """ Shop administration panel
     """
 
-    schema_factory = CameFromSchema
+    schema_factory = ProductOperationSchema
+    use_csrf_token = False
+
+    buttons = (
+        deform.Button('delete_backend_product', _(u'Delete')),
+        deform.Button('delete_product_assignment', _(u'Delete')))
 
     def delete_backend_product_success(self, appstruct):
-        product_id = self.request.params.get('backend_product_id', None)
-        if product_id is not None:
-            product = DBSession.query(BackendProduct).filter(
-                BackendProduct.id == product_id).first()
-            if product:
-                DBSession.delete(product)
-                root = get_root()
-                return HTTPFound(location=self.request.resource_url(root) +
-                                 '@@shop_admin?action=products')
+        product = appstruct['backend_product']
+        # product_id = self.request.params.get('backend_product_id', None)
+        # if product_id is not None:
+        #     product = DBSession.query(BackendProduct).filter(
+        #         BackendProduct.id == product_id).first()
+        #     if product:
+        #         DBSession.delete(product)
+        #         root = get_root()
+        #         return HTTPFound(location=self.request.resource_url(root) +
+        #                          '@@shop_admin?action=products')
 
-    def delete_product_assignment_success(self):
-        product_id = self.request.params.get('backend_product_id', None)
-        content_item_id = self.request.params.get('content_item_id', None)
-        if product_id is not None and content_item_id is not None:
-            product = DBSession.query(BackendProduct).filter(
-                BackendProduct.id == product_id).first()
-            if product:
-                for content in product.assigned_content:
-                    if content.id == int(content_item_id):
-                        product.assigned_content.remove(content)
-
-                root = get_root()
-                return HTTPFound(location=self.request.resource_url(root) +
-                                 '@@shop_admin?action=products')
+    def delete_product_assignment_success(self, appstruct):
+        product = appstruct['product']
+        # product_id = self.request.params.get('backend_product_id', None)
+        # content_item_id = self.request.params.get('content_item_id', None)
+        # if product_id is not None and content_item_id is not None:
+        #     product = DBSession.query(BackendProduct).filter(
+        #         BackendProduct.id == product_id).first()
+        #     if product:
+        #         for content in product.assigned_content:
+        #             if content.id == int(content_item_id):
+        #                 product.assigned_content.remove(content)
+        #
+        #         root = get_root()
+        #         return HTTPFound(location=self.request.resource_url(root) +
+        #                          '@@shop_admin?action=products')
 
 
 @view_defaults(permission="view")
