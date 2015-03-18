@@ -85,6 +85,16 @@ class ShoppingCart(Base):
         super(ShoppingCart, self).__init__(**kw)
         self.__dict__.update(kw)
 
+    def add_to_cart(self, product_id=None, quantity=1):
+        """ Add product to cart
+        """
+        shopping_cart = self
+        association = ProductCartPlacement(quantity=quantity)
+        product = DBSession.query(BackendProduct).filter(
+            BackendProduct.id == product_id).first()
+        association.products = product
+        shopping_cart.products.append(association)
+
 
 class ProductCartPlacement(Base):
     __tablename__ = 'shopping_carts_to_products_association'

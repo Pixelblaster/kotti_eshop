@@ -280,8 +280,9 @@ class ShoppingCartViews(BaseView):
                     cart = DBSession.query(ShoppingCart).filter_by(
                         shoppingcart_uid=shoppingcart_uid).first()
 
-                # [TODO] cart.add_product(product_id=product_id,
-                #                         quantity=quantity)
+                # ADD product
+                cart.add_to_cart(product_id=int(product_id), quantity=quantity)
+
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root))
 
