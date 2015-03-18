@@ -19,7 +19,7 @@
             View cart
           </a>
           <input type="hidden" name="backend_product_id" value="${product.id}">
-          <input type="hidden" name="quantity" value="3"><!-- [TODO] option change quantity -->
+          <input type="number" name="quantity" value="1" min="1">
         </form>
       </p>
     </tal:condition>
