@@ -31,56 +31,31 @@ def unique_pin(node, pin):
 
 @colander.deferred
 def deferred_edit_product_validator(node, kw):
-    def unique_edit_pin(node, pin):
+
+    def unique_pin(node, pin):
         """ Check if the given pin already exists for Edit view
         """
         request = kw.get('request')
-        product_id = request.GET.get('product_id', 0)
-        this_product = DBSession.query(BackendProduct).filter_by(
-            id=product_id).first()
-        product_with_new_pin = DBSession.query(BackendProduct).filter_by(
-            pin=pin).first()
-        if product_with_new_pin != this_product:
+        product_id = request.GET.get('product_id')
+
+        product = DBSession.query(BackendProduct).filter_by(pin=pin).first()
+
+        if product is None:
+            return
+
+        context = None
+        if product_id:
+            context = DBSession.query(BackendProduct).get(int(product_id))
+
+        if product != context:
             msg = _(u'This Unique Product Identification Number $pin is '
                     u'already in database.', mapping={'pin': pin})
             raise colander.Invalid(node, msg)
-    return unique_edit_pin
+
+    return unique_pin
 
 
-class BackendProductAddSchema(colander.MappingSchema):
-    """ Schema for add product
-    """
-    title = colander.SchemaNode(
-        colander.String(),
-        title=_(u'Title'),
-        )
-    description = colander.SchemaNode(
-        colander.String(),
-        title=_('Description'),
-        widget=TextAreaWidget(cols=40, rows=5),
-        missing=u"",
-        )
-    text = colander.SchemaNode(
-        colander.String(),
-        title=_(u'Product details'),
-        widget=RichTextWidget(
-            # theme='advanced', width=790, height=500
-        ),
-        missing=u"",
-        )
-    price = colander.SchemaNode(
-        colander.Decimal(),
-        title=_(u'Base Price'),
-        widget=MoneyInputWidget(),
-        )
-    pin = colander.SchemaNode(
-        colander.String(),
-        title=_(u'Unique Product Identification Number'),
-        validator=unique_pin,
-        )
-
-
-class BackendProductEditSchema(colander.MappingSchema):
+class BackendProductSchema(colander.MappingSchema):
     """ Schema for edit product
     """
     title = colander.SchemaNode(
@@ -118,7 +93,7 @@ class BackendProductEditSchema(colander.MappingSchema):
 class BackendProductAddForm(BaseFormView):
     """ A form view to instantiate a new BackendProduct
     """
-    schema_factory = BackendProductAddSchema
+    schema_factory = BackendProductSchema
     success_message = _(u"Product added")
 
     def save_success(self, appstruct):
@@ -133,7 +108,7 @@ class BackendProductEditForm(EditFormView):
     """ A form view to edit a BackendProduct
         Example: www.mykottisite.com/@@edit_product?product_id=3
     """
-    schema_factory = BackendProductEditSchema
+    schema_factory = BackendProductSchema
     success_message = _(u"Product details saved.")
     first_heading = (u"Edit product details")
 
