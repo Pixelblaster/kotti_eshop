@@ -1,3 +1,4 @@
+from datetime import datetime
 from deform.widget import MoneyInputWidget
 from deform.widget import RichTextWidget
 from deform.widget import TextAreaWidget
@@ -11,12 +12,14 @@ from kotti.views.form import get_appstruct
 from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
+from kotti_eshop.resources import ShoppingCart
 from kotti_eshop.views.widget import SelectizeWidget
 from pyramid.decorator import reify
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 from pyramid.view import view_defaults
 import colander
+import uuid
 
 
 def unique_pin(node, pin):
@@ -220,7 +223,6 @@ class AdminViews(BaseFormView):
     """
 
     schema_factory = CameFromSchema
-    import pdb; pdb.set_trace( )
 
     def delete_backend_product_success(self, appstruct):
         product_id = self.request.params.get('backend_product_id', None)
@@ -262,12 +264,24 @@ class ShoppingCartViews(BaseView):
             product_id = self.request.params.get('backend_product_id', None)
             quantity = int(self.request.params.get('quantity', 0))
             if product_id is not None and quantity > 0:
-                pass
-                # [TODO]
-                # check session for uuid
-                # create or get shopping cart with this uuid
-                # add product * quantity to cart
-                # redirect to cart view?
+                # CREATE cart
+                if 'shoppingcart_uid' not in self.request.session:
+                    shoppingcart_uid = str(uuid.uuid4())
+                    cart = ShoppingCart(
+                            shoppingcart_uid=shoppingcart_uid,
+                            creation_date=datetime.today()
+                        )
+                    DBSession.add(cart)
+                    self.request.session['shoppingcart_uid'] = shoppingcart_uid
+                # GET cart
+                else:
+                    shoppingcart_uid = str(self.request.session.get(
+                        'shoppingcart_uid'))
+                    cart = DBSession.query(ShoppingCart).filter_by(
+                        shoppingcart_uid=shoppingcart_uid).first()
+
+                # [TODO] cart.add_product(product_id=product_id,
+                #                         quantity=quantity)
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root))
 

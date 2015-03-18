@@ -76,10 +76,14 @@ class ShoppingCart(Base):
     __tablename__ = 'shopping_carts'
 
     id = Column(Integer(), primary_key=True)
-    uuid = Column(Unicode(512))
+    shoppingcart_uid = Column(Unicode(512))
     creation_date = Column(DateTime())  # a shopping cart can live 30 days
 
     products = relationship("ProductCartPlacement", backref="shopping_cart")
+
+    def __init__(self, **kw):
+        super(ShoppingCart, self).__init__(**kw)
+        self.__dict__.update(kw)
 
 
 class ProductCartPlacement(Base):
