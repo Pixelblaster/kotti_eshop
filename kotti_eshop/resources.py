@@ -119,10 +119,11 @@ class ShoppingCart(Base):
         """
         if product_id is not None and delta is not None:
             content_record = self.get_content_record(product_id=product_id)
-            if delta != 0:
-                content_record.quantity += delta
-            else:
-                DBSession.remove(content_record)
+            if content_record:
+                if delta != 0:
+                    content_record.quantity += delta
+                else:
+                    DBSession.delete(content_record)
 
 
 class ProductCartPlacement(Base):

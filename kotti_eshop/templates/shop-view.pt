@@ -20,8 +20,25 @@
         <p>Some filters here for products</p>
       </div>
       <div class="shop-products-col col col-lg-10 col-md-10 col-sm-12 col-xs-12">
-        <h3>Products</h3>
-        <p>list of products + pagination</p>
+      
+        <!-- ALL PRODUCTS -->
+        <div class="row products-list">
+          <h3>Products</h3>
+          <tal:repeat repeat="product api.get_all_backend_products()">
+            <div class="product-item-col col col-lg-4 col-md-6 col-sm-12 col-xs-12">
+
+              <h3 class="product-title">${product.title}</h3>
+              <div class="product-details">
+                <p>${product.description}</p>
+                <h4 class="price-simple">
+                  ${python: float(product.price)} ${api.shop_currency()}
+                </h4>
+              </div>
+
+            </div>
+          </tal:repeat>
+        </div><!-- ALL PRODUCTS -->
+
       </div>      
     </div>
   </article>

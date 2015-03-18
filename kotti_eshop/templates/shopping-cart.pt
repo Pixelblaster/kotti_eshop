@@ -15,11 +15,15 @@
           <button class="add-to-cart shop-add-btn btn btn-primary" name="add_to_cart">
             Add to cart
           </button>
+          <button tal:condition="shopping_cart and shopping_cart.get_content_record(product.id)"
+                  class="remove-from-cart shop-remove-btn btn btn-danger" name="remove_from_cart">
+            Remove from cart
+          </button>
           <a class="view-cart shop-view-btn btn btn-default" href="">
             View cart
           </a>
           <input type="hidden" name="backend_product_id" value="${product.id}">
-          <input type="hidden" name="quantity" value="3"><!-- [TODO] option change quantity -->
+          <input type="number" name="quantity" value="1" min="1">
         </form>
       </p>
     </tal:condition>
