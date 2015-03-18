@@ -107,7 +107,7 @@ class ProductCartPlacement(Base):
     shopping_cart = relationship(ShoppingCart,
                                  backref="cart_content")
 
-    def __init__(self, shopping_cart=None, product=None, quantity=0):
+    def __init__(self, shopping_cart=None, product=None, quantity=None):
         super(ProductCartPlacement, self).__init__()
 
         if shopping_cart is not None:
@@ -115,3 +115,6 @@ class ProductCartPlacement(Base):
 
         if product is not None:
             self.product = product
+
+        if quantity is not None:
+            self.quantity = quantity
