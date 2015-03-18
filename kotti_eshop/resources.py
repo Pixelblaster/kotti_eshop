@@ -91,6 +91,14 @@ class ShoppingCart(Base):
                                    quantity=quantity)
         DBSession.add(pcp)
 
+    def get_total_price(self):
+        total = 0
+        for content_record in self.cart_content:
+            unit_price = content_record.product.price
+            quantity = content_record.quantity
+            total += unit_price * quantity
+        return float(total)
+
 
 class ProductCartPlacement(Base):
     __tablename__ = 'shopping_carts_to_products_association'

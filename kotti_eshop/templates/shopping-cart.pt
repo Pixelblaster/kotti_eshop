@@ -42,7 +42,8 @@
           <th>PIN</th>
           <th>Title</th>
           <th>Quantity</th>
-          <th>Price</th>
+          <th>Unit price</th>
+          <th>Total price</th>
         </tr>
       </thead>
       <tbody>
@@ -51,10 +52,12 @@
             <td>${product.pin}</td>
             <td>${product.title}</td>
             <td>${content_record.quantity}</td>
-            <td>${product.price}</td>
+            <td>${python: float(product.price)}</td>
+            <td>${python: float(product.price) * content_record.quantity} ${api.shop_currency()}</td>
           </tr>
         </tal:repeat>
       </tbody>
     </table>
+    <h5><b>Cart Total: ${shopping_cart.get_total_price()} ${api.shop_currency()}</b></h5>
   </div>
 </div>
