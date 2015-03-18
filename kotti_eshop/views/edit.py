@@ -139,7 +139,7 @@ class BackendProductEditForm(EditFormView):
         product_id = get.get('product_id', None)
         if product_id is not None:
             product = DBSession.query(BackendProduct).filter(
-                BackendProduct.id == product_id).first()
+                BackendProduct.id == int(product_id)).first()
             if product:
                 product.pin = appstruct['pin']
                 product.title = appstruct['title']
@@ -204,42 +204,39 @@ class AssignBackendProductForm(BaseFormView):
         return super(AssignBackendProductForm, self).before(form)
 
 
-@view_defaults(permission="manage")
-class AdminViews(BaseView):
+@view_config(name='shop_admin', permission="manage",
+                renderer='kotti_eshop:templates/shop-admin-view.pt')
+class AdminViews(BaseFormView):
+    """ Shop administration panel
+    """
 
-    @view_config(name='shop_admin',
-                 renderer='kotti_eshop:templates/shop-admin-view.pt')
-    def shop_admin_view(self):
-        """ Shop administration panel
-        """
-        # DELETE product
-        if 'delete_backend_product' in self.request.params:
-            product_id = self.request.params.get('backend_product_id', None)
-            if product_id is not None:
-                product = DBSession.query(BackendProduct).filter(
-                    BackendProduct.id == product_id).first()
-                if product:
-                    DBSession.delete(product)
-                    root = get_root()
-                    return HTTPFound(location=self.request.resource_url(root) +
-                                     '@@shop_admin?action=products')
+    schema_factory = SchemaNode
 
-        # DELETE assignment
-        if 'delete_product_assignment' in self.request.params:
-            product_id = self.request.params.get('backend_product_id', None)
-            content_item_id = self.request.params.get('content_item_id', None)
-            if product_id is not None and content_item_id is not None:
-                product = DBSession.query(BackendProduct).filter(
-                    BackendProduct.id == product_id).first()
-                if product:
-                    for content in product.assigned_content:
-                        if content.id == int(content_item_id):
-                            product.assigned_content.remove(content)
+    def delete_backend_product_success(self, appstruct):
+        product_id = self.request.params.get('backend_product_id', None)
+        if product_id is not None:
+            product = DBSession.query(BackendProduct).filter(
+                BackendProduct.id == product_id).first()
+            if product:
+                DBSession.delete(product)
+                root = get_root()
+                return HTTPFound(location=self.request.resource_url(root) +
+                                    '@@shop_admin?action=products')
 
-                    root = get_root()
-                    return HTTPFound(location=self.request.resource_url(root) +
-                                     '@@shop_admin?action=products')
-        return {}
+    def delete_product_assignment_success(self):
+        product_id = self.request.params.get('backend_product_id', None)
+        content_item_id = self.request.params.get('content_item_id', None)
+        if product_id is not None and content_item_id is not None:
+            product = DBSession.query(BackendProduct).filter(
+                BackendProduct.id == product_id).first()
+            if product:
+                for content in product.assigned_content:
+                    if content.id == int(content_item_id):
+                        product.assigned_content.remove(content)
+
+                root = get_root()
+                return HTTPFound(location=self.request.resource_url(root) +
+                                    '@@shop_admin?action=products')
 
 
 @view_defaults(permission="view")
