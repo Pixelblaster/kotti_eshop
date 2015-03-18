@@ -1,5 +1,6 @@
 from kotti.resources import DBSession
 from kotti_eshop.resources import BackendProduct
+from kotti_eshop.resources import ShoppingCart
 from pyramid.exceptions import PredicateMismatch
 from pyramid.view import view_config
 
@@ -19,8 +20,14 @@ def shopping_cart(context, request):
     if context.backend_products:
         backend_product = context.backend_products[0]
 
+    cart = None
+    if 'shoppingcart_uid' in request.session:
+        shoppingcart_uid = str(request.session['shoppingcart_uid'])
+        cart = DBSession.query(ShoppingCart).filter_by(
+            shoppingcart_uid=shoppingcart_uid).first()
     return {
-        'product': backend_product
+        'product': backend_product,
+        'shopping_cart': cart,
     }
 
 
