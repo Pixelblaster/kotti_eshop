@@ -83,15 +83,29 @@ class ShoppingCart(Base):
         super(ShoppingCart, self).__init__(**kw)
         self.__dict__.update(kw)
 
+    def get_content_record(self, product_id=None):
+        """ Get content record for a given product id
+        """
+        content_record = DBSession.query(ProductCartPlacement).filter(
+            ProductCartPlacement.shopping_cart_id == self.id,
+            ProductCartPlacement.product_id == product_id).first()
+        return content_record
+
     def add_to_cart(self, product_id=None, quantity=1):
         """ Add product to cart
         """
         product = DBSession.query(BackendProduct).get(product_id)
-        pcp = ProductCartPlacement(shopping_cart=self, product=product,
-                                   quantity=quantity)
-        DBSession.add(pcp)
+        content_record = self.get_content_record(product_id=product_id)
+        if content_record:
+            self.change_product_quantity(product_id=product_id, delta=quantity)
+        else:
+            pcp = ProductCartPlacement(shopping_cart=self, product=product,
+                                       quantity=quantity)
+            DBSession.add(pcp)
 
     def get_total_price(self):
+        """ Get total price for all products in cart
+        """
         total = 0
         for content_record in self.cart_content:
             unit_price = content_record.product.price
@@ -99,8 +113,21 @@ class ShoppingCart(Base):
             total += unit_price * quantity
         return float(total)
 
+    def change_product_quantity(self, product_id=None, delta=None):
+        """ Change quantity for given product in this cart
+            * delta=0 means you want to delete all quantity
+        """
+        if product_id is not None and delta is not None:
+            content_record = self.get_content_record(product_id=product_id)
+            if delta != 0:
+                content_record.quantity += delta
+            else:
+                DBSession.remove(content_record)
+
 
 class ProductCartPlacement(Base):
+    """ What products in what carts, in what quantity
+    """
     __tablename__ = 'shopping_carts_to_products_association'
 
     shopping_cart_id = Column(Integer, ForeignKey('shopping_carts.id'),
