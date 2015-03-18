@@ -79,7 +79,7 @@ class ShoppingCart(Base):
     shoppingcart_uid = Column(Unicode(512))
     creation_date = Column(DateTime())  # a shopping cart can live 30 days
 
-    products = relationship("ProductCartPlacement", backref="shopping_cart")
+    #products = relationship("ProductCartPlacement", backref="shopping_cart")
 
     def __init__(self, **kw):
         super(ShoppingCart, self).__init__(**kw)
@@ -104,8 +104,10 @@ class ProductCartPlacement(Base):
 
     quantity = Column(Integer())
 
-    product = relationship(BackendProduct, backref="placed_in_cart")
-    shopping_cart = relationship(ShoppingCart, backref="shopping_cart")
+    product = relationship(BackendProduct,
+                           backref="shoppingcart_placements")
+    shopping_cart = relationship(ShoppingCart,
+                                 backref="cart_content")
 
     def __init__(self, shopping_cart=None, product=None):
         super(ProductCartPlacement, self).__init__()
