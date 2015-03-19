@@ -13,4 +13,8 @@ kotti_eshop/views/widget.pyc
 lib/
 local/
 src/
+.cache/
+.coverage
+kotti_eshop/tests/__pycache__/
+kotti_eshop/tests/conftest.pyc
 
