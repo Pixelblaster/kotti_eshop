@@ -51,11 +51,9 @@ def includeme(config):
 
     config.add_translation_dirs('kotti_eshop:locale')
     config.add_static_view('static-kotti_eshop', 'kotti_eshop:static')
+    config.add_route("kotti_eshop", "/-shop/*traverse", factory=get_shop_root)
 
     config.scan(__name__)
 
     assign_slot('shopping_cart', 'abovecontent')
 
-    config.add_route("kotti_eshop", "/-shop/", factory=get_shop_root)
-    config.add_route("kotti_eshop_views", "/-shop/*traverse",
-                     factory=get_shop_root)

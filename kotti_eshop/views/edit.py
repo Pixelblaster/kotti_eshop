@@ -271,13 +271,13 @@ def view_shop_root(context, request):
     return {}
 
 
-@view_config(name="products", context=ShopRoot, route_name="kotti_eshop_views",
+@view_config(name="products", context=ShopRoot, route_name="kotti_eshop",
              renderer="kotti_eshop:templates/shop-admin-products.pt")
 def shop_admin_products(context, request):
     return {}
 
 
-@view_config(name="clients", context=ShopRoot, route_name="kotti_eshop_views",
+@view_config(name="clients", context=ShopRoot, route_name="kotti_eshop",
              renderer="kotti_eshop:templates/shop-admin-clients.pt")
 def shop_admin_clients(context, request):
     return {}
