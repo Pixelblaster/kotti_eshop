@@ -1,0 +1,10 @@
+<div class="col col-lg-2 col-md-2 col-sm-12 col-xs 12">
+  <div class="panel panel-default">
+    <div class="panel-heading">${parent.title}</div>
+    <ul class="list-group">
+      <li tal:repeat="link parent.children" class="list-group-item">
+        <a href="${link.url(context, request)}">${link.title}</a>
+      </li>
+    </ul>
+  </div>
+</div>
