@@ -371,6 +371,7 @@ class CheckoutView(BaseFormView):
 
         client = DBSession.query(ShopClient).filter_by(email=email).first()
         if client:
+            client.shopping_cart = []
             cart.client.append(client)
         else:
             client = ShopClient(email=email, creation_date=datetime.today())

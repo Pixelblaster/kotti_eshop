@@ -20,7 +20,8 @@
     <div tal:repeat="client api.get_all_clients()">
       <p><b>${client.email}</b> created on ${api.format_datetime(client.creation_date)} has cart:</p>
       <ol>
-        <li tal:repeat="shopping_cart client.shopping_cart">${shopping_cart} with products: 
+        <li tal:repeat="shopping_cart client.shopping_cart">${shopping_cart.shoppingcart_uid} 
+        created on ${api.format_datetime(shopping_cart.creation_date)} with products: 
           <ol>
             <tal:repeat repeat="content_record shopping_cart.cart_content">
               <li tal:define="product content_record.product">
