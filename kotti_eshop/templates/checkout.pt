@@ -14,5 +14,25 @@
   	<p>Form client, address</p>
     <p tal:content="structure view.form_description() | default"></p>
     <form tal:replace="structure form" />
+
+    <!-- for tests -->
+    <h4>For tests [TODO] Remove me:</h4>
+    <div tal:repeat="client api.get_all_clients()">
+      <p><b>${client.email}</b> created on ${api.format_datetime(client.creation_date)} has cart:</p>
+      <ol>
+        <li tal:repeat="shopping_cart client.shopping_cart">${shopping_cart} with products: 
+          <ol>
+            <tal:repeat repeat="content_record shopping_cart.cart_content">
+              <li tal:define="product content_record.product">
+                ${product.pin} - ${product.title} - ${content_record.quantity} - 
+                ${python: float(product.price)} ${api.shop_currency()} - 
+                ${python: float(product.price) * content_record.quantity} ${api.shop_currency()}
+              </li>
+            </tal:repeat>
+          </ol>
+        </li>
+      </ol>
+    </div>
+    <!-- for tests -->
   </article>
 </html>

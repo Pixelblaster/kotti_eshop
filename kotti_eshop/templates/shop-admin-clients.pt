@@ -28,14 +28,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr tal:repeat="client api.shop_clients()">
+            <tr tal:repeat="client api.get_all_clients()">
               <td>${client.id}</td>
-              <td>${client.creation_date}</td>
               <td>${client.email}</td>
+              <td>${client.creation_date}</td>
               <td>
-                <a class="btn btn-xs btn-warning" href="${api.url(client, '@@edit')}">Edit</a>
-                <a class="btn btn-xs btn-danger" href="${api.url(client, '@@delete')}">Delete</a>
-                <a class="btn btn-xs btn-primary" href="${api.url(client, '@@cart')}">View cart</a>
+                <a class="btn btn-xs btn-warning" href="">Edit</a>
+                <a class="btn btn-xs btn-danger" href="">Delete</a>
+                <a class="btn btn-xs btn-primary" href="">View cart</a>
               </td>
             </tr>
           </tbody>

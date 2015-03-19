@@ -368,11 +368,15 @@ class CheckoutView(BaseFormView):
         shoppingcart_uid = str(self.request.session.get('shoppingcart_uid'))
         cart = DBSession.query(ShoppingCart).filter_by(
             shoppingcart_uid=shoppingcart_uid).first()
-        client = ShopClient(email=email, creation_date=datetime.today())
-        cart.client.append(client)
+
+        client = DBSession.query(ShopClient).filter_by(email=email).first()
+        if client:
+            cart.client.append(client)
+        else:
+            client = ShopClient(email=email, creation_date=datetime.today())
+            cart.client.append(client)
 
         # [TODO]
-        # if client with this email exists don't create a new client
         # create order
         # empty shopping cart?
         root = get_root()
