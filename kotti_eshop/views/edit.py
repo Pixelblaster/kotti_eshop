@@ -13,6 +13,7 @@ from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
 from kotti_eshop.resources import ShoppingCart
+from kotti_eshop.resources import ShopClient
 from kotti_eshop.views import BaseView
 from kotti_eshop.views.widget import SelectizeWidget
 from pyramid.decorator import reify
@@ -356,11 +357,6 @@ class CheckoutView(BaseFormView):
     buttons = ('finish', 'back')
     success_message = _(u"Order finished. Check your email for notifications.")
 
-    # def before(self, form):
-    #     form.appstruct = get_appstruct(self.context, self.schema)
-    #     form.appstruct['name'] = self.context.title
-    #     form.appstruct['description'] = self.context.description
-
     def first_heading(self):
         return _(u"Enter details:")
 
@@ -368,8 +364,15 @@ class CheckoutView(BaseFormView):
         return _(u"Form description")
 
     def finish_success(self, appstruct):
+        email = appstruct['email']
+        shoppingcart_uid = str(self.request.session.get('shoppingcart_uid'))
+        cart = DBSession.query(ShoppingCart).filter_by(
+            shoppingcart_uid=shoppingcart_uid).first()
+        client = ShopClient(email=email)
+        cart.client.append(client)
+
         # [TODO]
-        # create shop client
+        # if client with this email exists don't create a new client
         # create order
         # empty shopping cart?
         root = get_root()
