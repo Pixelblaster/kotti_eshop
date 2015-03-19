@@ -10,7 +10,6 @@ from kotti.views.form import EditFormView
 from kotti.views.form import get_appstruct
 from kotti_eshop import ShopRoot
 from kotti_eshop import _
-from kotti_eshop import get_shop_root
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
 from kotti_eshop.resources import ShoppingCart
