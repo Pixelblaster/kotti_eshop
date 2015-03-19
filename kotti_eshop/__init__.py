@@ -21,7 +21,7 @@ def kotti_configure(settings):
     s['kotti.fanstatic.view_needed'] += ' kotti_eshop.fanstatic.css_and_js'
     s['kotti.templates.api'] = 'kotti_eshop.resources.TemplateAPI'
 
-    settings = RouteLink('shop_root', title=_(u'Kotti E-Shop Management'))
+    settings = RouteLink('kotti_eshop', title=_(u'Kotti E-Shop Management'))
     CONTROL_PANEL_LINKS.append(settings)
 
     Document.type_info.selectable_default_views.append(

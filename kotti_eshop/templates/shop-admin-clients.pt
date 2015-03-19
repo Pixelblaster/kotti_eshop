@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xml:lang="en"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  metal:use-macro="api.macro('kotti:templates/site-setup/master.pt')">
+
+  <div metal:fill-slot="editor-bar"></div>
+
+  <article metal:fill-slot="content"
+    class="content"
+    i18n:domain="kotti_eshop">
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <h1 i18n:translate="">Global shop settings</h1>
+    <div class="row" tal:define="action request.GET.get('action', '');">
+      <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
+        <h3>Clients</h3>
+
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nickname (Fullname)</th>
+              <th>Email</th>
+              <th>Deliver Address</th>
+              <th>Status</th>
+              <th>Last IP login</th>
+              <th>Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr tal:repeat="client shop_clients">
+              <td>${client.id}</td>
+              <td>
+                <a href="${api.url(client)}">${client.nickname}</a> (${client.fullname})
+              </td>
+              <td>
+                ${client.email} (${client.paypal_email})
+              </td>
+              <td>${client.deliver_address}</td>
+              <td>${client.status}</td>
+              <td>${client.last_ip_login}</td>
+              <td>
+                <a class="btn btn-xs btn-warning" href="${api.url(client, '@@edit')}">Edit</a>
+                <a class="btn btn-xs btn-danger" href="${api.url(client, '@@delete')}">Delete</a>
+                <a class="btn btn-xs btn-primary" href="${api.url(client, '@@cart')}">View cart</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </article>
+</html>
