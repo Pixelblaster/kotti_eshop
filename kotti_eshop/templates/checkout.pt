@@ -11,6 +11,8 @@
            i18n:domain="kotti_eshop">
 
     <h2>Checkout</h2>
-	<p>Form client, address</p>
+  	<p>Form client, address</p>
+    <p tal:content="structure view.form_description() | default"></p>
+    <form tal:replace="structure form" />
   </article>
 </html>

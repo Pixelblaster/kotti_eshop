@@ -334,3 +334,48 @@ class ShoppingCartViews(BaseView):
     renderer="kotti_eshop:templates/edit/assign-product-menu-entry.pt")
 def assign_product_menu_entry(context, request):
     return {}
+
+
+class CheckoutSchema(colander.MappingSchema):
+    """ Schema for Checkout form
+    """
+    email = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Email'),
+        description=_(u'To receive notifications about your order.'),
+    )
+
+
+@view_config(name='checkout', permission='view',
+             renderer='kotti_eshop:templates/checkout.pt')
+class CheckoutView(EditFormView):
+    """ Checkout view
+    """
+
+    schema_factory = CheckoutSchema
+
+    # def before(self, form):
+    #     form.appstruct = get_appstruct(self.context, self.schema)
+    #     form.appstruct['name'] = self.context.title
+    #     form.appstruct['description'] = self.context.description
+
+    def first_heading(self):
+        return _(u"Enter details:")
+
+    def form_description(self):
+        return _(u"Form description")
+
+    def edit(self, **appstruct):
+        print "edited"
+        # self.context.name = self.context.name
+        # self.context.title = appstruct['name']
+        # self.context.description = appstruct['description']
+
+    @property
+    def success_url(self):
+        root = get_root()
+        return self.request.resource_url(root)
+
+    def cancel_success(self, appstruct):
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root))

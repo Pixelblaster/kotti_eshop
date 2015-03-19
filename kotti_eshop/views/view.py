@@ -31,14 +31,6 @@ def shopping_cart(context, request):
     }
 
 
-@view_config(name='checkout', permission='view',
-             renderer='kotti_eshop:templates/checkout.pt')
-def checkout_view(self):
-    """ Checkout view
-    """
-    return {}
-
-
 @view_config(name='shop_view', permission='view',
              renderer='kotti_eshop:templates/shop-view.pt')
 def shop_view(self):
