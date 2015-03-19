@@ -40,7 +40,7 @@
               </a>
             </li>
             <li class="list-group-item">
-              <a href="${api.url(context,'@@settings')}">Edit shop settings</a>
+              <a href="${api.url(api.root,'@@settings')}">Edit shop settings</a>
             </li>
           </ul>
         </div>

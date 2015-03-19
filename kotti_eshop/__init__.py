@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
-#from kotti.resources import Content
 from kotti.resources import Document
 from kotti.resources import default_actions
-from kotti.resources import get_root
 from kotti.util import LinkRenderer
 from kotti.views.site_setup import CONTROL_PANEL_LINKS
 from kotti.views.slots import assign_slot
@@ -28,15 +26,6 @@ def kotti_configure(settings):
         ('shop_view', 'Shop View'))
 
     default_actions.children.append(LinkRenderer("assign-product-menu-entry"))
-
-
-def get_kotti_root(request):
-    return get_root()
-
-
-from kotti.views.view import view_content_default
-def view_root(context, request):
-    return view_content_default(context, request)
 
 
 class Root(object):
@@ -66,7 +55,15 @@ def includeme(config):
     config.scan(__name__)
     assign_slot('shopping_cart', 'abovecontent')
 
-    config.add_route("root", "/", factory=get_kotti_root)
-    config.add_view(view_root, route_name="root")
     config.add_route("kotti_eshop", "/-shop/", factory=get_shop_root)
-    config.add_route("kotti_eshop_views", "/-shop/*traverse", factory=get_shop_root)
+    config.add_route("kotti_eshop_views", "/-shop/*traverse",
+                     factory=get_shop_root)
+
+    # from kotti.resources import get_root
+    # from kotti.views.view import view_content_default
+    # def get_kotti_root(request):
+    #     return get_root()
+    # def view_root(context, request):
+    #     return view_content_default(context, request)
+    # config.add_route("root", "/", factory=get_kotti_root)
+    # config.add_view(view_root, route_name="root")
