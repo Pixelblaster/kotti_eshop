@@ -1,60 +1,38 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en"
-      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-      xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal"
-      metal:use-macro="api.macro('kotti:templates/site-setup/master.pt')">
+  xml:lang="en"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  metal:use-macro="api.macro('kotti:templates/site-setup/master.pt')">
 
   <div metal:fill-slot="editor-bar"></div>
 
   <article metal:fill-slot="content"
-           class="content"
-           i18n:domain="kotti_eshop">
+    class="content"
+    i18n:domain="kotti_eshop">
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
 
     <h1 i18n:translate="">Global shop settings</h1>
 
+    1
+    ${api.render_view(context, '@@shop-admin-menu')}2
+
     <div class="row">
 
       <!-- menu left -->
-      <div class="col col-lg-2 col-md-2 col-sm-12 col-xs 12">
-        <div class="panel panel-default">
-          <div class="panel-heading">Options</div>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <a href="${api.url(context)}">Main</a>
-            </li>
-            <li class="list-group-item">
-              <a href="${api.url(context)}@@add-product">Add a product</a>
-            </li>
-            <li class="list-group-item">
-              <a href="${api.url(context)}@@products">
-                Manage products
-              </a>
-            </li>
-            <li class="list-group-item">
-              <a href="${api.url(context)}@@clients">
-                Manage clients
-              </a>
-            </li>
-            <li class="list-group-item">
-              <a href="${api.url(api.root,'@@settings')}">Edit shop settings</a>
-            </li>
-          </ul>
-        </div>
-      </div><!-- menu left -->
+      <!-- menu left -->
 
       <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
         <!-- ADMIN MAIN -->
-          <h3>Admin main</h3>
-          <p>Maybe you want <a href="${api.url(api.root, '@@shop_admin')}?action=products">manage products</a> or
-             <a href="${api.url(api.root, '@@shop_admin')}?action=clients">clients</a>
-          </p>
-          <h4>Shop Settings</h4>
-          <p>Currency: ${api.shop_currency()}</p>
-          <p>You can change these <a href="${api.url(api.root, '@@settings')}">settings in Shop settings tab</a>.</p>
+        <h3>Admin main</h3>
+        <p>Maybe you want <a href="${api.url(api.root, '@@shop_admin')}?action=products">manage products</a> or
+          <a href="${api.url(api.root, '@@shop_admin')}?action=clients">clients</a>
+        </p>
+        <h4>Shop Settings</h4>
+        <p>Currency: ${api.shop_currency()}</p>
+        <p>You can change these <a href="${api.url(api.root, '@@settings')}">settings in Shop settings tab</a>.</p>
 
       </div>
     </div>

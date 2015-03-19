@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
     <h1 i18n:translate="">Global shop settings</h1>
     <div class="row" tal:define="action request.GET.get('action', '');">
+
+      ${api.render_view('shop-admin-menu')}
+
       <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
         <h3>Clients</h3>
 
