@@ -42,6 +42,12 @@ product_association_table = Table(
     Column('contents_id', Integer(), ForeignKey('contents.id')),
 )
 
+client_cart_association_table = Table(
+    'clients_to_carts', Base.metadata,
+    Column('shopclient_id', Integer(), ForeignKey('shop_clients.id')),
+    Column('shoppingcart_id', Integer(), ForeignKey('shopping_carts.id')),
+)
+
 
 class BackendProduct(Base):
     """ A backend product in this eShop
@@ -78,6 +84,9 @@ class ShoppingCart(Base):
     id = Column(Integer(), primary_key=True)
     shoppingcart_uid = Column(Unicode(512))
     creation_date = Column(DateTime())  # a shopping cart can live 30 days
+
+    client = relationship("ShopClient", backref="shopping_cart",
+                          secondary=client_cart_association_table)
 
     def __init__(self, **kw):
         super(ShoppingCart, self).__init__(**kw)
@@ -154,3 +163,11 @@ class ProductCartPlacement(Base):
 
         if quantity is not None:
             self.quantity = quantity
+
+
+class ShopClient(Base):
+    """ A client in this eShop
+    """
+    __tablename__ = 'shop_clients'
+    id = Column(Integer(), primary_key=True)
+    email = Column(Unicode(254))
