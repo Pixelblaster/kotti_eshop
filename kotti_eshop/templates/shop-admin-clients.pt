@@ -22,26 +22,16 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>Nickname (Fullname)</th>
               <th>Email</th>
-              <th>Deliver Address</th>
-              <th>Status</th>
-              <th>Last IP login</th>
+              <td>Creation date</td>
               <th>Options</th>
             </tr>
           </thead>
           <tbody>
-            <tr tal:repeat="client shop_clients">
+            <tr tal:repeat="client api.shop_clients()">
               <td>${client.id}</td>
-              <td>
-                <a href="${api.url(client)}">${client.nickname}</a> (${client.fullname})
-              </td>
-              <td>
-                ${client.email} (${client.paypal_email})
-              </td>
-              <td>${client.deliver_address}</td>
-              <td>${client.status}</td>
-              <td>${client.last_ip_login}</td>
+              <td>${client.creation_date}</td>
+              <td>${client.email}</td>
               <td>
                 <a class="btn btn-xs btn-warning" href="${api.url(client, '@@edit')}">Edit</a>
                 <a class="btn btn-xs btn-danger" href="${api.url(client, '@@delete')}">Delete</a>

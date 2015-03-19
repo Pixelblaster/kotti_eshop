@@ -28,6 +28,13 @@ class TemplateAPI(BaseTemplateAPI):
             BackendProduct.created)
         return products
 
+    def get_all_clients(self):
+        """ Returns all shop clients
+        """
+        clients = DBSession.query(ShopClient).order_by(
+            ShopClient.creation_date)
+        return clients
+
     def get_backend_product(self, product_id):
         """ Get backend product by id
         """
@@ -171,3 +178,4 @@ class ShopClient(Base):
     __tablename__ = 'shop_clients'
     id = Column(Integer(), primary_key=True)
     email = Column(Unicode(254))
+    creation_date = Column(DateTime())

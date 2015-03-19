@@ -368,7 +368,7 @@ class CheckoutView(BaseFormView):
         shoppingcart_uid = str(self.request.session.get('shoppingcart_uid'))
         cart = DBSession.query(ShoppingCart).filter_by(
             shoppingcart_uid=shoppingcart_uid).first()
-        client = ShopClient(email=email)
+        client = ShopClient(email=email, creation_date=datetime.today())
         cart.client.append(client)
 
         # [TODO]
