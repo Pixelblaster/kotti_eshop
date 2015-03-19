@@ -33,6 +33,12 @@
           </ol>
         </li>
       </ol>
+      and addresses:
+      <ol>
+        <li tal:repeat="address client.shipping_addresses">
+          ${address.address}
+        </li>
+      </ol>      
     </div>
     <!-- for tests -->
   </article>

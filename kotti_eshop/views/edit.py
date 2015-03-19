@@ -14,6 +14,7 @@ from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
 from kotti_eshop.resources import ShoppingCart
 from kotti_eshop.resources import ShopClient
+from kotti_eshop.resources import ShippingAddress
 from kotti_eshop.views import BaseView
 from kotti_eshop.views.widget import SelectizeWidget
 from pyramid.decorator import reify
@@ -155,7 +156,6 @@ class BackendProductEditForm(EditFormView):
                          '@@shop_admin?action=products')
 
 
-
 class PKType(colander.Integer):
 
     def __init__(self, model):
@@ -240,11 +240,11 @@ class AdminViews(BaseFormView):
 
     def delete_backend_product_success(self, appstruct):
         product = appstruct['backend_product']
-        if not product.assigned_to_content: # avoid integrity error
+        if not product.assigned_to_content:  # avoid integrity error
             DBSession.delete(product)
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
-                            '@@shop_admin?action=products')
+                         '@@shop_admin?action=products')
 
     def delete_product_assignment_success(self, appstruct):
         product = appstruct['product']
@@ -264,7 +264,7 @@ class AdminViews(BaseFormView):
         #                          '@@shop_admin?action=products')
 
 
-@view_config(name="", #permission="edit",
+@view_config(name="",  # permission="edit",
              route_name="kotti_eshop",
              renderer='kotti_eshop:templates/shop-admin-view.pt')
 def view_shop_root(context, request):
@@ -346,6 +346,12 @@ class CheckoutSchema(colander.MappingSchema):
         description=_(u'To receive notifications about your order.'),
     )
 
+    shipping_address = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Shipping address'),
+        description=_(u'There we will send the products.'),
+    )
+
 
 @view_config(name='checkout', permission='view',
              renderer='kotti_eshop:templates/checkout.pt')
@@ -365,6 +371,7 @@ class CheckoutView(BaseFormView):
 
     def finish_success(self, appstruct):
         email = appstruct['email']
+
         shoppingcart_uid = str(self.request.session.get('shoppingcart_uid'))
         cart = DBSession.query(ShoppingCart).filter_by(
             shoppingcart_uid=shoppingcart_uid).first()
@@ -377,6 +384,12 @@ class CheckoutView(BaseFormView):
             client = ShopClient(email=email, creation_date=datetime.today())
             cart.client.append(client)
 
+        shipping_address = ShippingAddress(
+            address=appstruct['shipping_address'])
+
+        client.shipping_addresses.append(shipping_address)
+        # also:
+        # order.shipping_address.append(shipping_address)
         # [TODO]
         # create order
         # empty shopping cart?

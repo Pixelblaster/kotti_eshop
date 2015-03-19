@@ -55,6 +55,13 @@ client_cart_association_table = Table(
     Column('shoppingcart_id', Integer(), ForeignKey('shopping_carts.id')),
 )
 
+client_addresses_association_table = Table(
+    'clients_to_addresses', Base.metadata,
+    Column('shopclient_id', Integer(), ForeignKey('shop_clients.id')),
+    Column('shipping_address_id', Integer(),
+           ForeignKey('shipping_addresses.id')),
+)
+
 
 class BackendProduct(Base):
     """ A backend product in this eShop
@@ -179,6 +186,10 @@ class ShopClient(Base):
     id = Column(Integer(), primary_key=True)
     email = Column(Unicode(254))
     creation_date = Column(DateTime())
+
+    shipping_addresses = relationship(
+        "ShippingAddress", backref="client",
+        secondary=client_addresses_association_table)
 
 
 class ShippingAddress(Base):
