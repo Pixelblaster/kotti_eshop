@@ -17,4 +17,5 @@ src/
 .coverage
 kotti_eshop/tests/__pycache__/
 kotti_eshop/tests/conftest.pyc
+kotti_eshop/util.pyc
 
