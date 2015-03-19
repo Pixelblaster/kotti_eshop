@@ -117,7 +117,7 @@
                 <td>${product.title}</td>
                 <td>${product.description}</td>
                 <td>
-                  <tal:repeat repeat="content_item product.assigned_content">
+                  <tal:repeat repeat="content_item product.assigned_to_content">
                     <form method="POST" action="${request.resource_url(api.root, '@@shop_admin')}">
                       <a href="${api.url(content_item)}">${content_item.title}</a>
                       <button class="btn btn-xs btn-danger" name="delete_product_assignment">

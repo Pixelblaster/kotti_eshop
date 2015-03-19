@@ -61,9 +61,9 @@ class BackendProduct(Base):
     price = Column(Float(asdecimal=True))
     created = Column(DateTime())
 
-    assigned_content = relationship(Content,
-                                    backref="backend_products",
-                                    secondary=product_association_table)
+    assigned_to_content = relationship(Content,
+                                       backref="backend_products",
+                                       secondary=product_association_table)
 
     def __init__(self, **kw):
         super(BackendProduct, self).__init__(**kw)

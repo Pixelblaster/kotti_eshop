@@ -1,18 +1,19 @@
 from datetime import datetime
+from deform.widget import HiddenWidget
 from deform.widget import MoneyInputWidget
 from deform.widget import RichTextWidget
 from deform.widget import TextAreaWidget
-from deform.widget import HiddenWidget
-from kotti_eshop.views import BaseView
 from kotti.resources import DBSession
 from kotti.resources import get_root
 from kotti.views.form import BaseFormView
 from kotti.views.form import EditFormView
 from kotti.views.form import get_appstruct
+from kotti_eshop import ShopRoot
 from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
 from kotti_eshop.resources import ShoppingCart
+from kotti_eshop.views import BaseView
 from kotti_eshop.views.widget import SelectizeWidget
 from pyramid.decorator import reify
 from pyramid.httpexceptions import HTTPFound
@@ -21,17 +22,6 @@ from pyramid.view import view_defaults
 import colander
 import deform
 import uuid
-
-
-def unique_pin(node, pin):
-    """ Product Identification Number must be unique.
-    """
-    products = DBSession.query(BackendProduct.id).filter_by(pin=pin).count()
-
-    if products:
-        msg = _(u'This Unique Product Identification Number $pin is already '
-                u'in database.', mapping={'pin': pin})
-        raise colander.Invalid(node, msg)
 
 
 @colander.deferred
@@ -60,12 +50,12 @@ def deferred_edit_product_validator(node, kw):
     return unique_pin
 
 
-class CameFromSchema(colander.Schema):
-    came_from = colander.SchemaNode(
-        colander.String(),
-        widget=HiddenWidget(),
-        default='',
-    )
+# class CameFromSchema(colander.Schema):
+#     came_from = colander.SchemaNode(
+#         colander.String(),
+#         widget=HiddenWidget(),
+#         default='',
+#     )
 
 
 class BackendProductSchema(colander.MappingSchema):
@@ -164,21 +154,24 @@ class BackendProductEditForm(EditFormView):
                          '@@shop_admin?action=products')
 
 
-class ProductType(colander.Integer):
+
+class PKType(colander.Integer):
+
+    def __init__(self, model):
+        self.model = model
 
     def deserialize(self, node, cstruct):
-        return DBSession.query(BackendProduct).get(int(cstruct))
+        return DBSession.query(self.model).get(int(cstruct))
 
     def serialize(self, node, cstruct):
         if cstruct is colander.null:
             return
-
         return str(cstruct.id)
 
 
 class Products(colander.SequenceSchema):
     product = colander.SchemaNode(
-        ProductType(),
+        PKType(BackendProduct),
     )
 
 
@@ -219,8 +212,12 @@ class AssignBackendProductForm(BaseFormView):
 
 class ProductOperationSchema(colander.Schema):
     backend_product = colander.SchemaNode(
-        ProductType()
+        PKType(BackendProduct)
     )
+
+
+# def shop_admin_index(context, request):
+#     if request.subpath:`
 
 
 @view_config(name='shop_admin', permission="manage",
@@ -234,22 +231,23 @@ class AdminViews(BaseFormView):
 
     buttons = (
         deform.Button('delete_backend_product', _(u'Delete')),
-        deform.Button('delete_product_assignment', _(u'Delete')))
+        deform.Button('delete_product_assignment', _(u'Delete'))
+    )
+
+    def __getitem__(self, name):
+        import pdb; pdb.set_trace()
 
     def delete_backend_product_success(self, appstruct):
         product = appstruct['backend_product']
-        # product_id = self.request.params.get('backend_product_id', None)
-        # if product_id is not None:
-        #     product = DBSession.query(BackendProduct).filter(
-        #         BackendProduct.id == product_id).first()
-        #     if product:
-        #         DBSession.delete(product)
-        #         root = get_root()
-        #         return HTTPFound(location=self.request.resource_url(root) +
-        #                          '@@shop_admin?action=products')
+        if not product.assigned_to_content: # avoid integrity error
+            DBSession.delete(product)
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root) +
+                            '@@shop_admin?action=products')
 
     def delete_product_assignment_success(self, appstruct):
         product = appstruct['product']
+        import pdb; pdb.set_trace()
         # product_id = self.request.params.get('backend_product_id', None)
         # content_item_id = self.request.params.get('content_item_id', None)
         # if product_id is not None and content_item_id is not None:
@@ -316,4 +314,11 @@ class ShoppingCartViews(BaseView):
     name="assign-product-menu-entry", permission="edit",
     renderer="kotti_eshop:templates/edit/assign-product-menu-entry.pt")
 def assign_product_menu_entry(context, request):
+    return {}
+
+
+@view_config(name="", #permission="edit",
+             route_name="shop_root",
+             renderer='kotti_eshop:templates/shop-admin-view.pt')
+def view_shop_root(context, request):
     return {}

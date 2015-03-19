@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
 #from kotti.resources import Content
-from kotti.resources import default_actions
 from kotti.resources import Document
+from kotti.resources import default_actions
+from kotti.resources import get_root
 from kotti.util import Link, LinkRenderer
 from kotti.views.site_setup import CONTROL_PANEL_LINKS
 from kotti.views.slots import assign_slot
 from pyramid.i18n import TranslationStringFactory
+
 
 _ = TranslationStringFactory('kotti_eshop')
 
@@ -27,6 +29,29 @@ def kotti_configure(settings):
     default_actions.children.append(LinkRenderer("assign-product-menu-entry"))
 
 
+def get_kotti_root(request):
+    return get_root()
+
+
+from kotti.views.view import view_content_default
+def view_root(context, request):
+    return view_content_default(context, request)
+
+
+class ShopRoot(object):
+    __name__ = '+shop'
+    __root__ = None
+
+    def __getitem__(self, name):
+        print "getting", name
+
+        #import pdb; pdb.set_trace()
+
+
+def get_shop_root(request):
+    return ShopRoot()
+
+
 def includeme(config):
 
     config.add_translation_dirs('kotti_eshop:locale')
@@ -34,3 +59,7 @@ def includeme(config):
 
     config.scan(__name__)
     assign_slot('shopping_cart', 'abovecontent')
+
+    config.add_route("root", "/", factory=get_kotti_root)
+    config.add_view(view_root, route_name="root")
+    config.add_route("shop_root", "/+shop", factory=get_shop_root)
