@@ -179,3 +179,11 @@ class ShopClient(Base):
     id = Column(Integer(), primary_key=True)
     email = Column(Unicode(254))
     creation_date = Column(DateTime())
+
+
+class ShippingAddress(Base):
+    """ A shipping address used by a shop client
+    """
+    __tablename__ = 'shipping_addresses'
+    id = Column(Integer(), primary_key=True)
+    address = Column(Unicode())
