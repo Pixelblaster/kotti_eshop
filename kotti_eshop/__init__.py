@@ -28,7 +28,7 @@ def kotti_configure(settings):
     default_actions.children.append(LinkRenderer("assign-product-menu-entry"))
 
 
-class Root(object):
+class DummyRoot(object):
     __name__ = ''
     __parent__ = None
     title = _("Root")
@@ -36,7 +36,7 @@ class Root(object):
 
 class ShopRoot(object):
     __name__ = '-shop'
-    __parent__ = Root()
+    __parent__ = DummyRoot()
     title = _("Kotti E-Shop Administration")
 
     def __getitem__(self, name):
@@ -53,17 +53,9 @@ def includeme(config):
     config.add_static_view('static-kotti_eshop', 'kotti_eshop:static')
 
     config.scan(__name__)
+
     assign_slot('shopping_cart', 'abovecontent')
 
     config.add_route("kotti_eshop", "/-shop/", factory=get_shop_root)
     config.add_route("kotti_eshop_views", "/-shop/*traverse",
                      factory=get_shop_root)
-
-    # from kotti.resources import get_root
-    # from kotti.views.view import view_content_default
-    # def get_kotti_root(request):
-    #     return get_root()
-    # def view_root(context, request):
-    #     return view_content_default(context, request)
-    # config.add_route("root", "/", factory=get_kotti_root)
-    # config.add_view(view_root, route_name="root")
