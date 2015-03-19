@@ -63,5 +63,6 @@
       </tbody>
     </table>
     <h5><b>Cart Total: ${shopping_cart.get_total_price()} ${api.shop_currency()}</b></h5>
+    <a class="checkout-btn btn btn-primary" href="${api.url(api.root, '@@checkout')}">Checkout</a>
   </div>
 </div>

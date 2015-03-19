@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="api.macro('kotti:templates/view/master.pt')">
+
+  <article metal:fill-slot="content"
+           class="content"
+           i18n:domain="kotti_eshop">
+
+    <h2>Checkout</h2>
+  	<p>Form client, address</p>
+    <p tal:content="structure view.form_description() | default"></p>
+    <form tal:replace="structure form" />
+  </article>
+</html>

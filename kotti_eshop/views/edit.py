@@ -13,6 +13,7 @@ from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
 from kotti_eshop.resources import ShoppingCart
+from kotti_eshop.resources import ShopClient
 from kotti_eshop.views import BaseView
 from kotti_eshop.views.widget import SelectizeWidget
 from pyramid.decorator import reify
@@ -334,3 +335,50 @@ class ShoppingCartViews(BaseView):
     renderer="kotti_eshop:templates/edit/assign-product-menu-entry.pt")
 def assign_product_menu_entry(context, request):
     return {}
+
+
+class CheckoutSchema(colander.MappingSchema):
+    """ Schema for Checkout form
+    """
+    email = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Email'),
+        description=_(u'To receive notifications about your order.'),
+    )
+
+
+@view_config(name='checkout', permission='view',
+             renderer='kotti_eshop:templates/checkout.pt')
+class CheckoutView(BaseFormView):
+    """ Checkout view
+    """
+
+    schema_factory = CheckoutSchema
+    buttons = ('finish', 'back')
+    success_message = _(u"Order finished. Check your email for notifications.")
+
+    def first_heading(self):
+        return _(u"Enter details:")
+
+    def form_description(self):
+        return _(u"Form description")
+
+    def finish_success(self, appstruct):
+        email = appstruct['email']
+        shoppingcart_uid = str(self.request.session.get('shoppingcart_uid'))
+        cart = DBSession.query(ShoppingCart).filter_by(
+            shoppingcart_uid=shoppingcart_uid).first()
+        client = ShopClient(email=email, creation_date=datetime.today())
+        cart.client.append(client)
+
+        # [TODO]
+        # if client with this email exists don't create a new client
+        # create order
+        # empty shopping cart?
+        root = get_root()
+        self.request.session.flash(self.success_message, 'success')
+        return HTTPFound(location=self.request.resource_url(root))
+
+    def back_success(self, appstruct):
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root))
