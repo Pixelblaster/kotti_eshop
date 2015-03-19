@@ -348,11 +348,13 @@ class CheckoutSchema(colander.MappingSchema):
 
 @view_config(name='checkout', permission='view',
              renderer='kotti_eshop:templates/checkout.pt')
-class CheckoutView(EditFormView):
+class CheckoutView(BaseFormView):
     """ Checkout view
     """
 
     schema_factory = CheckoutSchema
+    buttons = ('finish', 'back')
+    success_message = _(u"Order finished. Check your email for notifications.")
 
     # def before(self, form):
     #     form.appstruct = get_appstruct(self.context, self.schema)
@@ -365,17 +367,15 @@ class CheckoutView(EditFormView):
     def form_description(self):
         return _(u"Form description")
 
-    def edit(self, **appstruct):
-        print "edited"
-        # self.context.name = self.context.name
-        # self.context.title = appstruct['name']
-        # self.context.description = appstruct['description']
-
-    @property
-    def success_url(self):
+    def finish_success(self, appstruct):
+        # [TODO]
+        # create shop client
+        # create order
+        # empty shopping cart?
         root = get_root()
-        return self.request.resource_url(root)
+        self.request.session.flash(self.success_message, 'success')
+        return HTTPFound(location=self.request.resource_url(root))
 
-    def cancel_success(self, appstruct):
+    def back_success(self, appstruct):
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root))
