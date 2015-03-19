@@ -4,10 +4,11 @@
 from kotti.resources import Document
 from kotti.resources import default_actions
 from kotti.resources import get_root
-from kotti.util import Link, LinkRenderer
+from kotti.util import LinkRenderer
 from kotti.views.site_setup import CONTROL_PANEL_LINKS
 from kotti.views.slots import assign_slot
 from pyramid.i18n import TranslationStringFactory
+from kotti_eshop.util import RouteLink
 
 
 _ = TranslationStringFactory('kotti_eshop')
@@ -20,7 +21,7 @@ def kotti_configure(settings):
     s['kotti.fanstatic.view_needed'] += ' kotti_eshop.fanstatic.css_and_js'
     s['kotti.templates.api'] = 'kotti_eshop.resources.TemplateAPI'
 
-    settings = Link('shop_admin', title=_(u'Kotti E-Shop Management'))
+    settings = RouteLink('shop_root', title=_(u'Kotti E-Shop Management'))
     CONTROL_PANEL_LINKS.append(settings)
 
     Document.type_info.selectable_default_views.append(
@@ -38,14 +39,19 @@ def view_root(context, request):
     return view_content_default(context, request)
 
 
+class Root(object):
+    __name__ = ''
+    __parent__ = None
+    title = _("Root")
+
+
 class ShopRoot(object):
-    __name__ = '+shop'
-    __root__ = None
+    __name__ = '-shop'
+    __parent__ = Root()
+    title = _("Kotti E-Shop Administration")
 
     def __getitem__(self, name):
         print "getting", name
-
-        #import pdb; pdb.set_trace()
 
 
 def get_shop_root(request):
@@ -62,4 +68,5 @@ def includeme(config):
 
     config.add_route("root", "/", factory=get_kotti_root)
     config.add_view(view_root, route_name="root")
-    config.add_route("shop_root", "/+shop", factory=get_shop_root)
+    config.add_route("kotti_eshop", "/-shop/", factory=get_shop_root)
+    config.add_route("kotti_eshop_views", "/-shop/*traverse", factory=get_shop_root)

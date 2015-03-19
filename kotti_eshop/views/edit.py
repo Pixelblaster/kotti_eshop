@@ -10,6 +10,7 @@ from kotti.views.form import EditFormView
 from kotti.views.form import get_appstruct
 from kotti_eshop import ShopRoot
 from kotti_eshop import _
+from kotti_eshop import get_shop_root
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
 from kotti_eshop.resources import ShoppingCart
@@ -263,6 +264,25 @@ class AdminViews(BaseFormView):
         #                          '@@shop_admin?action=products')
 
 
+@view_config(name="", #permission="edit",
+             route_name="kotti_eshop",
+             renderer='kotti_eshop:templates/shop-admin-view.pt')
+def view_shop_root(context, request):
+    return {}
+
+
+@view_config(name="products", context=ShopRoot, route_name="kotti_eshop_views",
+             renderer="kotti_eshop:templates/shop-admin-products.pt")
+def shop_admin_products(context, request):
+    return {}
+
+
+@view_config(name="clients", context=ShopRoot, route_name="kotti_eshop_views",
+             renderer="kotti_eshop:templates/shop-admin-clients.pt")
+def shop_admin_clients(context, request):
+    return {}
+
+
 @view_defaults(permission="view")
 class ShoppingCartViews(BaseView):
 
@@ -314,11 +334,4 @@ class ShoppingCartViews(BaseView):
     name="assign-product-menu-entry", permission="edit",
     renderer="kotti_eshop:templates/edit/assign-product-menu-entry.pt")
 def assign_product_menu_entry(context, request):
-    return {}
-
-
-@view_config(name="", #permission="edit",
-             route_name="shop_root",
-             renderer='kotti_eshop:templates/shop-admin-view.pt')
-def view_shop_root(context, request):
     return {}

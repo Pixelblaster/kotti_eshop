@@ -16,7 +16,7 @@
 
     <h1 i18n:translate="">Global shop settings</h1>
 
-    <div class="row" tal:define="action request.GET.get('action', '');">
+    <div class="row">
 
       <!-- menu left -->
       <div class="col col-lg-2 col-md-2 col-sm-12 col-xs 12">
@@ -24,31 +24,30 @@
           <div class="panel-heading">Options</div>
           <ul class="list-group">
             <li class="list-group-item">
-              <a href="${api.url(api.root,'@@add-product')}">Add a product</a>
+              <a href="${api.url(context)}">Main</a>
             </li>
             <li class="list-group-item">
-              <a href="${api.url(api.root,'@@shop_admin')}">Main</a>
+              <a href="${api.url(context)}@@add-product">Add a product</a>
             </li>
             <li class="list-group-item">
-              <a href="${api.url(api.root,'@@shop_admin')}?action=products">
+              <a href="${api.url(context)}@@products">
                 Manage products
               </a>
             </li>
             <li class="list-group-item">
-              <a href="${api.url(api.root,'@@shop_admin')}?action=clients">
+              <a href="${api.url(context)}@@clients">
                 Manage clients
               </a>
             </li>
             <li class="list-group-item">
-              <a href="${api.url(api.root,'@@settings')}">Edit shop settings</a>
-            </li>            
+              <a href="${api.url(context,'@@settings')}">Edit shop settings</a>
+            </li>
           </ul>
-        </div>      
+        </div>
       </div><!-- menu left -->
 
       <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
         <!-- ADMIN MAIN -->
-        <tal:condition condition="python: action == ''">
           <h3>Admin main</h3>
           <p>Maybe you want <a href="${api.url(api.root, '@@shop_admin')}?action=products">manage products</a> or
              <a href="${api.url(api.root, '@@shop_admin')}?action=clients">clients</a>
@@ -56,93 +55,8 @@
           <h4>Shop Settings</h4>
           <p>Currency: ${api.shop_currency()}</p>
           <p>You can change these <a href="${api.url(api.root, '@@settings')}">settings in Shop settings tab</a>.</p>
-        </tal:condition>
-        <!-- ADMIN MAIN -->
 
-        <!-- CLIENTS -->
-        <tal:condition condition="python: action == 'clients'">
-          <h3>Clients</h3>
-          <table class="table table-condensed">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nickname (Fullname)</th>
-                <th>Email (Paypal email)</th>
-                <th>Deliver Address</th>
-                <th>Status</th>
-                <th>Last IP login</th>
-                <th>Options</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr tal:repeat="client shop_clients">
-                <td>${client.id}</td>
-                <td>
-                  <a href="${api.url(client)}">${client.nickname}</a> (${client.fullname})
-                </td>
-                <td>
-                  ${client.email} (${client.paypal_email})
-                </td>
-                <td>${client.deliver_address}</td>
-                <td>${client.status}</td>
-                <td>${client.last_ip_login}</td>
-                <td>
-                  <a class="btn btn-xs btn-warning" href="${api.url(client, '@@edit')}">Edit</a>
-                  <a class="btn btn-xs btn-danger" href="${api.url(client, '@@delete')}">Delete</a>
-                  <a class="btn btn-xs btn-primary" href="${api.url(client, '@@cart')}">View cart</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </tal:condition>
-        <!-- CLIENTS -->
-
-        <!-- PRODUCTS -->
-        <tal:condition condition="python: action == 'products'">
-          <h3>Backend products</h3>
-          <table class="table table-condensed">
-            <thead>
-              <tr>
-                <th>PIN</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Assigned to</th>
-                <th>Price</th>
-                <th>Options</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr tal:repeat="product api.get_all_backend_products()">
-                <td>${product.pin}</td>
-                <td>${product.title}</td>
-                <td>${product.description}</td>
-                <td>
-                  <tal:repeat repeat="content_item product.assigned_to_content">
-                    <form method="POST" action="${request.resource_url(api.root, '@@shop_admin')}">
-                      <a href="${api.url(content_item)}">${content_item.title}</a>
-                      <button class="btn btn-xs btn-danger" name="delete_product_assignment">
-                        <i class="fa fa-times"></i>
-                      </button>
-                      <input type="hidden" name="backend_product" value="${product.id}">
-                      <input type="hidden" name="content_item_id" value="${content_item.id}">
-                    </form>
-                  </tal:repeat>
-                </td>
-                <td>${python: float(product.price)} ${api.shop_currency()}</td>
-                <td>
-                  <form method="POST" action="${request.resource_url(api.root, '@@shop_admin')}">
-                    <a class="btn btn-sm btn-warning"
-                       href="${api.url(api.root)}@@edit-product?product_id=${product.id}">Edit</a>
-                    <button class="btn btn-sm btn-danger" name="delete_backend_product">Delete</button>
-                    <input type="hidden" name="backend_product" value="${product.id}">
-                  </form>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </tal:condition>
-        <!-- PRODUCTS -->
-      </div>      
+      </div>
     </div>
   </article>
 </html>
