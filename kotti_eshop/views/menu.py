@@ -11,6 +11,7 @@ admin_links = LinkParent(_("Options"), children=[
     Link('add-product', title=_("Add a product")),
     Link('products', title=_("Manage products")),
     Link('clients', title=_("Manage clients")),
+    Link('orders', title=_("Manage orders")),
     RootLink('settings', title=_("Shop settings")),
 ])
 
