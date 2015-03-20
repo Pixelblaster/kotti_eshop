@@ -16,23 +16,24 @@
 
     <h1 i18n:translate="">Global shop settings</h1>
 
-    ${api.render_view(context, '@@shop-admin-menu')}
-
     <div class="row">
 
       <!-- menu left -->
-      <!-- menu left -->
+      ${api.render_view(name='shop-admin-menu')}
 
       <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
         <!-- ADMIN MAIN -->
         <h3>Admin main</h3>
-        <p>Maybe you want <a href="${api.url(api.root, '@@shop_admin')}?action=products">manage products</a> or
+        <p>
+          Maybe you want 
+          <a href="${api.url(api.root, '@@shop_admin')}?action=products">manage products</a> or 
           <a href="${api.url(api.root, '@@shop_admin')}?action=clients">clients</a>
         </p>
         <h4>Shop Settings</h4>
         <p>Currency: ${api.shop_currency()}</p>
-        <p>You can change these <a href="${api.url(api.root, '@@settings')}">settings in Shop settings tab</a>.</p>
-
+        <p>You can change these 
+          <a href="${api.url(api.root, '@@settings')}">settings in Shop settings tab</a>.
+        </p>
       </div>
     </div>
   </article>

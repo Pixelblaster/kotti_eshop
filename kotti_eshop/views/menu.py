@@ -1,32 +1,22 @@
-from kotti.util import LinkParent, Link #, RouteLink
+from kotti.util import LinkParent, Link
+from kotti_eshop.util import RouteLink
+from kotti_eshop.util import RootLink
 from pyramid.view import view_config
 from kotti_eshop import _
+from kotti_eshop import ShopRoot
 
 
 admin_links = LinkParent(_("Options"), children=[
-    Link('', _("Main")),
+    RouteLink('kotti_eshop', title=_(u'Main'), traverse=[]),
+    Link('add-product', title=_("Add a product")),
+    Link('products', title=_("Manage products")),
+    Link('clients', title=_("Manage clients")),
+    RootLink('settings', title=_("Shop settings")),
 ])
-      # <li class="list-group-item">
-      #   <a href="${api.url(context)}">Main</a>
-      # </li>
-      # <li class="list-group-item">
-      #   <a href="${api.url(context)}@@add-product">Add a product</a>
-      # </li>
-      # <li class="list-group-item">
-      #   <a href="${api.url(context)}@@products">
-      #     Manage products
-      #   </a>
-      # </li>
-      # <li class="list-group-item">
-      #   <a href="${api.url(context)}@@clients">
-      #     Manage clients
-      #   </a>
-      # </li>
-      # <li class="list-group-item">
-      #   <a href="${api.url(api.root,'@@settings')}">Edit shop settings</a>
-      # </li>
 
-@view_config(name="shop-admin-links", renderer="templates/shop-admin-menu.pt")
+
+@view_config(name="shop-admin-menu", permission="view",
+             context=ShopRoot,
+             renderer="kotti_eshop:templates/shop-admin-menu.pt")
 def shop_admin_menu(context, request):
-    import pdb; pdb.set_trace()
     return {'links': admin_links}

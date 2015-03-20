@@ -2,6 +2,7 @@
 
 from kotti.resources import Document
 from kotti.resources import default_actions
+from kotti.security import SITE_ACL
 from kotti.util import LinkRenderer
 from kotti.views.site_setup import CONTROL_PANEL_LINKS
 from kotti.views.slots import assign_slot
@@ -19,9 +20,9 @@ def kotti_configure(settings):
     s['kotti.fanstatic.view_needed'] += ' kotti_eshop.fanstatic.css_and_js'
     s['kotti.templates.api'] = 'kotti_eshop.resources.TemplateAPI'
 
-    settings = RouteLink('kotti_eshop', title=_(u'Kotti E-Shop Management'),
-                         traverse=[])
-    CONTROL_PANEL_LINKS.append(settings)
+    shop = RouteLink('kotti_eshop', title=_(u'Kotti E-Shop Management'),
+                     traverse=[])
+    CONTROL_PANEL_LINKS.append(shop)
 
     Document.type_info.selectable_default_views.append(
         ('shop_view', 'Shop View'))
@@ -39,6 +40,7 @@ class ShopRoot(object):
     __name__ = '-shop'
     __parent__ = DummyRoot()
     title = _("Kotti E-Shop Administration")
+    __acl__ = SITE_ACL
 
     def __getitem__(self, name):
         print "getting", name
