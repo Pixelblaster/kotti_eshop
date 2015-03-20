@@ -395,9 +395,7 @@ class CheckoutView(BaseFormView):
 
         client.shipping_addresses.append(shipping_address)
 
-        order = ShopOrder(
-            total_price=cart.get_total_price(),
-            creation_date=datetime.today())
+        order = ShopOrder(creation_date=datetime.today())
 
         order.shipping_address.append(shipping_address)
         client.shop_orders.append(order)

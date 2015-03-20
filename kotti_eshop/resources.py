@@ -230,7 +230,16 @@ class ShopOrder(Base):
     __tablename__ = 'shop_orders'
     id = Column(Integer(), primary_key=True)
     creation_date = Column(DateTime())
-    total_price = Column(Float(asdecimal=True))
+
+    @property
+    def total_price(self):
+        """ Total price for this order based on original unit price
+            of each product
+        """
+        order_total_price = 0
+        for p_o_p in self.order_content:
+            order_total_price += p_o_p.original_unit_price * p_o_p.quantity
+        return order_total_price
 
     shipping_address = relationship(
         "ShippingAddress", backref="order",
