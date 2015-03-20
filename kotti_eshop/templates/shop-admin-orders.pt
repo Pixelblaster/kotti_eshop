@@ -33,8 +33,8 @@
             <tr tal:repeat="order api.get_all_orders()">
               <td>${order.id}</td>
               <td>${api.format_datetime(order.creation_date)}</td>
-              <td>${order.client}</td>
-              <td>${order.shipping_address}</td>
+              <td>${order.client[0].email}</td>
+              <td>${order.shipping_address[0].address}</td>
               <td>Products list</td>
               <td>${python: float(order.total_price)} ${api.shop_currency()}</td>
               <td>
