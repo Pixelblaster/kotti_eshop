@@ -62,6 +62,12 @@ client_addresses_association_table = Table(
            ForeignKey('shipping_addresses.id')),
 )
 
+client_orders_association_table = Table(
+    'clients_to_orders', Base.metadata,
+    Column('shopclient_id', Integer(), ForeignKey('shop_clients.id')),
+    Column('shop_order_id', Integer(), ForeignKey('shop_orders.id')),
+)
+
 
 class BackendProduct(Base):
     """ A backend product in this eShop
@@ -191,6 +197,10 @@ class ShopClient(Base):
         "ShippingAddress", backref="client",
         secondary=client_addresses_association_table)
 
+    shop_orders = relationship(
+        "ShopOrder", backref="client",
+        secondary=client_orders_association_table)
+
 
 class ShippingAddress(Base):
     """ A shipping address used by a shop client
@@ -198,3 +208,12 @@ class ShippingAddress(Base):
     __tablename__ = 'shipping_addresses'
     id = Column(Integer(), primary_key=True)
     address = Column(Unicode())
+
+
+class ShopOrder(Base):
+    """ An order in shop for a client
+    """
+    __tablename__ = 'shop_orders'
+    id = Column(Integer(), primary_key=True)
+    creation_date = Column(DateTime())
+    total_price = Column(Float(asdecimal=True))
