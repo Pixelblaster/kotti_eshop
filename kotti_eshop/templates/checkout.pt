@@ -36,7 +36,7 @@
       and addresses:
       <ol>
         <li tal:repeat="address client.shipping_addresses">
-          ${address.address}
+          ${address.address} - created on ${api.format_datetime(address.creation_date)}
         </li>
       </ol>      
     </div>

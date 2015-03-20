@@ -215,6 +215,7 @@ class ShippingAddress(Base):
     __tablename__ = 'shipping_addresses'
     id = Column(Integer(), primary_key=True)
     address = Column(Unicode())
+    creation_date = Column(DateTime())
 
 
 class ShopOrder(Base):

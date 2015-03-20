@@ -383,7 +383,8 @@ class CheckoutView(BaseFormView):
             cart.client.append(client)
 
         shipping_address = ShippingAddress(
-            address=appstruct['shipping_address'])
+            address=appstruct['shipping_address'],
+            creation_date=datetime.today())
 
         client.shipping_addresses.append(shipping_address)
         # also:
