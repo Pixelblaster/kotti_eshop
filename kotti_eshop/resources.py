@@ -35,13 +35,19 @@ class TemplateAPI(BaseTemplateAPI):
             ShopClient.creation_date)
         return clients
 
+    def get_all_orders(self):
+        """ Returns all orders
+        """
+        orders = DBSession.query(ShopOrder).order_by(
+            ShopOrder.creation_date)
+        return orders
+
     def get_backend_product(self, product_id):
         """ Get backend product by id
         """
         product = DBSession.query(BackendProduct).filter(
             BackendProduct.id == product_id)
         return product
-
 
 product_association_table = Table(
     'contents_to_products', Base.metadata,

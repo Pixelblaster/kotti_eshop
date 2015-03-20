@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xml:lang="en"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  metal:use-macro="api.macro('kotti:templates/site-setup/master.pt')">
+
+  <div metal:fill-slot="editor-bar"></div>
+
+  <article metal:fill-slot="content"
+    class="content"
+    i18n:domain="kotti_eshop">
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <h1 i18n:translate="">Global shop settings</h1>
+    <div class="row">
+      <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
+        <h3>Orders</h3>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Creation date</th>
+              <th>Client</th>
+              <th>Shipping Address</th>
+              <th>Products</th>
+              <th>Total Price</th>
+              <th>Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr tal:repeat="order api.get_all_orders()">
+              <td>${order.id}</td>
+              <td>${api.format_datetime(order.creation_date)}</td>
+              <td>${order.client}</td>
+              <td>${order.shipping_address}</td>
+              <td>Products list</td>
+              <td>${python: float(order.total_price)} ${api.shop_currency()}</td>
+              <td>
+                Options
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </article>
+</html>

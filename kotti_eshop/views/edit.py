@@ -282,6 +282,12 @@ def shop_admin_clients(context, request):
     return {}
 
 
+@view_config(name="orders", context=ShopRoot, route_name="kotti_eshop",
+             renderer="kotti_eshop:templates/shop-admin-orders.pt")
+def shop_admin_orders(context, request):
+    return {}
+
+
 @view_defaults(permission="view")
 class ShoppingCartViews(BaseView):
 
