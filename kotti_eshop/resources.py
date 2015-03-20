@@ -235,3 +235,37 @@ class ShopOrder(Base):
     shipping_address = relationship(
         "ShippingAddress", backref="order",
         secondary=order_addresses_association_table)
+
+
+class ProductOrderPlacement(Base):
+    """ What products in what orders, in what quantity + original unit price
+    """
+    __tablename__ = 'orders_to_products_association'
+
+    order_id = Column(Integer, ForeignKey('shop_orders.id'),
+                      primary_key=True)
+    product_id = Column(Integer, ForeignKey('backend_products.id'),
+                        primary_key=True)
+
+    quantity = Column(Integer())
+    original_unit_price = Column(Float(asdecimal=True))
+
+    product = relationship(BackendProduct,
+                           backref="shoporders_placements")
+    shop_order = relationship(ShopOrder, backref="order_content")
+
+    def __init__(self, shop_order=None, product=None, quantity=None,
+                 original_unit_price=None):
+        super(ProductOrderPlacement, self).__init__()
+
+        if shop_order is not None:
+            self.shop_order = shop_order
+
+        if product is not None:
+            self.product = product
+
+        if quantity is not None:
+            self.quantity = quantity
+
+        if original_unit_price is not None:
+            self.original_unit_price = original_unit_price
