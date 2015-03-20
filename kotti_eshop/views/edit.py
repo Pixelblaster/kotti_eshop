@@ -14,6 +14,7 @@ from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
 from kotti_eshop.resources import ShoppingCart
 from kotti_eshop.resources import ShopClient
+from kotti_eshop.resources import ShopOrder
 from kotti_eshop.resources import ShippingAddress
 from kotti_eshop.views import BaseView
 from kotti_eshop.views.widget import SelectizeWidget
@@ -387,11 +388,13 @@ class CheckoutView(BaseFormView):
             creation_date=datetime.today())
 
         client.shipping_addresses.append(shipping_address)
-        # also:
-        # order.shipping_address.append(shipping_address)
-        # [TODO]
-        # create order
-        # empty shopping cart?
+
+        order = ShopOrder(
+            total_price=cart.get_total_price(),
+            creation_date=datetime.today())
+
+        order.shipping_address.append(shipping_address)
+
         root = get_root()
         self.request.session.flash(self.success_message, 'success')
         return HTTPFound(location=self.request.resource_url(root))
