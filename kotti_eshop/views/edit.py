@@ -402,6 +402,8 @@ class CheckoutView(BaseFormView):
         order.shipping_address.append(shipping_address)
         client.shop_orders.append(order)
 
+        order.save_content_from_cart(cart)
+
         root = get_root()
         self.request.session.flash(self.success_message, 'success')
         return HTTPFound(location=self.request.resource_url(root))
