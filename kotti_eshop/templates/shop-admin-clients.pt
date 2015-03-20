@@ -26,7 +26,7 @@
             <tr>
               <th>ID</th>
               <th>Email</th>
-              <td>Creation date</td>
+              <th>Creation date</th>
               <th>Options</th>
             </tr>
           </thead>
