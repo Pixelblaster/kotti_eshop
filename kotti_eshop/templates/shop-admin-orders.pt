@@ -25,7 +25,7 @@
               <th>Client</th>
               <th>Shipping Address</th>
               <th>Products</th>
-              <th>Total Price</th>
+              <th>Total Order Price</th>
               <th>Options</th>
             </tr>
           </thead>
@@ -35,7 +35,20 @@
               <td>${api.format_datetime(order.creation_date)}</td>
               <td>${order.client[0].email}</td>
               <td>${order.shipping_address[0].address}</td>
-              <td>Products list</td>
+              <td>
+                <ol>
+                  <tal:repeat repeat="content_record order.order_content">
+                    <li tal:define="product content_record.product">
+                      <b>${product.title}</b> (${product.pin}) <br />
+                      Quantity: ${content_record.quantity} <br />
+                      Current Unit Price: ${python: float(product.price)} ${api.shop_currency()} <br />
+                      Original Unit Price: ${python: float(content_record.original_unit_price)}
+                      ${api.shop_currency()} <br />
+                      Total Price: ${python: float(content_record.original_unit_price) * content_record.quantity} ${api.shop_currency()}
+                    </li>
+                  </tal:repeat>
+                </ol>
+              </td>
               <td>${python: float(order.total_price)} ${api.shop_currency()}</td>
               <td>
                 Options
