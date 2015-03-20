@@ -94,6 +94,7 @@ class BackendProductSchema(colander.MappingSchema):
 
 
 @view_config(name="add-product", permission="view",
+             context=ShopRoot, route_name="kotti_eshop",
              renderer="kotti:templates/edit/node.pt")
 class BackendProductAddForm(BaseFormView):
     """ A form view to instantiate a new BackendProduct
@@ -234,9 +235,6 @@ class AdminViews(BaseFormView):
         deform.Button('delete_backend_product', _(u'Delete')),
         deform.Button('delete_product_assignment', _(u'Delete'))
     )
-
-    def __getitem__(self, name):
-        import pdb; pdb.set_trace()
 
     def delete_backend_product_success(self, appstruct):
         product = appstruct['backend_product']
