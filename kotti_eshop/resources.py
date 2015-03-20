@@ -236,6 +236,22 @@ class ShopOrder(Base):
         "ShippingAddress", backref="order",
         secondary=order_addresses_association_table)
 
+    def save_content_from_cart(self, cart=None):
+        """ The products are moved from cart to order saving the original price
+            for each product
+        """
+        order = self
+        if cart:
+            for p_c_p in cart.cart_content:
+                p_o_p = ProductOrderPlacement(
+                        shop_order=order,
+                        product=p_c_p.product,
+                        quantity=p_c_p.quantity,
+                        original_unit_price=p_c_p.product.price,
+                    )
+                DBSession.add(p_o_p)
+                DBSession.delete(p_c_p)
+
 
 class ProductOrderPlacement(Base):
     """ What products in what orders, in what quantity + original unit price
