@@ -18,7 +18,8 @@
     <!-- for tests -->
     <h4>For tests [TODO] Remove me:</h4>
     <div tal:repeat="client api.get_all_clients()">
-      <p><b>${client.email}</b> created on ${api.format_datetime(client.creation_date)} has cart:</p>
+      <h3>${client.email}</h3>
+      <p> created on ${api.format_datetime(client.creation_date)} has cart:</p>
       <ol>
         <li tal:repeat="shopping_cart client.shopping_cart">${shopping_cart.shoppingcart_uid} 
         created on ${api.format_datetime(shopping_cart.creation_date)} with products: 
@@ -33,12 +34,19 @@
           </ol>
         </li>
       </ol>
-      and addresses:
+      <h4>addresses:</h4>
       <ol>
         <li tal:repeat="address client.shipping_addresses">
           ${address.address} - created on ${api.format_datetime(address.creation_date)}
         </li>
-      </ol>      
+      </ol>
+
+      <h4>orders:</h4>
+      <ol>
+        <li tal:repeat="order client.shop_orders">
+          ${python: float(order.total_price)} ${api.shop_currency()} - created on ${api.format_datetime(order.creation_date)}
+        </li>
+      </ol>
     </div>
     <!-- for tests -->
   </article>

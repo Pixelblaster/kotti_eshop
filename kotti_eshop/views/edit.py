@@ -394,6 +394,7 @@ class CheckoutView(BaseFormView):
             creation_date=datetime.today())
 
         order.shipping_address.append(shipping_address)
+        client.shop_orders.append(order)
 
         root = get_root()
         self.request.session.flash(self.success_message, 'success')
