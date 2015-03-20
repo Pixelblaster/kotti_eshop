@@ -65,7 +65,14 @@ client_addresses_association_table = Table(
 client_orders_association_table = Table(
     'clients_to_orders', Base.metadata,
     Column('shopclient_id', Integer(), ForeignKey('shop_clients.id')),
-    Column('shop_order_id', Integer(), ForeignKey('shop_orders.id')),
+    Column('shoporder_id', Integer(), ForeignKey('shop_orders.id')),
+)
+
+order_addresses_association_table = Table(
+    'order_to_addresses', Base.metadata,
+    Column('shoporder_id', Integer(), ForeignKey('shop_orders.id')),
+    Column('shipping_address_id', Integer(),
+           ForeignKey('shipping_addresses.id')),
 )
 
 
@@ -217,3 +224,7 @@ class ShopOrder(Base):
     id = Column(Integer(), primary_key=True)
     creation_date = Column(DateTime())
     total_price = Column(Float(asdecimal=True))
+
+    shipping_address = relationship(
+        "ShippingAddress", backref="order",
+        secondary=order_addresses_association_table)
