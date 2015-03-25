@@ -494,6 +494,12 @@ class CheckoutView(object):
                     client.shop_orders.append(order)
                     order.save_content_from_cart(cart)
 
+                    # Destroy cart. Else there can be a problem with
+                    # client = cart.client[0] if two different clients
+                    # will use the same cart in a session.
+                    DBSession.delete(cart)
+                    del self.request.session['shoppingcart_uid']
+
                     root = get_root()
                     self.request.session.flash(_(
                         u"Order finished. Check your email for " +
