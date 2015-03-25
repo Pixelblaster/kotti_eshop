@@ -450,3 +450,64 @@ class CheckoutView(BaseFormView):
     def back_success(self, appstruct):
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root))
+
+
+@view_config(name='multiple_forms', permission='view',
+             renderer='kotti_eshop:templates/checkout.pt')
+class CheckoutViewMultipleForms(object):
+    """ Checkout view with multiple forms
+    """
+    def __init__(self, request):
+        self.request = request
+
+    def __call__(self):
+        import itertools
+
+        counter = itertools.count()
+
+        class Schema1(colander.Schema):
+            name1 = colander.SchemaNode(colander.String())
+        schema1 = Schema1()
+        form1 = deform.Form(schema1, buttons=('submit',), formid='form1',
+                            counter=counter)
+
+        class Schema2(colander.Schema):
+            name2 = colander.SchemaNode(colander.String())
+        schema2 = Schema2()
+        form2 = deform.Form(schema2, buttons=('submit',), formid='form2',
+                            counter=counter)
+
+        html = []
+        captured = None
+
+        if 'submit' in self.request.POST:
+            posted_formid = self.request.POST['__formid__']
+            for (formid, form) in [('form1', form1), ('form2', form2)]:
+                if formid == posted_formid:
+                    try:
+                        controls = self.request.POST.items()
+                        captured = form.validate(controls)
+                        html.append(form.render(captured))
+                    except deform.ValidationFailure as e:
+                        # the submitted values could not be validated
+                        html.append(e.render())
+                else:
+                    html.append(form.render())
+        else:
+            for form in form1, form2:
+                html.append(form.render())
+
+        html = ''.join(html)
+
+        # code, start, end = self.get_code(1)
+
+        # values passed to template for rendering
+        return {
+            'form': html,
+            'captured': repr(captured),
+            # 'code': code,
+            # 'start': start,
+            # 'demos': self.get_demos(),
+            # 'end': end,
+            'title': 'Multiple Forms on the Same Page',
+            }
