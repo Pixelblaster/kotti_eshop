@@ -452,6 +452,61 @@ class CheckoutView(BaseFormView):
         return HTTPFound(location=self.request.resource_url(root))
 
 
+class ShopClientSchema(colander.MappingSchema):
+    """ Schema for Shop Client
+    """
+    email = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Email'),
+        description=_(u'To receive notifications about your order.'),
+    )
+
+
+class ShippingAddressSchema(colander.MappingSchema):
+    """ Schema for ShippingAddress
+    """
+    recipient_fullname = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Full Name'),
+        description=_(u'Recipient full name'),
+    )
+
+    address_line1 = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Address Line 1'),
+        description=_(u'Street address, number, company name, etc.'),
+    )
+
+    address_line2 = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Address Line 2'),
+        description=_(u'Apartament, suite, unit, building, floor, etc.'),
+    )
+
+    city = colander.SchemaNode(
+        colander.String(),
+        title=_(u'City'),
+        description=_(u'City / Locality'),
+    )
+
+    region = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Region'),
+        description=_(u'State / Province / Region'),
+    )
+
+    postal_code = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Postal Code'),
+        description=_(u'ZIP / Postal Code'),
+    )
+
+    country = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Country'),
+    )
+
+
 @view_config(name='multiple_forms', permission='view',
              renderer='kotti_eshop:templates/checkout.pt')
 class CheckoutViewMultipleForms(object):
@@ -465,15 +520,13 @@ class CheckoutViewMultipleForms(object):
 
         counter = itertools.count()
 
-        class Schema1(colander.Schema):
-            name1 = colander.SchemaNode(colander.String())
-        schema1 = Schema1()
+        # class Schema1(colander.Schema):
+        #     name1 = colander.SchemaNode(colander.String())
+        schema1 = ShopClientSchema()
         form1 = deform.Form(schema1, buttons=('submit',), formid='form1',
                             counter=counter)
 
-        class Schema2(colander.Schema):
-            name2 = colander.SchemaNode(colander.String())
-        schema2 = Schema2()
+        schema2 = ShippingAddressSchema()
         form2 = deform.Form(schema2, buttons=('submit',), formid='form2',
                             counter=counter)
 
