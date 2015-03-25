@@ -351,10 +351,45 @@ class CheckoutSchema(colander.MappingSchema):
         description=_(u'To receive notifications about your order.'),
     )
 
-    shipping_address = colander.SchemaNode(
+    recipient_fullname = colander.SchemaNode(
         colander.String(),
-        title=_(u'Shipping address'),
-        description=_(u'There we will send the products.'),
+        title=_(u'Full Name'),
+        description=_(u'Recipient full name'),
+    )
+
+    address_line1 = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Address Line 1'),
+        description=_(u'Street address, number, company name, etc.'),
+    )
+
+    address_line2 = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Address Line 2'),
+        description=_(u'Apartament, suite, unit, building, floor, etc.'),
+    )
+
+    city = colander.SchemaNode(
+        colander.String(),
+        title=_(u'City'),
+        description=_(u'City / Locality'),
+    )
+
+    region = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Region'),
+        description=_(u'State / Province / Region'),
+    )
+
+    postal_code = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Postal Code'),
+        description=_(u'ZIP / Postal Code'),
+    )
+
+    country = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Country'),
     )
 
 
