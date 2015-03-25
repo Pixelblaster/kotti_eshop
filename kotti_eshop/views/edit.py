@@ -425,7 +425,13 @@ class CheckoutView(BaseFormView):
             cart.client.append(client)
 
         shipping_address = ShippingAddress(
-            address=appstruct['shipping_address'],
+            recipient_fullname=appstruct['recipient_fullname'],
+            address_line1=appstruct['address_line1'],
+            address_line2=appstruct['address_line2'],
+            city=appstruct['city'],
+            region=appstruct['region'],
+            postal_code=appstruct['postal_code'],
+            country=appstruct['country'],
             creation_date=datetime.today())
 
         client.shipping_addresses.append(shipping_address)

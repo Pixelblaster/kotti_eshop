@@ -34,7 +34,16 @@
               <td>${order.id}</td>
               <td>${api.format_datetime(order.creation_date)}</td>
               <td>${order.client[0].email}</td>
-              <td>${order.shipping_address[0].address}</td>
+              <td tal:define="address order.shipping_address[0]">
+                ${address.recipient_fullname} <br />
+                ${address.address_line1} <br />
+                ${address.address_line2} <br />
+                ${address.city} <br />
+                ${address.region} <br />
+                ${address.postal_code} <br />
+                ${address.country} <br />
+                created on ${api.format_datetime(address.creation_date)}
+              </td>
               <td>
                 <ol>
                   <tal:repeat repeat="content_record order.order_content">

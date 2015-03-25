@@ -37,7 +37,14 @@
       <h4>addresses:</h4>
       <ol>
         <li tal:repeat="address client.shipping_addresses">
-          ${address.address} - created on ${api.format_datetime(address.creation_date)}
+          ${address.recipient_fullname} <br />
+          ${address.address_line1} <br />
+          ${address.address_line2} <br />
+          ${address.city} <br />
+          ${address.region} <br />
+          ${address.postal_code} <br />
+          ${address.country} <br />
+          created on ${api.format_datetime(address.creation_date)}
         </li>
       </ol>
 
