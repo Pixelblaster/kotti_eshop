@@ -482,6 +482,7 @@ class CheckoutView(object):
 
         html = []
         captured = None
+        form_validation_errors = False
 
         if 'submit' in self.request.POST:
             posted_formid = self.request.POST['__formid__']
@@ -494,6 +495,23 @@ class CheckoutView(object):
                     html.append(form_address.render())  # address is next step
                 except deform.ValidationFailure as e:
                     html.append(e.render())
+                    form_validation_errors = True
+                if not form_validation_errors:
+                    # GET or CREATE client and assign this shopping cart
+                    email = captured.get('email')
+                    shoppingcart_uid = str(
+                        self.request.session.get('shoppingcart_uid'))
+                    cart = DBSession.query(ShoppingCart).filter_by(
+                        shoppingcart_uid=shoppingcart_uid).first()
+                    client = DBSession.query(ShopClient).filter_by(
+                        email=email).first()
+                    if client:
+                        client.shopping_cart = []
+                        cart.client.append(client)
+                    else:
+                        client = ShopClient(
+                            email=email, creation_date=datetime.today())
+                        cart.client.append(client)
 
             # SUBMIT address
             elif posted_formid == "form_address":
@@ -502,6 +520,31 @@ class CheckoutView(object):
                     captured = form_address.validate(controls)
                 except deform.ValidationFailure as e:
                     html.append(e.render())
+                    form_validation_errors = True
+                if not form_validation_errors:
+                    import pdb; pdb.set_trace( )
+                    # GET client
+                    # GET or CREATE address
+                    # CREATE order
+                    # 
+                    # shipping_address = ShippingAddress(
+                    #     recipient_fullname=appstruct['recipient_fullname'],
+                    #     address_line1=appstruct['address_line1'],
+                    #     address_line2=appstruct['address_line2'],
+                    #     city=appstruct['city'],
+                    #     region=appstruct['region'],
+                    #     postal_code=appstruct['postal_code'],
+                    #     country=appstruct['country'],
+                    #     creation_date=datetime.today())
+
+                    # client.shipping_addresses.append(shipping_address)
+
+                    # order = ShopOrder(creation_date=datetime.today())
+
+                    # order.shipping_address.append(shipping_address)
+                    # client.shop_orders.append(order)
+
+                    # order.save_content_from_cart(cart)
         else:
             # NO SUBMIT - go to first step: select client
             html.append(form_client.render())
