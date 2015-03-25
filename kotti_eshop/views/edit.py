@@ -459,8 +459,8 @@ class ShippingAddressSchema(colander.MappingSchema):
 
 @view_config(name='checkout', permission='view',
              renderer='kotti_eshop:templates/checkout.pt')
-class CheckoutViewMultipleForms(object):
-    """ Checkout view with multiple forms
+class CheckoutView(object):
+    """ Checkout view (multiple forms)
     """
     def __init__(self, request):
         self.request = request
@@ -485,26 +485,27 @@ class CheckoutViewMultipleForms(object):
 
         if 'submit' in self.request.POST:
             posted_formid = self.request.POST['__formid__']
-            for (formid, form) in [('form_client', form_client),
-                                   ('form_address', form_address)]:
-                if formid == posted_formid:
-                    try:
-                        controls = self.request.POST.items()
-                        captured = form.validate(controls)
-                        html.append(form.render(captured))
-                    except deform.ValidationFailure as e:
-                        # the submitted values could not be validated
-                        html.append(e.render())
-                else:
-                    html.append(form.render())
+
+            # SUBMIT client
+            if posted_formid == "form_client":
+                try:
+                    controls = self.request.POST.items()
+                    captured = form_client.validate(controls)
+                    html.append(form_address.render())  # address is next step
+                except deform.ValidationFailure as e:
+                    html.append(e.render())
+
+            # SUBMIT address
+            elif posted_formid == "form_address":
+                try:
+                    controls = self.request.POST.items()
+                    captured = form_address.validate(controls)
+                except deform.ValidationFailure as e:
+                    html.append(e.render())
         else:
-            for form in form_client, form_address:
-                html.append(form.render())
+            # NO SUBMIT - go to first step: select client
+            html.append(form_client.render())
 
         html = ''.join(html)
 
-        return {
-            'form': html,
-            'captured': repr(captured),
-            'title': 'Multiple Forms on the Same Page',
-            }
+        return {'form': html, 'captured': repr(captured)}
