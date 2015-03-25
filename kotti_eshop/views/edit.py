@@ -447,11 +447,10 @@ class CheckoutView(object):
                         email=email).first()
                     if client:
                         client.shopping_cart = []
-                        cart.client.append(client)
                     else:
                         client = ShopClient(
                             email=email, creation_date=datetime.today())
-                        cart.client.append(client)
+                    cart.client.append(client)
 
             # SUBMIT address
             elif posted_formid == "form_address":
@@ -468,15 +467,27 @@ class CheckoutView(object):
                         shoppingcart_uid=shoppingcart_uid).first()
                     client = cart.client[0]
 
-                    shipping_address = ShippingAddress(
+                    shipping_address = DBSession.query(
+                        ShippingAddress).filter_by(
                         recipient_fullname=captured.get('recipient_fullname'),
                         address_line1=captured.get('address_line1'),
                         address_line2=captured.get('address_line2'),
                         city=captured.get('city'),
                         region=captured.get('region'),
                         postal_code=captured.get('postal_code'),
-                        country=captured.get('country'),
-                        creation_date=datetime.today())
+                        country=captured.get('country')).first()
+
+                    if not shipping_address:
+                        shipping_address = ShippingAddress(
+                            recipient_fullname=captured.get(
+                                'recipient_fullname'),
+                            address_line1=captured.get('address_line1'),
+                            address_line2=captured.get('address_line2'),
+                            city=captured.get('city'),
+                            region=captured.get('region'),
+                            postal_code=captured.get('postal_code'),
+                            country=captured.get('country'),
+                            creation_date=datetime.today())
 
                     client.shipping_addresses.append(shipping_address)
                     order = ShopOrder(creation_date=datetime.today())
