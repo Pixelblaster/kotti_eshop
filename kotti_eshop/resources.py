@@ -214,6 +214,24 @@ class ShopClient(Base):
         "ShopOrder", backref="client",
         secondary=client_orders_association_table)
 
+    def get_shipping_address(self, recipient_fullname=None, address_line1=None,
+                             address_line2=None, city=None, region=None,
+                             postal_code=None, country=None):
+        """ Check if this client has a given address
+        """
+        client = self
+        found_address = None
+        for address in client.shipping_addresses:
+            if (address.recipient_fullname == recipient_fullname and
+                address.address_line1 == address_line1 and
+                address.address_line2 == address_line2 and
+                address.city == city and
+                address.region == region and
+                address.postal_code == postal_code and
+                    address.country == country):
+                found_address = address
+        return found_address
+
 
 class ShippingAddress(Base):
     """ A shipping address used by a shop client

@@ -467,17 +467,16 @@ class CheckoutView(object):
                         shoppingcart_uid=shoppingcart_uid).first()
                     client = cart.client[0]
 
-                    shipping_address = DBSession.query(
-                        ShippingAddress).filter_by(
+                    shipping_address = client.get_shipping_address(
                         recipient_fullname=captured.get('recipient_fullname'),
                         address_line1=captured.get('address_line1'),
                         address_line2=captured.get('address_line2'),
                         city=captured.get('city'),
                         region=captured.get('region'),
                         postal_code=captured.get('postal_code'),
-                        country=captured.get('country')).first()
+                        country=captured.get('country'))
 
-                    if not shipping_address:
+                    if shipping_address is None:
                         shipping_address = ShippingAddress(
                             recipient_fullname=captured.get(
                                 'recipient_fullname'),
@@ -488,8 +487,8 @@ class CheckoutView(object):
                             postal_code=captured.get('postal_code'),
                             country=captured.get('country'),
                             creation_date=datetime.today())
+                        client.shipping_addresses.append(shipping_address)
 
-                    client.shipping_addresses.append(shipping_address)
                     order = ShopOrder(creation_date=datetime.today())
                     order.shipping_address.append(shipping_address)
                     client.shop_orders.append(order)
