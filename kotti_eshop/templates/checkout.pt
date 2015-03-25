@@ -11,49 +11,57 @@
            i18n:domain="kotti_eshop">
 
     <h2>Checkout</h2>
-    <p>ShoppingCart (we have it in session) -> ShopClient (logged in or created) -> Shipping Address (select or add) -> Payment method (select or add) -> ShopOrder (based on all info)</p>
-    <p tal:content="structure view.form_description() | default"></p>
+
+    <!-- progress bar -->
+    <h3>${progress_status}</h3>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${progress_value}%;">
+      </div>
+    </div>
+    <!-- progress bar -->
+
     <form tal:replace="structure form" />
 
     <!-- for tests -->
-    <p>CAPTURED: ${captured}</p>
-    <div tal:repeat="client api.get_all_clients()">
-      <h3>${client.email}</h3>
-      <p> created on ${api.format_datetime(client.creation_date)} has cart:</p>
-      <ol>
-        <li tal:repeat="shopping_cart client.shopping_cart">${shopping_cart.shoppingcart_uid} 
-        created on ${api.format_datetime(shopping_cart.creation_date)} with products: 
-          <ol>
-            <tal:repeat repeat="content_record shopping_cart.cart_content">
-              <li tal:define="product content_record.product">
-                ${product.pin} - ${product.title} - ${content_record.quantity} - 
-                ${python: float(product.price)} ${api.shop_currency()} - 
-                ${python: float(product.price) * content_record.quantity} ${api.shop_currency()}
-              </li>
-            </tal:repeat>
-          </ol>
-        </li>
-      </ol>
-      <h4>addresses:</h4>
-      <ol>
-        <li tal:repeat="address client.shipping_addresses">
-          ${address.recipient_fullname} <br />
-          ${address.address_line1} <br />
-          ${address.address_line2} <br />
-          ${address.city} <br />
-          ${address.region} <br />
-          ${address.postal_code} <br />
-          ${address.country} <br />
-          created on ${api.format_datetime(address.creation_date)}
-        </li>
-      </ol>
+    <div tal:replace="nothing">
+      <div tal:repeat="client api.get_all_clients()">
+        <h3>${client.email}</h3>
+        <p> created on ${api.format_datetime(client.creation_date)} has cart:</p>
+        <ol>
+          <li tal:repeat="shopping_cart client.shopping_cart">${shopping_cart.shoppingcart_uid} 
+          created on ${api.format_datetime(shopping_cart.creation_date)} with products: 
+            <ol>
+              <tal:repeat repeat="content_record shopping_cart.cart_content">
+                <li tal:define="product content_record.product">
+                  ${product.pin} - ${product.title} - ${content_record.quantity} - 
+                  ${python: float(product.price)} ${api.shop_currency()} - 
+                  ${python: float(product.price) * content_record.quantity} ${api.shop_currency()}
+                </li>
+              </tal:repeat>
+            </ol>
+          </li>
+        </ol>
+        <h4>addresses:</h4>
+        <ol>
+          <li tal:repeat="address client.shipping_addresses">
+            ${address.recipient_fullname} <br />
+            ${address.address_line1} <br />
+            ${address.address_line2} <br />
+            ${address.city} <br />
+            ${address.region} <br />
+            ${address.postal_code} <br />
+            ${address.country} <br />
+            created on ${api.format_datetime(address.creation_date)}
+          </li>
+        </ol>
 
-      <h4>orders:</h4>
-      <ol>
-        <li tal:repeat="order client.shop_orders">
-          ${python: float(order.total_price)} ${api.shop_currency()} - created on ${api.format_datetime(order.creation_date)}
-        </li>
-      </ol>
+        <h4>orders:</h4>
+        <ol>
+          <li tal:repeat="order client.shop_orders">
+            ${python: float(order.total_price)} ${api.shop_currency()} - created on ${api.format_datetime(order.creation_date)}
+          </li>
+        </ol>
+      </div>
     </div>
     <!-- for tests -->
   </article>

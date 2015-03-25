@@ -451,7 +451,8 @@ class CheckoutView(object):
                         client = ShopClient(
                             email=email, creation_date=datetime.today())
                     cart.client.append(client)
-
+                    progress_value = 80
+                    progress_status = _(u'Select address. Finish order.')
             # SUBMIT address
             elif posted_formid == "form_address":
                 try:
@@ -508,7 +509,13 @@ class CheckoutView(object):
         else:
             # NO SUBMIT - go to first step: select client
             html.append(form_client.render())
+            progress_value = 40
+            progress_status = _(u'Selecting accout.')
 
         html = ''.join(html)
 
-        return {'form': html, 'captured': repr(captured)}
+        return {
+            'form': html,
+            'progress_value': progress_value,
+            'progress_status': progress_status
+        }
