@@ -342,66 +342,6 @@ def assign_product_menu_entry(context, request):
     return {}
 
 
-# @view_config(name='checkout', permission='view',
-#              renderer='kotti_eshop:templates/checkout.pt')
-# class CheckoutView(BaseFormView):
-#     """ Checkout view
-#     """
-
-#     schema_factory = CheckoutSchema
-#     buttons = ('finish', 'back')
-#     success_message = _(
-#       u"Order finished. Check your email for notifications.")
-
-#     def first_heading(self):
-#         return _(u"Enter details:")
-
-#     def form_description(self):
-#         return _(u"Form description")
-
-#     def finish_success(self, appstruct):
-#         email = appstruct['email']
-
-#         shoppingcart_uid = str(self.request.session.get('shoppingcart_uid'))
-#         cart = DBSession.query(ShoppingCart).filter_by(
-#             shoppingcart_uid=shoppingcart_uid).first()
-
-#         client = DBSession.query(ShopClient).filter_by(email=email).first()
-#         if client:
-#             client.shopping_cart = []
-#             cart.client.append(client)
-#         else:
-#             client = ShopClient(email=email, creation_date=datetime.today())
-#             cart.client.append(client)
-
-#         shipping_address = ShippingAddress(
-#             recipient_fullname=appstruct['recipient_fullname'],
-#             address_line1=appstruct['address_line1'],
-#             address_line2=appstruct['address_line2'],
-#             city=appstruct['city'],
-#             region=appstruct['region'],
-#             postal_code=appstruct['postal_code'],
-#             country=appstruct['country'],
-#             creation_date=datetime.today())
-
-#         client.shipping_addresses.append(shipping_address)
-
-#         order = ShopOrder(creation_date=datetime.today())
-
-#         order.shipping_address.append(shipping_address)
-#         client.shop_orders.append(order)
-
-#         order.save_content_from_cart(cart)
-
-#         root = get_root()
-#         self.request.session.flash(self.success_message, 'success')
-#         return HTTPFound(location=self.request.resource_url(root))
-
-#     def back_success(self, appstruct):
-#         root = get_root()
-#         return HTTPFound(location=self.request.resource_url(root))
-
-
 class ShopClientSchema(colander.MappingSchema):
     """ Schema for Shop Client
     """
