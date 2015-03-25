@@ -522,29 +522,33 @@ class CheckoutView(object):
                     html.append(e.render())
                     form_validation_errors = True
                 if not form_validation_errors:
-                    import pdb; pdb.set_trace( )
-                    # GET client
-                    # GET or CREATE address
-                    # CREATE order
-                    # 
-                    # shipping_address = ShippingAddress(
-                    #     recipient_fullname=appstruct['recipient_fullname'],
-                    #     address_line1=appstruct['address_line1'],
-                    #     address_line2=appstruct['address_line2'],
-                    #     city=appstruct['city'],
-                    #     region=appstruct['region'],
-                    #     postal_code=appstruct['postal_code'],
-                    #     country=appstruct['country'],
-                    #     creation_date=datetime.today())
+                    shoppingcart_uid = str(
+                        self.request.session.get('shoppingcart_uid'))
+                    cart = DBSession.query(ShoppingCart).filter_by(
+                        shoppingcart_uid=shoppingcart_uid).first()
+                    client = cart.client[0]
 
-                    # client.shipping_addresses.append(shipping_address)
+                    shipping_address = ShippingAddress(
+                        recipient_fullname=captured.get('recipient_fullname'),
+                        address_line1=captured.get('address_line1'),
+                        address_line2=captured.get('address_line2'),
+                        city=captured.get('city'),
+                        region=captured.get('region'),
+                        postal_code=captured.get('postal_code'),
+                        country=captured.get('country'),
+                        creation_date=datetime.today())
 
-                    # order = ShopOrder(creation_date=datetime.today())
+                    client.shipping_addresses.append(shipping_address)
+                    order = ShopOrder(creation_date=datetime.today())
+                    order.shipping_address.append(shipping_address)
+                    client.shop_orders.append(order)
+                    order.save_content_from_cart(cart)
 
-                    # order.shipping_address.append(shipping_address)
-                    # client.shop_orders.append(order)
-
-                    # order.save_content_from_cart(cart)
+                    root = get_root()
+                    self.request.session.flash(_(
+                        u"Order finished. Check your email for " +
+                        "notifications."), 'success')
+                    return HTTPFound(location=self.request.resource_url(root))
         else:
             # NO SUBMIT - go to first step: select client
             html.append(form_client.render())
