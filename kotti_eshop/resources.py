@@ -220,8 +220,14 @@ class ShippingAddress(Base):
     """
     __tablename__ = 'shipping_addresses'
     id = Column(Integer(), primary_key=True)
-    address = Column(Unicode())
     creation_date = Column(DateTime())
+    recipient_fullname = Column(Unicode())
+    address_line1 = Column(Unicode())
+    address_line2 = Column(Unicode())
+    city = Column(Unicode())
+    region = Column(Unicode())
+    postal_code = Column(Unicode())
+    country = Column(Unicode())
 
 
 class ShopOrder(Base):
