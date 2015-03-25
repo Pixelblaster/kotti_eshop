@@ -510,7 +510,7 @@ class CheckoutView(object):
             # NO SUBMIT - go to first step: select client
             html.append(form_client.render())
             progress_value = 40
-            progress_status = _(u'Selecting accout.')
+            progress_status = _(u'Selecting account.')
 
         html = ''.join(html)
 
