@@ -342,114 +342,64 @@ def assign_product_menu_entry(context, request):
     return {}
 
 
-class CheckoutSchema(colander.MappingSchema):
-    """ Schema for Checkout form
-    """
-    email = colander.SchemaNode(
-        colander.String(),
-        title=_(u'Email'),
-        description=_(u'To receive notifications about your order.'),
-    )
+# @view_config(name='checkout', permission='view',
+#              renderer='kotti_eshop:templates/checkout.pt')
+# class CheckoutView(BaseFormView):
+#     """ Checkout view
+#     """
 
-    recipient_fullname = colander.SchemaNode(
-        colander.String(),
-        title=_(u'Full Name'),
-        description=_(u'Recipient full name'),
-    )
+#     schema_factory = CheckoutSchema
+#     buttons = ('finish', 'back')
+#     success_message = _(
+#       u"Order finished. Check your email for notifications.")
 
-    address_line1 = colander.SchemaNode(
-        colander.String(),
-        title=_(u'Address Line 1'),
-        description=_(u'Street address, number, company name, etc.'),
-    )
+#     def first_heading(self):
+#         return _(u"Enter details:")
 
-    address_line2 = colander.SchemaNode(
-        colander.String(),
-        title=_(u'Address Line 2'),
-        description=_(u'Apartament, suite, unit, building, floor, etc.'),
-    )
+#     def form_description(self):
+#         return _(u"Form description")
 
-    city = colander.SchemaNode(
-        colander.String(),
-        title=_(u'City'),
-        description=_(u'City / Locality'),
-    )
+#     def finish_success(self, appstruct):
+#         email = appstruct['email']
 
-    region = colander.SchemaNode(
-        colander.String(),
-        title=_(u'Region'),
-        description=_(u'State / Province / Region'),
-    )
+#         shoppingcart_uid = str(self.request.session.get('shoppingcart_uid'))
+#         cart = DBSession.query(ShoppingCart).filter_by(
+#             shoppingcart_uid=shoppingcart_uid).first()
 
-    postal_code = colander.SchemaNode(
-        colander.String(),
-        title=_(u'Postal Code'),
-        description=_(u'ZIP / Postal Code'),
-    )
+#         client = DBSession.query(ShopClient).filter_by(email=email).first()
+#         if client:
+#             client.shopping_cart = []
+#             cart.client.append(client)
+#         else:
+#             client = ShopClient(email=email, creation_date=datetime.today())
+#             cart.client.append(client)
 
-    country = colander.SchemaNode(
-        colander.String(),
-        title=_(u'Country'),
-    )
+#         shipping_address = ShippingAddress(
+#             recipient_fullname=appstruct['recipient_fullname'],
+#             address_line1=appstruct['address_line1'],
+#             address_line2=appstruct['address_line2'],
+#             city=appstruct['city'],
+#             region=appstruct['region'],
+#             postal_code=appstruct['postal_code'],
+#             country=appstruct['country'],
+#             creation_date=datetime.today())
 
+#         client.shipping_addresses.append(shipping_address)
 
-@view_config(name='checkout', permission='view',
-             renderer='kotti_eshop:templates/checkout.pt')
-class CheckoutView(BaseFormView):
-    """ Checkout view
-    """
+#         order = ShopOrder(creation_date=datetime.today())
 
-    schema_factory = CheckoutSchema
-    buttons = ('finish', 'back')
-    success_message = _(u"Order finished. Check your email for notifications.")
+#         order.shipping_address.append(shipping_address)
+#         client.shop_orders.append(order)
 
-    def first_heading(self):
-        return _(u"Enter details:")
+#         order.save_content_from_cart(cart)
 
-    def form_description(self):
-        return _(u"Form description")
+#         root = get_root()
+#         self.request.session.flash(self.success_message, 'success')
+#         return HTTPFound(location=self.request.resource_url(root))
 
-    def finish_success(self, appstruct):
-        email = appstruct['email']
-
-        shoppingcart_uid = str(self.request.session.get('shoppingcart_uid'))
-        cart = DBSession.query(ShoppingCart).filter_by(
-            shoppingcart_uid=shoppingcart_uid).first()
-
-        client = DBSession.query(ShopClient).filter_by(email=email).first()
-        if client:
-            client.shopping_cart = []
-            cart.client.append(client)
-        else:
-            client = ShopClient(email=email, creation_date=datetime.today())
-            cart.client.append(client)
-
-        shipping_address = ShippingAddress(
-            recipient_fullname=appstruct['recipient_fullname'],
-            address_line1=appstruct['address_line1'],
-            address_line2=appstruct['address_line2'],
-            city=appstruct['city'],
-            region=appstruct['region'],
-            postal_code=appstruct['postal_code'],
-            country=appstruct['country'],
-            creation_date=datetime.today())
-
-        client.shipping_addresses.append(shipping_address)
-
-        order = ShopOrder(creation_date=datetime.today())
-
-        order.shipping_address.append(shipping_address)
-        client.shop_orders.append(order)
-
-        order.save_content_from_cart(cart)
-
-        root = get_root()
-        self.request.session.flash(self.success_message, 'success')
-        return HTTPFound(location=self.request.resource_url(root))
-
-    def back_success(self, appstruct):
-        root = get_root()
-        return HTTPFound(location=self.request.resource_url(root))
+#     def back_success(self, appstruct):
+#         root = get_root()
+#         return HTTPFound(location=self.request.resource_url(root))
 
 
 class ShopClientSchema(colander.MappingSchema):
@@ -507,7 +457,7 @@ class ShippingAddressSchema(colander.MappingSchema):
     )
 
 
-@view_config(name='multiple_forms', permission='view',
+@view_config(name='checkout', permission='view',
              renderer='kotti_eshop:templates/checkout.pt')
 class CheckoutViewMultipleForms(object):
     """ Checkout view with multiple forms
@@ -520,22 +470,23 @@ class CheckoutViewMultipleForms(object):
 
         counter = itertools.count()
 
-        # class Schema1(colander.Schema):
-        #     name1 = colander.SchemaNode(colander.String())
-        schema1 = ShopClientSchema()
-        form1 = deform.Form(schema1, buttons=('submit',), formid='form1',
-                            counter=counter)
+        shop_client_schema = ShopClientSchema()
+        form_client = deform.Form(
+            shop_client_schema, buttons=('submit',),
+            formid='form_client', counter=counter)
 
-        schema2 = ShippingAddressSchema()
-        form2 = deform.Form(schema2, buttons=('submit',), formid='form2',
-                            counter=counter)
+        shipping_address_schema = ShippingAddressSchema()
+        form_address = deform.Form(
+            shipping_address_schema, buttons=('submit',),
+            formid='form_address', counter=counter)
 
         html = []
         captured = None
 
         if 'submit' in self.request.POST:
             posted_formid = self.request.POST['__formid__']
-            for (formid, form) in [('form1', form1), ('form2', form2)]:
+            for (formid, form) in [('form_client', form_client),
+                                   ('form_address', form_address)]:
                 if formid == posted_formid:
                     try:
                         controls = self.request.POST.items()
@@ -547,20 +498,13 @@ class CheckoutViewMultipleForms(object):
                 else:
                     html.append(form.render())
         else:
-            for form in form1, form2:
+            for form in form_client, form_address:
                 html.append(form.render())
 
         html = ''.join(html)
 
-        # code, start, end = self.get_code(1)
-
-        # values passed to template for rendering
         return {
             'form': html,
             'captured': repr(captured),
-            # 'code': code,
-            # 'start': start,
-            # 'demos': self.get_demos(),
-            # 'end': end,
             'title': 'Multiple Forms on the Same Page',
             }
