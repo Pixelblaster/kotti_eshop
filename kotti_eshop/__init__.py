@@ -51,7 +51,7 @@ def includeme(config):
     config.add_translation_dirs('kotti_eshop:locale')
     config.add_static_view('static-kotti_eshop', 'kotti_eshop:static')
     config.add_route("kotti_eshop", "/-shop/*traverse",
-                     factory=lambda request:ShopRoot())
+                     factory=lambda request: ShopRoot())
 
     config.scan(__name__)
 

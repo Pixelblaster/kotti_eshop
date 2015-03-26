@@ -1,5 +1,4 @@
 from datetime import datetime
-from deform.widget import HiddenWidget
 from deform.widget import MoneyInputWidget
 from deform.widget import RichTextWidget
 from deform.widget import TextAreaWidget
@@ -51,14 +50,6 @@ def deferred_edit_product_validator(node, kw):
             raise colander.Invalid(node, msg)
 
     return unique_pin
-
-
-# class CameFromSchema(colander.Schema):
-#     came_from = colander.SchemaNode(
-#         colander.String(),
-#         widget=HiddenWidget(),
-#         default='',
-#     )
 
 
 class BackendProductSchema(colander.MappingSchema):
@@ -122,8 +113,7 @@ class BackendProductEditForm(EditFormView):
     @reify
     def success_url(self):
         root = get_root()
-        return self.request.resource_url(root) + \
-            '@@shop_admin?action=products'
+        return self.request.resource_url(root) + '-shop/@@products'
 
     def before(self, form):
         get = self.request.GET
@@ -155,7 +145,7 @@ class BackendProductEditForm(EditFormView):
                 product.price = appstruct['price']
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
-                         '@@shop_admin?action=products')
+                         '-shop/@@products')
 
 
 class PKType(colander.Integer):
@@ -243,7 +233,7 @@ class AdminViews(BaseFormView):
             DBSession.delete(product)
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
-                         '@@shop_admin?action=products')
+                         '-shop/@@products')
 
     def delete_product_assignment_success(self, appstruct):
         product = appstruct['backend_product']
@@ -255,7 +245,7 @@ class AdminViews(BaseFormView):
 
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
-                         '@@shop_admin?action=products')
+                         '-shop/@@products')
 
 
 @view_config(name="",  # permission="edit",
