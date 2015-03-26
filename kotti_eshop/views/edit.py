@@ -246,21 +246,16 @@ class AdminViews(BaseFormView):
                          '@@shop_admin?action=products')
 
     def delete_product_assignment_success(self, appstruct):
-        product = appstruct['product']
-        import pdb; pdb.set_trace()
-        # product_id = self.request.params.get('backend_product_id', None)
-        # content_item_id = self.request.params.get('content_item_id', None)
-        # if product_id is not None and content_item_id is not None:
-        #     product = DBSession.query(BackendProduct).filter(
-        #         BackendProduct.id == product_id).first()
-        #     if product:
-        #         for content in product.assigned_content:
-        #             if content.id == int(content_item_id):
-        #                 product.assigned_content.remove(content)
-        #
-        #         root = get_root()
-        #         return HTTPFound(location=self.request.resource_url(root) +
-        #                          '@@shop_admin?action=products')
+        product = appstruct['backend_product']
+        content_item_id = self.request.params.get('content_item_id', None)
+        if product is not None and content_item_id is not None:
+            for content in product.assigned_to_content:
+                if content.id == int(content_item_id):
+                    product.assigned_to_content.remove(content)
+
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root) +
+                         '@@shop_admin?action=products')
 
 
 @view_config(name="",  # permission="edit",
