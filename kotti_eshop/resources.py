@@ -318,3 +318,17 @@ class ProductOrderPlacement(Base):
 
         if original_unit_price is not None:
             self.original_unit_price = original_unit_price
+
+
+class OrderStatus(Base):
+    """ A status for an order
+        Examples: payment accepted, preparation in progress, shipped,
+                  delivered, canceled, refund, payment error,
+                  awainting paypal payment
+
+        Useful for shop admin and good for email notifications to client.
+    """
+    __tablename__ = 'order_statuses'
+    id = Column(Integer(), primary_key=True)
+    title = Column(Unicode())
+    creation_date = Column(DateTime())
