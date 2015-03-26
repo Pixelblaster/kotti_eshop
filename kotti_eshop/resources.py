@@ -81,6 +81,13 @@ order_addresses_association_table = Table(
            ForeignKey('shipping_addresses.id')),
 )
 
+order_statuses_association_table = Table(
+    'order_to_statuses', Base.metadata,
+    Column('shoporder_id', Integer(), ForeignKey('shop_orders.id')),
+    Column('orderstatus_id', Integer(),
+           ForeignKey('order_statuses.id')),
+)
+
 
 class BackendProduct(Base):
     """ A backend product in this eShop
@@ -269,6 +276,10 @@ class ShopOrder(Base):
         "ShippingAddress", backref="order",
         secondary=order_addresses_association_table)
 
+    status = relationship(
+        "OrderStatus", backref="order",
+        secondary=order_statuses_association_table)
+
     def save_content_from_cart(self, cart=None):
         """ The products are moved from cart to order saving the original price
             for each product
@@ -331,4 +342,5 @@ class OrderStatus(Base):
     __tablename__ = 'order_statuses'
     id = Column(Integer(), primary_key=True)
     title = Column(Unicode())
+    description = Column(Unicode())
     creation_date = Column(DateTime())
