@@ -495,10 +495,13 @@ class CheckoutView(object):
                     client.shop_orders.append(order)
                     order.save_content_from_cart(cart)
 
-                    # Destroy cart. Else there can be a problem with
+                    # Reset cart. Else there can be a problem with
                     # client = cart.client[0] if two different clients
                     # will use the same cart in a session.
-                    DBSession.delete(cart)
+                    # [TODO] Fix delete cart from db without
+                    # AssertionError: Dependency rule tried to blank-out
+                    # primary key column
+                    # for multiple products in cart
                     del self.request.session['shoppingcart_uid']
 
                     root = get_root()
