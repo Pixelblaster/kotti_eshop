@@ -352,3 +352,5 @@ class OrderStatus(Base):
     title = Column(Unicode())
     description = Column(Unicode())
     creation_date = Column(DateTime())
+    is_public = Column(
+        Boolean, default=True)  # Visible for client or only for admin

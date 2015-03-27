@@ -11,6 +11,7 @@ from kotti_eshop import ShopRoot
 from kotti_eshop import _
 from kotti_eshop.fanstatic import selectize
 from kotti_eshop.resources import BackendProduct
+from kotti_eshop.resources import OrderStatus
 from kotti_eshop.resources import ShoppingCart
 from kotti_eshop.resources import ShopClient
 from kotti_eshop.resources import ShopOrder
@@ -102,7 +103,7 @@ class BackendProductAddForm(BaseFormView):
     """ A form view to instantiate a new BackendProduct
     """
     schema_factory = BackendProductSchema
-    success_message = _(u"Product added")
+    success_message = _(u"Product added.")
 
     def save_success(self, appstruct):
         appstruct.pop('csrf_token', None)
@@ -112,6 +113,45 @@ class BackendProductAddForm(BaseFormView):
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
                          '-shop/@@products')
+
+
+class OrderStatusSchema(colander.MappingSchema):
+    """ Schema for add and edit a possible order status
+    """
+    title = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Title'),
+    )
+    description = colander.SchemaNode(
+        colander.String(),
+        title=_('Description'),
+        widget=TextAreaWidget(cols=40, rows=5),
+    )
+    is_public = colander.SchemaNode(
+        colander.Boolean(),
+        title=_(u'Is public'),
+        description=_(u'Public statuses are visible for the client, ' +
+                      'private ones only for the admin.'),
+    )
+
+
+@view_config(name="add-order-status", permission="view",
+             context=ShopRoot, route_name="kotti_eshop",
+             renderer="kotti:templates/edit/node.pt")
+class OrderStatusAddForm(BaseFormView):
+    """ A form view to instantiate a new OrderStatus
+    """
+    schema_factory = OrderStatusSchema
+    success_message = _(u"Status added.")
+
+    def save_success(self, appstruct):
+        appstruct.pop('csrf_token', None)
+        status = OrderStatus(**appstruct)
+        DBSession.add(status)
+        self.request.session.flash(_(u"Status added."), 'success')
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root) +
+                         '-shop/@@statuses')
 
 
 @view_config(name="edit-product", permission="view",
