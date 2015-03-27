@@ -64,6 +64,8 @@
                     href="${api.url(api.root)}@@edit-product?product_id=${product.id}">Edit</a>
                   <button tal:condition="product.is_active is True"
                           class="btn btn-sm btn-danger" name="delete_backend_product">Delete</button>
+                  <button tal:condition="product.is_active is True"
+                          class="btn btn-sm btn-warning" name="deactivate_backend_product">Deactivate</button>
                   <button tal:condition="product.is_active is False"
                           class="btn btn-sm btn-info" name="activate_backend_product">Activate</button>
                   <input type="hidden" name="backend_product" value="${product.id}" />

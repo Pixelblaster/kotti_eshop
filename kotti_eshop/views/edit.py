@@ -282,7 +282,8 @@ class AdminViews(BaseFormView):
     buttons = (
         deform.Button('delete_backend_product', _(u'Delete')),
         deform.Button('delete_product_assignment', _(u'Delete')),
-        deform.Button('activate_backend_product', _(u'Activate'))
+        deform.Button('activate_backend_product', _(u'Activate')),
+        deform.Button('deactivate_backend_product', _(u'Dectivate'))
     )
 
     def delete_backend_product_success(self, appstruct):
@@ -313,6 +314,14 @@ class AdminViews(BaseFormView):
                 if content.id == int(content_item_id):
                     product.assigned_to_content.remove(content)
         self.request.session.flash(_(u"Assignment deleted."), 'success')
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root) +
+                         '-shop/@@products')
+
+    def deactivate_backend_product_success(self, appstruct):
+        product = appstruct['backend_product']
+        product.is_active = False
+        self.request.session.flash(_(u"Product deactivated."), 'success')
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
                          '-shop/@@products')
