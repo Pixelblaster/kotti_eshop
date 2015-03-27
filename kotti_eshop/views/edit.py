@@ -282,7 +282,7 @@ class AdminViews(BaseFormView):
     buttons = (
         deform.Button('delete_backend_product', _(u'Delete')),
         deform.Button('delete_product_assignment', _(u'Delete')),
-        deform.Button('activate_product_assignment', _(u'Activate'))
+        deform.Button('activate_backend_product', _(u'Activate'))
     )
 
     def delete_backend_product_success(self, appstruct):
@@ -317,7 +317,7 @@ class AdminViews(BaseFormView):
         return HTTPFound(location=self.request.resource_url(root) +
                          '-shop/@@products')
 
-    def activate_product_success(self, appstruct):
+    def activate_backend_product_success(self, appstruct):
         product = appstruct['backend_product']
         product.is_active = True
         self.request.session.flash(_(u"Product activated."), 'success')
