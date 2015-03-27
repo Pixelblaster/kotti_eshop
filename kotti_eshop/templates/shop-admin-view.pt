@@ -23,16 +23,18 @@
 
       <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
         <!-- ADMIN MAIN -->
-        <h3>Admin main</h3>
+        <h3 i18n:translate="">Admin main</h3>
         <p>
           Maybe you want 
-          <a href="${api.url(api.root, '@@shop_admin')}?action=products">manage products</a> or 
-          <a href="${api.url(api.root, '@@shop_admin')}?action=clients">clients</a>
+          <a href="${api.url(api.root)}-shop/@@products">manage products</a> or 
+          <a href="${api.url(api.root)}-shop/@@clients">clients</a>
         </p>
-        <h4>Shop Settings</h4>
-        <p>Currency: ${api.shop_currency()}</p>
-        <p>You can change these 
-          <a href="${api.url(api.root, '@@settings')}">settings in Shop settings tab</a>.
+        <h4 i18n:translate="">Shop Settings</h4>
+        <p i18n:translate="">Currency: <span i18n:name="currency">${api.shop_currency()}</span></p>
+        <p i18n:translate="">You can change these 
+          <a href="${api.url(api.root, '@@settings')}" i18n:name="link_settings">
+            <span i18n:translate="">settings in Shop settings tab</span>
+          </a>.
         </p>
       </div>
     </div>

@@ -13,7 +13,7 @@
     i18n:domain="kotti_eshop">
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
-    <h1 i18n:translate="">Global shop settings</h1>
+    <h1 i18n:translate="">Manage orders</h1>
     <div class="row">
 
       ${api.render_view('shop-admin-menu')}

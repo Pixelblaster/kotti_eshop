@@ -13,14 +13,14 @@
       <p class="pull-right">
         <form method="POST" action="${request.resource_url(api.root, '@@cart_operations')}">
           <button class="add-to-cart shop-add-btn btn btn-primary" name="add_to_cart">
-            Add to cart
+            <span i18n:translate="">Add to cart</span>
           </button>
           <button tal:condition="shopping_cart and shopping_cart.get_content_record(product.id)"
                   class="remove-from-cart shop-remove-btn btn btn-danger" name="remove_from_cart">
-            Remove from cart
+            <span i18n:translate="">Remove from cart</span>
           </button>
           <a class="view-cart shop-view-btn btn btn-default" href="">
-            View cart
+            <span i18n:translate="">View cart</span>
           </a>
           <input type="hidden" name="backend_product_id" value="${product.id}">
           <input type="number" name="quantity" value="1" min="1">
@@ -43,18 +43,16 @@
     <table class="table table-condensed">
       <thead>
         <tr>
-          <th>PIN</th>
-          <th>Title</th>
-          <th>Quantity</th>
-          <th>Unit price</th>
-          <th>Total price</th>
+          <th i18n:translate="">Title / Unique Product Identification Number</th>
+          <th i18n:translate="">Quantity</th>
+          <th i18n:translate="">Unit price</th>
+          <th i18n:translate="">Total price</th>
         </tr>
       </thead>
       <tbody>
         <tal:repeat repeat="content_record shopping_cart.cart_content">
           <tr tal:define="product content_record.product">
-            <td>${product.pin}</td>
-            <td>${product.title}</td>
+            <td>${product.title} / ${product.pin}</td>
             <td>${content_record.quantity}</td>
             <td>${python: float(product.price)}</td>
             <td>${python: float(product.price) * content_record.quantity} ${api.shop_currency()}</td>
@@ -62,7 +60,13 @@
         </tal:repeat>
       </tbody>
     </table>
-    <h5><b>Cart Total: ${shopping_cart.get_total_price()} ${api.shop_currency()}</b></h5>
-    <a class="checkout-btn btn btn-primary" href="${api.url(api.root, '@@checkout')}">Checkout</a>
+    <h5>
+      <b i18n:translate="">Cart Total:
+        <span i18n:name="">${shopping_cart.get_total_price()} ${api.shop_currency()}</span>
+      </b>
+    </h5>
+    <a class="checkout-btn btn btn-primary" href="${api.url(api.root, '@@checkout')}">
+      <span i18n:translate="">Checkout</span>
+    </a>
   </div>
 </div>
