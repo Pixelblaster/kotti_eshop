@@ -27,6 +27,8 @@
               <th i18n:translate="">ID</th>
               <th i18n:translate="">Email</th>
               <th i18n:translate="">Creation date</th>
+              <th i18n:translate="">Shipping addresses</th>
+              <th i18n:translate="">Orders</th>
               <th i18n:translate="">Options</th>
             </tr>
           </thead>
@@ -35,6 +37,30 @@
               <td>${client.id}</td>
               <td>${client.email}</td>
               <td>${client.creation_date}</td>
+
+              <td>
+                <ol>
+                  <li tal:repeat="address client.shipping_addresses">
+                    ${address.recipient_fullname} <br />
+                    ${address.address_line1} <br />
+                    ${address.address_line2} <br />
+                    ${address.city} <br />
+                    ${address.region} <br />
+                    ${address.postal_code} <br />
+                    ${address.country} <br />
+                    created on ${api.format_datetime(address.creation_date)}
+                  </li>
+                </ol>
+              </td>
+
+              <td>
+                <ol>
+                  <li tal:repeat="order client.shop_orders">
+                    ${python: float(order.total_price)} ${api.shop_currency()} - created on ${api.format_datetime(order.creation_date)}
+                  </li>
+                </ol>
+              </td>
+
               <td>
                 <a class="btn btn-xs btn-warning"
                     href="${api.url(api.root)}@@edit-client?client_id=${client.id}">
