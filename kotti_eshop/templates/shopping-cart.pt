@@ -15,21 +15,24 @@
               class="form-inline">
 
           <div class="form-group">
-            <label for="quantity_input" i18n:translate="">Quantity</label>
-            <input class="form-control" id="quantity_input"
-                   type="number" name="quantity" value="1" min="1">
+            <label for="quantity_input" i18n:translate="">Quantity:</label>
+              <input class="form-control" id="quantity_input"
+                     type="number" name="quantity" value="1" min="1">
           </div>
 
           <button class="add-to-cart shop-add-btn btn btn-primary" name="add_to_cart">
             <span i18n:translate="">Add to cart</span>
           </button>
+
           <button tal:condition="shopping_cart and shopping_cart.get_content_record(product.id)"
                   class="remove-from-cart shop-remove-btn btn btn-danger" name="remove_from_cart">
             <span i18n:translate="">Remove from cart</span>
           </button>
+
           <a class="view-cart shop-view-btn btn btn-default" href="">
             <span i18n:translate="">View cart</span>
           </a>
+
           <input type="hidden" name="backend_product_id" value="${product.id}">
         </form>
       </p>
