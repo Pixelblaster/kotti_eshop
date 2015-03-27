@@ -19,7 +19,12 @@
       ${api.render_view('shop-admin-menu')}
 
       <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
-        <h3>Orders</h3>
+        <h3>
+          <span i18n:translate="">Orders</span>
+          <a class="btn btn-info" href="${api.url(api.root)}-shop/@@statuses" i18n:translate="">
+            Manage possible order statuses
+          </a>
+        </h3>      
         <table class="table table-condensed">
           <thead>
             <tr>
