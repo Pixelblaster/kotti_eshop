@@ -40,12 +40,6 @@
                     href="${api.url(api.root)}@@edit-client?client_id=${client.id}">
                   <span i18n:translate="">Edit</span>
                 </a>
-                <a class="btn btn-xs btn-danger" href="">
-                  <span i18n:translate="">Delete</span>
-                </a>
-                <a class="btn btn-xs btn-primary" href="">
-                  <span i18n:translate="">View cart</span>
-                </a>
               </td>
             </tr>
           </tbody>
