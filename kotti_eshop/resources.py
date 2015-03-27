@@ -107,7 +107,7 @@ class BackendProduct(Base):
     text = Column(Unicode())
     price = Column(Float(asdecimal=True))
     created = Column(DateTime())
-    active = Column(Boolean(), default=True),
+    is_active = Column(Boolean, default=True)
     assigned_to_content = relationship(Content,
                                        backref="backend_products",
                                        secondary=product_association_table)

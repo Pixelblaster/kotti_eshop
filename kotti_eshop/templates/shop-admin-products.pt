@@ -28,6 +28,7 @@
               <th>Description</th>
               <th>Assigned to</th>
               <th>Price</th>
+              <th>Status</th>
               <th>Options</th>
             </tr>
           </thead>
@@ -50,10 +51,21 @@
               </td>
               <td>${python: float(product.price)} ${api.shop_currency()}</td>
               <td>
+                <tal:condition condition="product.is_active is True">
+                  <span i18n:translate="">Active</span>
+                </tal:condition>
+                <tal:condition condition="product.is_active is False">
+                  <span i18n:translate="">Not active</span>
+                </tal:condition>                
+              </td>
+              <td>
                 <form method="POST" action="${request.resource_url(api.root, '@@shop_admin')}">
                   <a class="btn btn-sm btn-warning"
                     href="${api.url(api.root)}@@edit-product?product_id=${product.id}">Edit</a>
-                  <button class="btn btn-sm btn-danger" name="delete_backend_product">Delete</button>
+                  <button tal:condition="product.is_active is True"
+                          class="btn btn-sm btn-danger" name="delete_backend_product">Delete</button>
+                  <button tal:condition="product.is_active is False"
+                          class="btn btn-sm btn-info" name="activate_backend_product">Activate</button>
                   <input type="hidden" name="backend_product" value="${product.id}" />
                 </form>
               </td>

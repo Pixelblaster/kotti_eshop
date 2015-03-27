@@ -143,6 +143,7 @@ class BackendProductEditForm(EditFormView):
                     'description': product.description,
                     'text': product.description,
                     'price': float(product.price),
+                    'is_active': True,
                 })
 
     def edit(self, **appstruct):
@@ -280,7 +281,8 @@ class AdminViews(BaseFormView):
 
     buttons = (
         deform.Button('delete_backend_product', _(u'Delete')),
-        deform.Button('delete_product_assignment', _(u'Delete'))
+        deform.Button('delete_product_assignment', _(u'Delete')),
+        deform.Button('activate_product_assignment', _(u'Activate'))
     )
 
     def delete_backend_product_success(self, appstruct):
@@ -291,10 +293,10 @@ class AdminViews(BaseFormView):
                 DBSession.delete(product)
                 self.request.session.flash(_(u"Product deleted."), 'success')
             else:
-                product.active = False
+                product.is_active = False
                 self.request.session.flash(
                     _(u"Cannot be deleted because it is used in some " +
-                      "carts or orders Product deactivated."), 'info')
+                      "carts or orders. Product deactivated."), 'info')
         else:
             self.request.session.flash(
                 _(u"Cannot be deleted because it is assigned to some " +
@@ -311,6 +313,14 @@ class AdminViews(BaseFormView):
                 if content.id == int(content_item_id):
                     product.assigned_to_content.remove(content)
         self.request.session.flash(_(u"Assignment deleted."), 'success')
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root) +
+                         '-shop/@@products')
+
+    def activate_product_success(self, appstruct):
+        product = appstruct['backend_product']
+        product.is_active = True
+        self.request.session.flash(_(u"Product activated."), 'success')
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
                          '-shop/@@products')
