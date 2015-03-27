@@ -19,23 +19,21 @@
       ${api.render_view('shop-admin-menu')}
 
       <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
-        <h3>Backend products</h3>
+        <h3 i18n:translate="">Backend products</h3>
         <table class="table table-condensed">
           <thead>
             <tr>
-              <th>PIN</th>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Assigned to</th>
-              <th>Price</th>
-              <th>Status</th>
-              <th>Options</th>
+              <th i18n:translate="">Title / Unique Product Identification Number</th>
+              <th i18n:translate="">Description</th>
+              <th i18n:translate="">Assigned to</th>
+              <th i18n:translate="">Price</th>
+              <th i18n:translate="">Status</th>
+              <th i18n:translate="">Options</th>
             </tr>
           </thead>
           <tbody>
             <tr tal:repeat="product api.get_all_backend_products()">
-              <td>${product.pin}</td>
-              <td>${product.title}</td>
+              <td>${product.title} / ${product.pin}</td>
               <td>${product.description}</td>
               <td>
                 <tal:repeat repeat="content_item product.assigned_to_content">
@@ -61,13 +59,21 @@
               <td>
                 <form method="POST" action="${request.resource_url(api.root, '@@shop_admin')}">
                   <a class="btn btn-sm btn-warning"
-                    href="${api.url(api.root)}@@edit-product?product_id=${product.id}">Edit</a>
+                    href="${api.url(api.root)}@@edit-product?product_id=${product.id}">
+                    <span i18n:translate="">Edit</span>
+                  </a>
                   <button tal:condition="product.is_active is True"
-                          class="btn btn-sm btn-danger" name="delete_backend_product">Delete</button>
+                          class="btn btn-sm btn-danger" name="delete_backend_product">
+                    <span i18n:translate="">Delete</span>
+                  </button>
                   <button tal:condition="product.is_active is True"
-                          class="btn btn-sm btn-warning" name="deactivate_backend_product">Deactivate</button>
+                          class="btn btn-sm btn-warning" name="deactivate_backend_product">
+                    <span i18n:translate="">Deactivate</span>
+                  </button>
                   <button tal:condition="product.is_active is False"
-                          class="btn btn-sm btn-info" name="activate_backend_product">Activate</button>
+                          class="btn btn-sm btn-info" name="activate_backend_product">
+                    <span i18n:translate="">Activate</span>
+                  </button>
                   <input type="hidden" name="backend_product" value="${product.id}" />
                 </form>
               </td>
