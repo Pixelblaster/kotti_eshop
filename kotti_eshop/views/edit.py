@@ -286,8 +286,15 @@ class AdminViews(BaseFormView):
     def delete_backend_product_success(self, appstruct):
         product = appstruct['backend_product']
         if not product.assigned_to_content:  # avoid integrity error
-            DBSession.delete(product)
-            self.request.session.flash(_(u"Product deleted."), 'success')
+            if not(product.shoppingcart_placements or
+                   product.shoporders_placements):  # avoid AssertionError
+                DBSession.delete(product)
+                self.request.session.flash(_(u"Product deleted."), 'success')
+            else:
+                product.active = False
+                self.request.session.flash(
+                    _(u"Cannot be deleted because it is used in some " +
+                      "carts or orders Product deactivated."), 'info')
         else:
             self.request.session.flash(
                 _(u"Cannot be deleted because it is assigned to some " +

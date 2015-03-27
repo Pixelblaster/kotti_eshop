@@ -3,6 +3,7 @@ from kotti.resources import Content
 from kotti.resources import DBSession
 from kotti.views.util import TemplateAPI as BaseTemplateAPI
 from kotti_settings.util import get_setting
+from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import DateTime
 from sqlalchemy import Float
@@ -106,7 +107,7 @@ class BackendProduct(Base):
     text = Column(Unicode())
     price = Column(Float(asdecimal=True))
     created = Column(DateTime())
-
+    active = Column(Boolean(), default=True),
     assigned_to_content = relationship(Content,
                                        backref="backend_products",
                                        secondary=product_association_table)
