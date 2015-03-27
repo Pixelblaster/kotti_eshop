@@ -85,6 +85,16 @@ class BackendProductSchema(colander.MappingSchema):
     )
 
 
+class ShopClientSchema(colander.MappingSchema):
+    """ Schema for Shop Client
+    """
+    email = colander.SchemaNode(
+        colander.String(),
+        title=_(u'Email'),
+        description=_(u'To receive notifications about your order.'),
+    )
+
+
 @view_config(name="add-product", permission="view",
              context=ShopRoot, route_name="kotti_eshop",
              renderer="kotti:templates/edit/node.pt")
@@ -104,7 +114,7 @@ class BackendProductAddForm(BaseFormView):
              renderer="kotti:templates/edit/node.pt")
 class BackendProductEditForm(EditFormView):
     """ A form view to edit a BackendProduct
-        Example: www.mykottisite.com/@@edit_product?product_id=3
+        Example: www.mykottisite.com/@@edit-product?product_id=3
     """
     schema_factory = BackendProductSchema
     success_message = _(u"Product details saved.")
@@ -146,6 +156,46 @@ class BackendProductEditForm(EditFormView):
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
                          '-shop/@@products')
+
+
+@view_config(name="edit-client", permission="view",
+             renderer="kotti:templates/edit/node.pt")
+class ShopClientEditForm(EditFormView):
+    """ A form view to edit a ShopClient
+        Example: www.mykottisite.com/@@edit-client?client_id=3
+    """
+    schema_factory = ShopClientSchema
+    success_message = _(u"Client details saved.")
+    first_heading = (u"Edit client details")
+
+    @reify
+    def success_url(self):
+        root = get_root()
+        return self.request.resource_url(root) + '-shop/@@clients'
+
+    def before(self, form):
+        get = self.request.GET
+        client_id = get.get('client_id', None)
+        if client_id is not None:
+            client = DBSession.query(ShopClient).filter_by(
+                id=client_id).first()
+            if client:
+                form.appstruct = get_appstruct(self.context, self.schema)
+                form.appstruct.update({
+                    'email': client.email,
+                })
+
+    def edit(self, **appstruct):
+        get = self.request.GET
+        client_id = get.get('client_id', None)
+        if client_id is not None:
+            client = DBSession.query(ShopClient).filter_by(
+                id=client_id).first()
+            if client:
+                client.email = appstruct['email']
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root) +
+                         '-shop/@@clients')
 
 
 class PKType(colander.Integer):
@@ -326,16 +376,6 @@ class ShoppingCartViews(BaseView):
     renderer="kotti_eshop:templates/edit/assign-product-menu-entry.pt")
 def assign_product_menu_entry(context, request):
     return {}
-
-
-class ShopClientSchema(colander.MappingSchema):
-    """ Schema for Shop Client
-    """
-    email = colander.SchemaNode(
-        colander.String(),
-        title=_(u'Email'),
-        description=_(u'To receive notifications about your order.'),
-    )
 
 
 class ShippingAddressSchema(colander.MappingSchema):

@@ -36,7 +36,8 @@
               <td>${client.email}</td>
               <td>${client.creation_date}</td>
               <td>
-                <a class="btn btn-xs btn-warning" href="">
+                <a class="btn btn-xs btn-warning"
+                    href="${api.url(api.root)}@@edit-client?client_id=${client.id}">
                   <span i18n:translate="">Edit</span>
                 </a>
                 <a class="btn btn-xs btn-danger" href="">
