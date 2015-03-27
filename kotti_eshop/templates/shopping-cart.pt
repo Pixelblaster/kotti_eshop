@@ -1,6 +1,6 @@
 <div class="shopping-cart-row row" tal:condition="product">
 
-  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+  <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
     <h3 class="product-details">
       <span class="product-title">${product.title}</span>
       <small class="product-description">${product.description}</small>
@@ -8,10 +8,18 @@
     </h3>
   </div>
 
-  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
     <tal:condition condition="request.user">
       <p class="pull-right">
-        <form method="POST" action="${request.resource_url(api.root, '@@cart_operations')}">
+        <form method="POST" action="${request.resource_url(api.root, '@@cart_operations')}"
+              class="form-inline">
+
+          <div class="form-group">
+            <label for="quantity_input" i18n:translate="">Quantity</label>
+            <input class="form-control" id="quantity_input"
+                   type="number" name="quantity" value="1" min="1">
+          </div>
+
           <button class="add-to-cart shop-add-btn btn btn-primary" name="add_to_cart">
             <span i18n:translate="">Add to cart</span>
           </button>
@@ -23,7 +31,6 @@
             <span i18n:translate="">View cart</span>
           </a>
           <input type="hidden" name="backend_product_id" value="${product.id}">
-          <input type="number" name="quantity" value="1" min="1">
         </form>
       </p>
     </tal:condition>
