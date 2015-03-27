@@ -247,6 +247,8 @@ class AssignBackendProductForm(BaseFormView):
 
     def save_success(self, appstruct):
         self.context.backend_products = list(appstruct['products'])
+        self.request.session.flash(_(u"Product assigned."), 'success')
+        return HTTPFound(location=self.request.resource_url(self.context))
 
     def before(self, form):
         selectize.need()
