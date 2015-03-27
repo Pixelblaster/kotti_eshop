@@ -287,6 +287,11 @@ class AdminViews(BaseFormView):
         product = appstruct['backend_product']
         if not product.assigned_to_content:  # avoid integrity error
             DBSession.delete(product)
+            self.request.session.flash(_(u"Product deleted."), 'success')
+        else:
+            self.request.session.flash(
+                _(u"Cannot be deleted because it is assigned to some " +
+                    "content. Delete product assignments first."), 'info')
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
                          '-shop/@@products')
@@ -298,7 +303,7 @@ class AdminViews(BaseFormView):
             for content in product.assigned_to_content:
                 if content.id == int(content_item_id):
                     product.assigned_to_content.remove(content)
-
+        self.request.session.flash(_(u"Assignment deleted."), 'success')
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root) +
                          '-shop/@@products')
