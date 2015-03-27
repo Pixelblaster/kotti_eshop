@@ -21,16 +21,16 @@
           </div>
 
           <button class="add-to-cart shop-add-btn btn btn-primary" name="add_to_cart">
-            <i class="fa fa-plus"></i><span i18n:translate="">Add to cart</span>
+            <i class="fa fa-cart-plus"></i> <span i18n:translate="">Add</span>
           </button>
 
           <button tal:condition="shopping_cart and shopping_cart.get_content_record(product.id)"
                   class="remove-from-cart shop-remove-btn btn btn-danger" name="remove_from_cart">
-            <span i18n:translate="">Remove from cart</span>
+            <i class="fa fa-times"></i> <span i18n:translate="">Remove</span>
           </button>
 
           <a class="view-cart shop-view-btn btn btn-default" href="">
-            <span i18n:translate="">View cart</span>
+            <i class="fa fa-shopping-cart"></i> <span i18n:translate="">View</span>
           </a>
 
           <input type="hidden" name="backend_product_id" value="${product.id}">
@@ -49,7 +49,6 @@
 
 <div class="products-row row" tal:condition="shopping_cart">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <h3>Products in cart:</h3>
     <table class="table table-condensed">
       <thead>
         <tr>
@@ -70,13 +69,13 @@
         </tal:repeat>
       </tbody>
     </table>
-    <h5>
+    <h3>
       <b i18n:translate="">Cart Total:
         <span i18n:name="">${shopping_cart.get_total_price()} ${api.shop_currency()}</span>
       </b>
-    </h5>
-    <a class="checkout-btn btn btn-primary" href="${api.url(api.root, '@@checkout')}">
-      <span i18n:translate="">Checkout</span>
-    </a>
+      <a class="pull-right checkout-btn btn btn-success" href="${api.url(api.root, '@@checkout')}">
+        <i class="fa fa-cart-arrow-down"></i> <span i18n:translate="">Checkout</span>
+      </a>
+    </h3>
   </div>
 </div>
