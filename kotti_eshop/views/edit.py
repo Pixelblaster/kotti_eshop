@@ -360,6 +360,12 @@ def shop_admin_orders(context, request):
     return {}
 
 
+@view_config(name="statuses", context=ShopRoot, route_name="kotti_eshop",
+             renderer="kotti_eshop:templates/shop-admin-statuses.pt")
+def shop_admin_order_possible_statuses(context, request):
+    return {}
+
+
 @view_defaults(permission="view")
 class ShoppingCartViews(BaseView):
 

@@ -43,6 +43,13 @@ class TemplateAPI(BaseTemplateAPI):
             ShopOrder.creation_date)
         return orders
 
+    def get_all_possible_order_statuses(self):
+        """ Returns all possible order order statuses for this shop
+        """
+        statuses = DBSession.query(OrderStatus).order_by(
+            OrderStatus.creation_date)
+        return statuses
+
     def get_backend_product(self, product_id):
         """ Get backend product by id
         """

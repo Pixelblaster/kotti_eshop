@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xml:lang="en"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  metal:use-macro="api.macro('kotti:templates/site-setup/master.pt')">
+
+  <div metal:fill-slot="editor-bar"></div>
+
+  <article metal:fill-slot="content"
+    class="content"
+    i18n:domain="kotti_eshop">
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <h1 i18n:translate="">Manage statuses</h1>
+    <div class="row">
+
+      ${api.render_view('shop-admin-menu')}
+
+      <div class="col col-lg-10 col-md-10 col-sm-12 col-xs 12">
+        <h3 i18n:translate="">Possible order statuses</h3>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th i18n:translate="">ID</th>
+              <th i18n:translate="">Title</th>
+              <th i18n:translate="">Description</th>
+              <th i18n:translate="">Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr tal:repeat="status api.get_all_possible_order_statuses()">
+              <td>${status.title}</td>
+              <td>${status.description}</td>
+              <td>Options</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </article>
+</html>
