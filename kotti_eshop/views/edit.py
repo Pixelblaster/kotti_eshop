@@ -154,6 +154,50 @@ class OrderStatusAddForm(BaseFormView):
                          '-shop/@@statuses')
 
 
+@view_config(name="edit-order-status", permission="view",
+             renderer="kotti:templates/edit/node.pt")
+class OrderStatusEditForm(EditFormView):
+    """ A form view to edit an OrderStatus
+        Example: www.mykottisite.com/@@edit-order-status?status_id=3
+    """
+    schema_factory = OrderStatusSchema
+    success_message = _(u"Status details saved.")
+    first_heading = (u"Edit status details")
+
+    @reify
+    def success_url(self):
+        root = get_root()
+        return self.request.resource_url(root) + '-shop/@@statuses'
+
+    def before(self, form):
+        get = self.request.GET
+        status_id = get.get('status_id', None)
+        if status_id is not None:
+            status = DBSession.query(OrderStatus).filter(
+                OrderStatus.id == status_id).first()
+            if status:
+                form.appstruct = get_appstruct(self.context, self.schema)
+                form.appstruct.update({
+                    'title': status.title,
+                    'description': status.description,
+                    'is_public': status.is_public,
+                })
+
+    def edit(self, **appstruct):
+        get = self.request.GET
+        status_id = get.get('status_id', None)
+        if status_id is not None:
+            status = DBSession.query(OrderStatus).filter(
+                OrderStatus.id == int(status_id)).first()
+            if status:
+                status.title = appstruct['title']
+                status.description = appstruct['description']
+                status.is_public = appstruct['is_public']
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root) +
+                         '-shop/@@statuses')
+
+
 @view_config(name="edit-product", permission="view",
              renderer="kotti:templates/edit/node.pt")
 class BackendProductEditForm(EditFormView):
@@ -183,7 +227,7 @@ class BackendProductEditForm(EditFormView):
                     'description': product.description,
                     'text': product.description,
                     'price': float(product.price),
-                    'is_active': True,
+                    'is_active': product.is_active,
                 })
 
     def edit(self, **appstruct):

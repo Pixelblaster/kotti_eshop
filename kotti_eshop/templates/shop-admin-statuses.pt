@@ -36,6 +36,7 @@
           </thead>
           <tbody>
             <tr tal:repeat="status api.get_all_possible_order_statuses()">
+              <td>${status.id}</td>
               <td>${status.title}</td>
               <td>${status.description}</td>
               <td>Options</td>
