@@ -108,6 +108,10 @@ class BackendProductAddForm(BaseFormView):
         appstruct.pop('csrf_token', None)
         product = BackendProduct(**appstruct)
         DBSession.add(product)
+        self.request.session.flash(_(u"Product created."), 'success')
+        root = get_root()
+        return HTTPFound(location=self.request.resource_url(root) +
+                         '-shop/@@products')
 
 
 @view_config(name="edit-product", permission="view",

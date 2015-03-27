@@ -28,7 +28,8 @@
           <i class="fa fa-times"></i> <span i18n:translate="">Remove product</span>
         </button>
 
-        <a class="view-cart shop-view-btn btn btn-default" href="">
+        <a tal:condition="shopping_cart"
+           class="view-cart shop-view-btn btn btn-default" href="">
           <i class="fa fa-shopping-cart"></i> <span i18n:translate="">View</span>
         </a>
 
