@@ -1,6 +1,6 @@
 <div class="shopping-cart-row row" tal:condition="product">
 
-  <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
     <h3 class="product-details">
       <span class="product-title">${product.title}</span>
       <small class="product-description">${product.description}</small>
@@ -8,34 +8,32 @@
     </h3>
   </div>
 
-  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
     <tal:condition condition="request.user">
-      <p class="pull-right">
-        <form method="POST" action="${request.resource_url(api.root, '@@cart_operations')}"
-              class="form-inline">
+      <form method="POST" action="${request.resource_url(api.root, '@@cart_operations')}"
+            class="form-inline">
 
-          <div class="form-group">
-            <label for="quantity_input" i18n:translate="">Quantity:</label>
-              <input class="form-control" id="quantity_input"
-                     type="number" name="quantity" value="1" min="1">
-          </div>
+        <div class="form-group">
+          <label for="quantity_input" i18n:translate="">Quantity:</label>
+            <input class="form-control" id="quantity_input"
+                   type="number" name="quantity" value="1" min="1">
+        </div>
 
-          <button class="add-to-cart shop-add-btn btn btn-primary" name="add_to_cart">
-            <i class="fa fa-cart-plus"></i> <span i18n:translate="">Add</span>
-          </button>
+        <button class="add-to-cart shop-add-btn btn btn-primary" name="add_to_cart">
+          <i class="fa fa-cart-plus"></i> <span i18n:translate="">Add</span>
+        </button>
 
-          <button tal:condition="shopping_cart and shopping_cart.get_content_record(product.id)"
-                  class="remove-from-cart shop-remove-btn btn btn-danger" name="remove_from_cart">
-            <i class="fa fa-times"></i> <span i18n:translate="">Remove</span>
-          </button>
+        <button tal:condition="shopping_cart and shopping_cart.get_content_record(product.id)"
+                class="remove-from-cart shop-remove-btn btn btn-danger" name="remove_from_cart">
+          <i class="fa fa-times"></i> <span i18n:translate="">Remove product</span>
+        </button>
 
-          <a class="view-cart shop-view-btn btn btn-default" href="">
-            <i class="fa fa-shopping-cart"></i> <span i18n:translate="">View</span>
-          </a>
+        <a class="view-cart shop-view-btn btn btn-default" href="">
+          <i class="fa fa-shopping-cart"></i> <span i18n:translate="">View</span>
+        </a>
 
-          <input type="hidden" name="backend_product_id" value="${product.id}">
-        </form>
-      </p>
+        <input type="hidden" name="backend_product_id" value="${product.id}">
+      </form>
     </tal:condition>
 
     <tal:condition condition="not request.user">
@@ -49,7 +47,7 @@
 
 <div class="products-row row" tal:condition="shopping_cart">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <table class="table table-condensed">
+    <table class="products-table table table-condensed">
       <thead>
         <tr>
           <th i18n:translate="">Title / Unique Product Identification Number</th>
@@ -69,13 +67,13 @@
         </tal:repeat>
       </tbody>
     </table>
-    <h3>
+    <h4>
       <b i18n:translate="">Cart Total:
         <span i18n:name="">${shopping_cart.get_total_price()} ${api.shop_currency()}</span>
       </b>
       <a class="pull-right checkout-btn btn btn-success" href="${api.url(api.root, '@@checkout')}">
         <i class="fa fa-cart-arrow-down"></i> <span i18n:translate="">Checkout</span>
       </a>
-    </h3>
+    </h4>
   </div>
 </div>

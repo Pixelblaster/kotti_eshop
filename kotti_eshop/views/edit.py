@@ -304,6 +304,7 @@ class ShoppingCartViews(BaseView):
 
                 # ADD product
                 cart.add_to_cart(product_id=int(product_id), quantity=quantity)
+                self.request.session.flash(_(u"Added to cart."), 'success')
 
         # REMOVE from cart
         if 'remove_from_cart' in self.request.params:
@@ -315,7 +316,7 @@ class ShoppingCartViews(BaseView):
                     shoppingcart_uid=shoppingcart_uid).first()
                 cart.change_product_quantity(
                     product_id=int(product_id), delta=0)
-
+                self.request.session.flash(_(u"Removed from cart."), 'success')
         root = get_root()
         return HTTPFound(location=self.request.resource_url(root))
 

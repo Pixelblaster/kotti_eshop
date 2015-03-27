@@ -4,3 +4,12 @@
 #quantity_input {
 	width: 70px;
 }
+
+.products-table {
+	margin-top:10px;
+	background-color: #eee;
+}
+
+.product-details {
+	margin-top: 0px;
+}
