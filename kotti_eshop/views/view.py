@@ -19,6 +19,8 @@ def shopping_cart(context, request):
     backend_product = None
     if context.backend_products:
         backend_product = context.backend_products[0]
+        if backend_product.is_active is False:
+            backend_product = None
 
     cart = None
     if 'shoppingcart_uid' in request.session:
