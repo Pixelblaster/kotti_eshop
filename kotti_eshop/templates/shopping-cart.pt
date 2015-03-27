@@ -21,7 +21,7 @@
           </div>
 
           <button class="add-to-cart shop-add-btn btn btn-primary" name="add_to_cart">
-            <span i18n:translate="">Add to cart</span>
+            <i class="fa fa-plus"></i><span i18n:translate="">Add to cart</span>
           </button>
 
           <button tal:condition="shopping_cart and shopping_cart.get_content_record(product.id)"
