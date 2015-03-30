@@ -18,7 +18,6 @@ from velruse import login_url
 class TemplateAPI(BaseTemplateAPI):
 
     def login_url(self, provider='facebook'):
-        import pdb; pdb.set_trace( )
         return login_url(self.request, provider)
 
     def shop_currency(self):
