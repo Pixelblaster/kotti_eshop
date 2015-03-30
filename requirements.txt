@@ -1,2 +1,4 @@
 -r https://raw.githubusercontent.com/Kotti/Kotti/master/requirements.txt
 -e git+ssh://git@github.com/j23d/kotti_settings.git#egg=kotti_settings
+-e git+ssh://git@github.com/tiberiuichim/kotti_accounts.git#egg=kotti_accounts
+-e git+ssh://git@github.com/tiberiuichim/kotti_velruse.git#egg=kotti_velruse
