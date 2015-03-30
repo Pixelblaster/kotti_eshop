@@ -39,7 +39,12 @@
               <td>${status.id}</td>
               <td>${status.title}</td>
               <td>${status.description}</td>
-              <td>Options</td>
+              <td>
+                <a class="btn btn-sm btn-warning"
+                   href="${api.url(api.root)}@@edit-order-status?status_id=${status.id}">
+                  <span i18n:translate="">Edit</span>
+                </a>
+              </td>
             </tr>
           </tbody>
         </table>

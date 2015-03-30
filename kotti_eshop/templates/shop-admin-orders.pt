@@ -68,7 +68,7 @@
               </td>
               <td>${python: float(order.total_price)} ${api.shop_currency()}</td>
               <td>
-                Options
+                [TODO] Add status from possible statuses.
               </td>
             </tr>
           </tbody>

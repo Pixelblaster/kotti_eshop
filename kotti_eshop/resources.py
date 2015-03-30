@@ -346,6 +346,10 @@ class OrderStatus(Base):
                   awainting paypal payment
 
         Useful for shop admin and good for email notifications to client.
+
+        [TODO] Assignemnt like product to cart. We need a creation_date for
+        the moment when a status was added to an order (and maybe the admin
+        name who solved this task).
     """
     __tablename__ = 'order_statuses'
     id = Column(Integer(), primary_key=True)
