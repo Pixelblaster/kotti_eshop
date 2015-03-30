@@ -20,7 +20,7 @@ _ = TranslationStringFactory('kotti_eshop')
 def kotti_configure(settings):
     s = settings
     s['kotti.populators'] += ' kotti_eshop.populate.populate'
-    s['pyramid.includes'] += ' kotti_eshop'
+    s['pyramid.includes'] += ' kotti_eshop velruse.app'
     s['kotti.fanstatic.view_needed'] += ' kotti_eshop.fanstatic.css_and_js'
     s['kotti.templates.api'] = 'kotti_eshop.resources.TemplateAPI'
 
@@ -67,7 +67,7 @@ def configure_velruse(config):
     config.add_facebook_login_from_settings(prefix='velruse.facebook.')
 
     # FOR EACH LOGGED IN: get_extra_info
-    import pdb; pdb.set_trace( )
+    #import pdb; pdb.set_trace( )
     # objectevent_listeners[(
     #     AfterKottiVelruseLoggedIn, AfterLoggedInObject)].append(
     #     get_extra_info)

@@ -39,7 +39,10 @@
 
     <tal:condition condition="not request.user">
       <p class="pull-right">
-        <a href="${api.url(api.root, '@@login')}">Log in</a> to buy ${product.title}.
+        <a href="${api.login_url()}" class="btn btn-primary">
+          <i class="fa fa-facebook"></i>
+          <span i18n:translate="">Log in to buy</span>
+        </a> ${product.title}.
       </p>
     </tal:condition>
 
