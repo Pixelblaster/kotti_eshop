@@ -8,7 +8,11 @@ from kotti.views.site_setup import CONTROL_PANEL_LINKS
 from kotti.views.slots import assign_slot
 from pyramid.i18n import TranslationStringFactory
 from kotti_eshop.util import RouteLink
-
+from anykeystore import create_store_from_settings
+from kotti.events import objectevent_listeners
+from kotti_accounts import kotti_configure_events
+from kotti_velruse.events import AfterKottiVelruseLoggedIn
+from kotti_velruse.events import AfterLoggedInObject
 
 _ = TranslationStringFactory('kotti_eshop')
 
@@ -44,6 +48,29 @@ class ShopRoot(object):
 
     def __getitem__(self, name):
         print "getting", name
+
+
+def configure_velruse(config):
+    """ Configure velruse to avoid a conflict error about the session setup
+    """
+
+    # setup velruse backing storage
+    settings = config.registry.settings
+    storage_string = settings.get('store')
+    settings['store.store'] = storage_string
+    store = create_store_from_settings(settings, prefix='store.')
+    config.register_velruse_store(store)
+
+    # configure velruse integration through kotti_accounts/kotti_velruse
+    kotti_configure_events(settings)
+    config.include('velruse.providers.facebook')
+    config.add_facebook_login_from_settings(prefix='velruse.facebook.')
+
+    # FOR EACH LOGGED IN: get_extra_info
+    import pdb; pdb.set_trace( )
+    # objectevent_listeners[(
+    #     AfterKottiVelruseLoggedIn, AfterLoggedInObject)].append(
+    #     get_extra_info)
 
 
 def includeme(config):

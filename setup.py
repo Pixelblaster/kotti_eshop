@@ -19,6 +19,7 @@ install_requires = [
     'Kotti>=0.10b1',
     'webhelpers',
     'kotti_settings',
+    'anykeystore',
 ]
 
 
